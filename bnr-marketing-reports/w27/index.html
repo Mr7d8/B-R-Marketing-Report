@@ -692,7 +692,7 @@ safeChart('chart-gmv-cat', {
         callbacks: { label: function(c) { return c.label + ': ' + c.parsed + '%'; } } },
       datalabels: {
         color: '#fff', font: { weight: '700', size: 10 },
-        formatter: function(v) { return v + '%'; }
+        formatter: function(v) { return v < 5 ? null : v + '%'; }
       }
     }
   }
@@ -712,7 +712,7 @@ safeChart('chart-sku-cat', {
         callbacks: { label: function(c) { return c.label + ': ' + c.parsed + '%'; } } },
       datalabels: {
         color: '#fff', font: { weight: '700', size: 10 },
-        formatter: function(v) { return v + '%'; }
+        formatter: function(v) { return v < 5 ? null : v + '%'; }
       }
     }
   }
