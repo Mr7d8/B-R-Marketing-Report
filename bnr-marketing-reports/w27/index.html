@@ -251,17 +251,81 @@ footer a { color: var(--ink); text-decoration: none; font-weight: 500; }
 
 /* PRINT */
 @media print {
-  body { background: white; }
+  body { background: white; font-size: 12px; }
   .masthead { display: none; }
-  .page-section { padding: 20px 0; min-height: auto; }
+  .page-section { padding: 10px 0; min-height: auto; }
   .pb { page-break-after: always; }
-  .chart-wrap { height: 260px; }
-  .chart-tall { height: 320px; }
+  .chart-wrap { height: 200px; }
+  .chart-tall { height: 240px; }
   footer { background: white; }
   .lightbox { display: none !important; }
   .print-btn { display: none; }
-  @page { margin: 1.2cm; size: A4; }
-  .card, .kpi-card, .insight, .ranking, .key-finding { page-break-inside: avoid; break-inside: avoid; }
+  @page { margin: 1cm; size: A4; }
+
+  /* Chrome's print engine cannot split a CSS grid container across a page:
+     if one doesn't fit in the remaining space, it jumps whole to the next
+     page and leaves the current one mostly blank. Individual cards below
+     are kept intact (they're small, this is harmless); the multi-card ROW
+     containers (.br-row*, .br-pies) are switched to flexbox further down
+     instead, since flex CAN wrap across a page boundary in Chrome. */
+  .card, .kpi-card, .insight, .ranking, .key-finding,
+  .funnel-card, .growth-card, .br-card {
+    page-break-inside: avoid; break-inside: avoid;
+  }
+
+  /* Row containers built with CSS grid: convert to flex for print so
+     Chrome can wrap their children across a page break instead of
+     shoving the whole row onto the next page. */
+  .br-row1, .br-row2, .br-row3, .br-pies, .growth-cards.kpi-row,
+  .plan-grid, .insight-grid, .insight-grid.cols-3, .two-col, .two-col-eq, .three-col {
+    display: flex !important;
+    flex-wrap: wrap;
+  }
+  .br-row1 > *, .br-row3 > *, .br-pies > *, .two-col > *, .two-col-eq > *,
+  .insight-grid > * { flex: 1 1 45%; }
+  .br-row2 > *, .three-col > *, .plan-grid > * { flex: 1 1 30%; }
+  .insight-grid.cols-3 > * { flex: 1 1 30%; }
+  .growth-cards.kpi-row > * { flex: 1 1 22%; }
+
+  h2.display-l { font-size: 24px; margin-bottom: 8px; }
+  .lede { font-size: 13px; margin-bottom: 16px; }
+  .page-label { margin-bottom: 12px; }
+
+  /* Conversion funnel: compact so funnel + highlights fit as one unit */
+  .funnel-card { padding: 12px 16px 10px; margin-top: 8px; }
+  .funnel-card .card-title-lg { font-size: 14px; }
+  .funnel-card .card-sub-sm { font-size: 11px; margin-bottom: 0; }
+  .funnel-split { gap: 16px; margin-top: 4px; }
+  .funnel-svg-wrap { max-width: 240px; margin: 0 auto; display: block; }
+  .funnel-highlights { padding-left: 16px; padding-top: 0; }
+  .funnel-highlights .card-title { font-size: 12px; }
+  .funnel-highlights .card-sub { font-size: 10px; margin-bottom: 8px; }
+  .ops-list { gap: 6px; }
+  .ops-list li { font-size: 10px; line-height: 1.35; padding-left: 14px; }
+
+  /* App Growth KPI tiles: compact */
+  .growth-cards.kpi-row { gap: 6px; }
+  .growth-card.compact { padding: 8px 10px; }
+  .growth-card.compact .growth-metric-value { font-size: 15px; }
+  .growth-pill { padding: 3px 8px; margin-bottom: 4px; }
+  .growth-pill .pill-main { font-size: 10px; }
+  .growth-pill .pill-sub { font-size: 8px; }
+  .growth-delta { font-size: 10px; margin-left: 4px; }
+
+  /* Business & Revenue cards: compact */
+  .br-card { padding: 12px; }
+  .br-value-xl { font-size: 22px; margin-top: 6px; }
+  .br-value-lg { font-size: 17px; }
+  .br-chart-sm { height: 110px; }
+  .br-top-sellers-wrap { height: 160px; }
+  .br-row1, .br-row2, .br-row3 { margin-top: 12px; gap: 10px; }
+
+  /* Insight / plan cards: compact */
+  .insight { padding: 14px 16px; }
+  .insight-title { font-size: 15px; margin-bottom: 6px; }
+  .insight-body { font-size: 11px; }
+  .plan-grid .br-card { padding: 12px 14px; }
+  .ops-list-sm li { font-size: 10px; }
 }
 
 @keyframes riseIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
