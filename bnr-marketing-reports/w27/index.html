@@ -300,13 +300,25 @@ footer a { color: var(--ink); text-decoration: none; font-weight: 500; }
   .pv-bar-row .fill { height: 100%; background: var(--gradient-h); border-radius: 4px; }
   .pv-bar-row .val { width: 52px; flex-shrink: 0; font-weight: 700; font-size: 10px; }
 
+  /* .compact: tighter rows for longer lists (10 sellers) so they still fit
+     one page. .small: on top of .compact, for the two-up ad mini-charts
+     where each column is half width. */
+  .pv-bars.compact { gap: 3px; }
+  .pv-bars.compact .pv-bar-row { font-size: 8.5px; }
+  .pv-bars.compact .pv-bar-row .name { width: 108px; font-size: 8.5px; }
+  .pv-bars.compact .pv-bar-row .track { height: 8px; }
+  .pv-bars.compact .pv-bar-row .val { width: 40px; font-size: 8.5px; }
+  .pv-bars.compact.small .pv-bar-row .name { width: 82px; }
+  .pv-bars.compact.small .pv-bar-row .val { width: 32px; }
+  .pv-mini-chart-title { font-size: 9px; font-weight: 700; color: var(--ink-soft); margin-bottom: 6px; }
+
   /* Pure CSS conic-gradient pies, deliberately not Chart.js: a background
      image renders identically in print and on screen, no canvas, no
      resize dependency, nothing that can go wrong between the two contexts. */
   .pv-pie-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
   .pv-pie-card { text-align: center; }
   .pv-pie-card .t { font-size: 10px; font-weight: 700; margin-bottom: 10px; }
-  .pv-pie { width: 108px; height: 108px; border-radius: 50%; margin: 0 auto 10px; }
+  .pv-pie { width: 132px; height: 132px; border-radius: 50%; margin: 0 auto 10px; }
   .pv-pie-legend { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 8px; font-size: 7.5px; color: var(--ink-soft); }
   .pv-pie-legend span { display: inline-flex; align-items: center; gap: 3px; white-space: nowrap; }
   .pv-pie-legend i { display: inline-block; width: 6px; height: 6px; border-radius: 2px; flex-shrink: 0; }
@@ -326,6 +338,17 @@ footer a { color: var(--ink); text-decoration: none; font-weight: 500; }
   .pv-table td { padding: 6px; border-bottom: 1px solid var(--line); }
   .pv-table th.num, .pv-table td.num { text-align: right; }
   .pv-table .rank { color: var(--ink-fade); font-weight: 700; }
+  .mut { color: var(--ink-mute); font-weight: 400; }
+
+  /* Ads table: 9 columns need to fit the ~658px print content width, so
+     compact padding/font and a small square thumbnail replace the
+     screen version's 74px creative preview. */
+  .pv-table-ads { table-layout: fixed; font-size: 8px; }
+  .pv-table-ads th, .pv-table-ads td { padding: 3px 4px; }
+  .pv-table-ads th:first-child, .pv-table-ads td:first-child { width: 14px; }
+  .pv-table-ads th:nth-child(2), .pv-table-ads td:nth-child(2) { width: 26px; }
+  .pv-table-ads th:nth-child(3), .pv-table-ads td:nth-child(3) { width: auto; }
+  .pv-table-ads img { width: 22px; height: 22px; object-fit: cover; border-radius: 4px; display: block; }
 
   .pv-funnel-wrap { max-width: 270px; margin: 4px auto 0; }
 
@@ -1051,12 +1074,17 @@ document.addEventListener('keydown', function(e) { if (e.key === 'Escape') { clo
     </div>
 
     <div class="pv-section-label">Top Sellers (GMV)</div>
-    <div class="pv-bars">
+    <div class="pv-bars compact">
       <div class="pv-bar-row"><div class="name">Be Pretty by Fatym</div><div class="track"><div class="fill" style="width:100%"></div></div><div class="val">32,000</div></div>
       <div class="pv-bar-row"><div class="name">Beauty Mall</div><div class="track"><div class="fill" style="width:10%"></div></div><div class="val">3,200</div></div>
       <div class="pv-bar-row"><div class="name">Digitronics</div><div class="track"><div class="fill" style="width:8.1%"></div></div><div class="val">2,600</div></div>
       <div class="pv-bar-row"><div class="name">World Market</div><div class="track"><div class="fill" style="width:6.6%"></div></div><div class="val">2,100</div></div>
       <div class="pv-bar-row"><div class="name">Sao Eleven</div><div class="track"><div class="fill" style="width:5.3%"></div></div><div class="val">1,700</div></div>
+      <div class="pv-bar-row"><div class="name">ETCInfo</div><div class="track"><div class="fill" style="width:4.4%"></div></div><div class="val">1,400</div></div>
+      <div class="pv-bar-row"><div class="name">Ad Librairie</div><div class="track"><div class="fill" style="width:3.4%"></div></div><div class="val">1,100</div></div>
+      <div class="pv-bar-row"><div class="name">Mango</div><div class="track"><div class="fill" style="width:2.8%"></div></div><div class="val">900</div></div>
+      <div class="pv-bar-row"><div class="name">Majouri Paris</div><div class="track"><div class="fill" style="width:2.2%"></div></div><div class="val">700</div></div>
+      <div class="pv-bar-row"><div class="name">Taurus</div><div class="track"><div class="fill" style="width:1.6%"></div></div><div class="val">500</div></div>
     </div>
 
     <div class="pv-section-label">Category Mix</div>
@@ -1092,15 +1120,21 @@ document.addEventListener('keydown', function(e) { if (e.key === 'Escape') { clo
     <div class="pv-two-col">
       <div class="pv-note-box good">
         <div class="t">Les bonnes nouvelles</div>
-        <p><strong>Signatures :</strong> cham&agrave;ty, keira, Maroc Vitamines, veranoclothing, superfood. <strong>Sujet chaud :</strong> pr&eacute;paration du P&amp;L Terranova + offre commerciale kak. Objectif SKU trimestre atteint (47). Module vente flash fix&eacute;.</p>
+        <p><strong>Signatures :</strong> cham&agrave;ty, keira, Maroc Vitamines, veranoclothing, superfood.<br>
+        <strong>Int&eacute;ress&eacute;s :</strong> Cookmaster, Anfa retail, Petit Bateau, MB Studio Z, Planet sport, Moxe, Wabi sabi.<br>
+        Validation de Ma Franchise, formation effectu&eacute;e, int&eacute;gration de ETAM en attente validation Cedric avec new contrat. Cr&eacute;ation des SIS L&rsquo;or&eacute;al.<br>
+        <strong>Sujet chaud :</strong> pr&eacute;paration du P&amp;L Terranova + offre commerciale kak. Objectif SKU trimestre atteint (47). Module vente flash fix&eacute;.</p>
       </div>
       <div class="pv-note-box warn">
         <div class="t">A Fixer</div>
         <ul>
-          <li>Feuille de recrutement Chaima et Khaoula</li>
-          <li>Objectifs et grille bonus AKSAL GROUPE</li>
-          <li>UX module bunddle &agrave; d&eacute;ployer tiers one</li>
-          <li>Profil AKWA group toujours pas valid&eacute;</li>
+          <li>Feuille de recrutement sign&eacute;es de Chaima et Khaoula</li>
+          <li>Objectifs AKSAL GROUPE et grille des bonus annuel</li>
+          <li>UX module bunddle &agrave; d&eacute;ployer pour tiers one</li>
+          <li>Parcours kenzup &agrave; fixer</li>
+          <li>Incubation CRC : carte sim (bon de commande &agrave; signer)</li>
+          <li>Profil AKWA group toujours pas valid&eacute;, stores d&eacute;sactiv&eacute;s</li>
+          <li>Outils &eacute;quipes en attente (onedrive, NDF, moyens g&eacute;n&eacute;raux)</li>
         </ul>
       </div>
     </div>
@@ -1128,7 +1162,7 @@ document.addEventListener('keydown', function(e) { if (e.key === 'Escape') { clo
     </div>
 
     <div class="pv-section-label">Conversion Funnel</div>
-    <div class="pv-funnel-wrap">
+    <div class="pv-funnel-wrap" style="max-width:250px;">
 <svg viewBox="0 0 460 420" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;">
   <defs>
     <linearGradient id="funnelGradPrint" x1="0" y1="0" x2="0" y2="1">
@@ -1148,16 +1182,39 @@ document.addEventListener('keydown', function(e) { if (e.key === 'Escape') { clo
     </div>
 
     <div class="pv-section-label">Top 5 Ads</div>
-    <table class="pv-table">
-      <thead><tr><th>#</th><th>Ad</th><th class="num">Spend</th><th class="num">CTR</th><th class="num">Results</th></tr></thead>
+    <table class="pv-table pv-table-ads">
+      <thead><tr><th>#</th><th></th><th>Ad</th><th class="num">Spend</th><th class="num">Impr.</th><th class="num">Clicks</th><th class="num">CTR</th><th class="num">CPC</th><th class="num">Results</th></tr></thead>
       <tbody>
-        <tr><td class="rank">1</td><td>IMG 2 <span style="color:var(--ink-mute);">&middot; Image</span></td><td class="num">&euro;64.53</td><td class="num">1.64%</td><td class="num">40 leads &middot; &euro;1.61/res</td></tr>
-        <tr><td class="rank">2</td><td>General - IMG 1 - nw <span style="color:var(--ink-mute);">&middot; Image</span></td><td class="num">&euro;60.89</td><td class="num">0.74%</td><td class="num">16 purch. &middot; &euro;3.81/res</td></tr>
-        <tr><td class="rank">3</td><td>For Her - VID 2 <span style="color:var(--ink-mute);">&middot; Video</span></td><td class="num">&euro;47.13</td><td class="num">1.89%</td><td class="num">10 purch. &middot; &euro;4.71/res</td></tr>
-        <tr><td class="rank">4</td><td>General - VID 1 <span style="color:var(--ink-mute);">&middot; Video</span></td><td class="num">&euro;72.00</td><td class="num">0.52%</td><td class="num">8 purch. &middot; &euro;9.00/res</td></tr>
-        <tr><td class="rank">5</td><td>IMG 3 <span style="color:var(--ink-mute);">&middot; Image</span></td><td class="num">&euro;6.47</td><td class="num">1.54%</td><td class="num">4 leads &middot; &euro;1.62/res</td></tr>
+        <tr><td class="rank">1</td><td><img src="https://res.cloudinary.com/dm49t65oz/image/upload/v1783605677/wasal-bnr-report/w27/img-2.png" alt=""></td><td>IMG 2 <span class="mut">&middot; Image</span></td><td class="num">&euro;64.53</td><td class="num">60,212</td><td class="num">990</td><td class="num">1.64%</td><td class="num">&euro;0.07</td><td class="num">40 leads &middot; &euro;1.61/res</td></tr>
+        <tr><td class="rank">2</td><td><img src="https://res.cloudinary.com/dm49t65oz/image/upload/v1783605685/wasal-bnr-report/w27/general-img-1-nw.png" alt=""></td><td>General - IMG 1 - nw <span class="mut">&middot; Image</span></td><td class="num">&euro;60.89</td><td class="num">55,376</td><td class="num">412</td><td class="num">0.74%</td><td class="num">&euro;0.15</td><td class="num">16 purch. &middot; &euro;3.81/res</td></tr>
+        <tr><td class="rank">3</td><td><img src="https://res.cloudinary.com/dm49t65oz/image/upload/v1783605692/wasal-bnr-report/w27/for-her-vid-2.jpg" alt=""></td><td>For Her - VID 2 <span class="mut">&middot; Video</span></td><td class="num">&euro;47.13</td><td class="num">22,911</td><td class="num">434</td><td class="num">1.89%</td><td class="num">&euro;0.11</td><td class="num">10 purch. &middot; &euro;4.71/res</td></tr>
+        <tr><td class="rank">4</td><td><img src="https://res.cloudinary.com/dm49t65oz/image/upload/v1783605696/wasal-bnr-report/w27/general-vid-1.jpg" alt=""></td><td>General - VID 1 <span class="mut">&middot; Video</span></td><td class="num">&euro;72.00</td><td class="num">71,918</td><td class="num">376</td><td class="num">0.52%</td><td class="num">&euro;0.19</td><td class="num">8 purch. &middot; &euro;9.00/res</td></tr>
+        <tr><td class="rank">5</td><td><img src="https://res.cloudinary.com/dm49t65oz/image/upload/v1783605700/wasal-bnr-report/w27/img-3.png" alt=""></td><td>IMG 3 <span class="mut">&middot; Image</span></td><td class="num">&euro;6.47</td><td class="num">4,805</td><td class="num">74</td><td class="num">1.54%</td><td class="num">&euro;0.09</td><td class="num">4 leads &middot; &euro;1.62/res</td></tr>
       </tbody>
     </table>
+
+    <div class="pv-pie-row" style="margin-top:12px;">
+      <div>
+        <div class="pv-mini-chart-title">Clicks by ad</div>
+        <div class="pv-bars compact small">
+          <div class="pv-bar-row"><div class="name">IMG 2</div><div class="track"><div class="fill" style="width:100%"></div></div><div class="val">990</div></div>
+          <div class="pv-bar-row"><div class="name">For Her - VID 2</div><div class="track"><div class="fill" style="width:43.8%"></div></div><div class="val">434</div></div>
+          <div class="pv-bar-row"><div class="name">General - IMG 1 - nw</div><div class="track"><div class="fill" style="width:41.6%"></div></div><div class="val">412</div></div>
+          <div class="pv-bar-row"><div class="name">General - VID 1</div><div class="track"><div class="fill" style="width:38%"></div></div><div class="val">376</div></div>
+          <div class="pv-bar-row"><div class="name">IMG 3</div><div class="track"><div class="fill" style="width:7.5%"></div></div><div class="val">74</div></div>
+        </div>
+      </div>
+      <div>
+        <div class="pv-mini-chart-title">CTR by ad</div>
+        <div class="pv-bars compact small">
+          <div class="pv-bar-row"><div class="name">For Her - VID 2</div><div class="track"><div class="fill" style="width:100%"></div></div><div class="val">1.89%</div></div>
+          <div class="pv-bar-row"><div class="name">IMG 2</div><div class="track"><div class="fill" style="width:86.8%"></div></div><div class="val">1.64%</div></div>
+          <div class="pv-bar-row"><div class="name">IMG 3</div><div class="track"><div class="fill" style="width:81.5%"></div></div><div class="val">1.54%</div></div>
+          <div class="pv-bar-row"><div class="name">General - IMG 1 - nw</div><div class="track"><div class="fill" style="width:39.2%"></div></div><div class="val">0.74%</div></div>
+          <div class="pv-bar-row"><div class="name">General - VID 1</div><div class="track"><div class="fill" style="width:27.5%"></div></div><div class="val">0.52%</div></div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div class="pv-page">
