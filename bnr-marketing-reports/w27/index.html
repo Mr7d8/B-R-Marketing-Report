@@ -238,8 +238,7 @@ footer a { color: var(--ink); text-decoration: none; font-weight: 500; }
   .display-xl { font-size: 44px; }
   h2.display-l { font-size: 32px; }
   .kpi-strip { grid-template-columns: repeat(2, 1fr); }
-  .two-col, .two-col-eq, .three-col, .insight-grid, .insight-grid.cols-3, .plan-grid, .funnel-split, .kpi-framework { grid-template-columns: 1fr; }
-  .funnel-highlights { border-left: none; padding-left: 0; border-top: 1px solid var(--line); padding-top: 20px; margin-top: 4px; }
+  .two-col, .two-col-eq, .three-col, .insight-grid, .insight-grid.cols-3, .plan-grid, .kpi-framework { grid-template-columns: 1fr; }
   .cover-meta { grid-template-columns: 1fr 1fr; gap: 24px; }
   .cover-meta-item, .cover-meta-item + .cover-meta-item { padding: 16px 0; border-left: none; border-top: 1px solid var(--line); }
   .ranking-row { grid-template-columns: 36px 64px 1fr; gap: 12px; padding: 14px; }
@@ -274,7 +273,11 @@ footer a { color: var(--ink); text-decoration: none; font-weight: 500; }
 .tag.vid { background: rgba(0,163,255,.1); color: var(--c-blue); }
 
 .growth-cards { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-top: 28px; }
+.growth-cards.kpi-row { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
 .growth-card { background: var(--paper); border: 1px solid var(--line); border-radius: 20px; padding: 26px 22px; position: relative; overflow: hidden; box-shadow: var(--shadow); transition: all .3s; }
+.growth-card.compact { padding: 18px 18px; }
+.growth-card.compact .growth-metric-value { font-size: 26px; }
+.growth-card.compact .growth-pill { margin-bottom: 12px; padding: 6px 16px; }
 .growth-card:hover { box-shadow: var(--shadow-lift); transform: translateY(-2px); }
 .growth-card::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--gradient-h); }
 .growth-pill { display: inline-flex; flex-direction: column; align-items: center; justify-content: center; background: var(--paper-2); border: 1.5px solid rgba(0,163,255,.28); border-radius: 999px; padding: 8px 20px; margin-bottom: 16px; }
@@ -327,6 +330,22 @@ footer a { color: var(--ink); text-decoration: none; font-weight: 500; }
 @media (max-width: 900px) {
   .ads-ranking .ranking-row { grid-template-columns: 36px 64px 1fr; }
   .growth-cards { grid-template-columns: 1fr; }
+  .br-row1, .br-row2, .br-row3, .br-split, .br-pies { grid-template-columns: 1fr; }
+  .br-split-col + .br-split-col { border-left: none; padding-left: 0; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--line); }
+  .br-gauge-row { flex-wrap: wrap; }
+  .funnel-split { grid-template-columns: 1fr; }
+  .funnel-highlights { border-left: none; padding-left: 0; border-top: 1px solid var(--line); padding-top: 20px; margin-top: 20px; }
+}
+
+@media (max-width: 560px) {
+  .page { padding-left: 16px; padding-right: 16px; }
+  .masthead-inner { padding-left: 16px; padding-right: 16px; gap: 8px; }
+  .cover-meta { grid-template-columns: 1fr; }
+  .cover-meta-item + .cover-meta-item { padding: 14px 0; border-left: none; border-top: 1px solid var(--line); }
+  .kpi-strip { grid-template-columns: 1fr; }
+  .growth-cards.kpi-row { grid-template-columns: repeat(2, 1fr); }
+  .brand-lock span { font-size: 11px; }
+  .print-btn { padding: 8px 12px; font-size: 12px; }
 }
 
 </style>
@@ -519,23 +538,38 @@ footer a { color: var(--ink); text-decoration: none; font-weight: 500; }
     <h2 class="display-l">AppsFlyer <span class="grad">acquisition</span></h2>
     <p class="lede">Installs, active users, retention and spend across iOS and Android, plus the in-app conversion funnel. Source: AppsFlyer.</p>
 
-    <div class="growth-cards">
-      <div class="growth-card">
+    <div class="growth-cards kpi-row">
+      <div class="growth-card compact">
+        <div class="growth-pill"><span class="pill-main">Active Users</span></div>
+        <div class="growth-metric-value">7,578 <span class="growth-delta down">&darr; 7%</span></div>
+      </div>
+      <div class="growth-card compact">
         <div class="growth-pill"><span class="pill-main">Installs</span></div>
-        <div class="growth-metric-label">Last week</div>
         <div class="growth-metric-value">2,405 <span class="growth-delta down">&darr; 37%</span></div>
-        <div class="growth-metric-label growth-gap">Organic Installs</div>
+      </div>
+      <div class="growth-card compact">
+        <div class="growth-pill"><span class="pill-main">Organic Installs</span></div>
         <div class="growth-metric-value">523 <span class="growth-delta down">&darr; 63%</span></div>
       </div>
-      <div class="growth-card">
-        <div class="growth-pill"><span class="pill-main">Active Users/</span><span class="pill-sub">Last 7 days</span></div>
-        <div class="growth-metric-value">7,578 <span class="growth-delta down">&darr; 7%</span></div>
-        <div class="growth-pill growth-gap"><span class="pill-main">Retention/week</span></div>
+      <div class="growth-card compact">
+        <div class="growth-pill"><span class="pill-main">Add To Cart</span></div>
+        <div class="growth-metric-value">245 <span class="growth-delta down">&darr; 85%</span></div>
+      </div>
+      <div class="growth-card compact">
+        <div class="growth-pill"><span class="pill-main">Sessions</span></div>
+        <div class="growth-metric-value">19.87K <span class="growth-delta down">&darr; 46%</span></div>
+      </div>
+      <div class="growth-card compact">
+        <div class="growth-pill"><span class="pill-main">Purchases</span><span class="pill-sub">Unique users</span></div>
+        <div class="growth-metric-value">24 <span class="growth-delta down">&darr; 97%</span></div>
+      </div>
+      <div class="growth-card compact">
+        <div class="growth-pill"><span class="pill-main">Retention</span><span class="pill-sub">W1</span></div>
         <div class="growth-metric-value">14.32% <span class="growth-delta down">&darr; 26%</span></div>
       </div>
-      <div class="growth-card">
+      <div class="growth-card compact">
         <div class="growth-pill"><span class="pill-main">Budget Spent</span></div>
-        <div class="growth-metric-value">&euro;57,614.94</div>
+        <div class="growth-metric-value" style="font-size: 20px;">&euro;57,614.94</div>
         <div class="growth-metric-note">spent since 04/02/2026</div>
       </div>
     </div>
@@ -549,19 +583,16 @@ footer a { color: var(--ink); text-decoration: none; font-weight: 500; }
   <defs>
     <linearGradient id="funnelGrad" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%" stop-color="#00c4cc"/>
-      <stop offset="40%" stop-color="#00a3ff"/>
-      <stop offset="75%" stop-color="#5b5fff"/>
+      <stop offset="50%" stop-color="#00a3ff"/>
       <stop offset="100%" stop-color="#7b61ff"/>
     </linearGradient>
   </defs>
-  <line x1="90" y1="40" x2="370" y2="40" stroke="#e3e8f0" stroke-width="1"/><line x1="90" y1="122" x2="370" y2="122" stroke="#e3e8f0" stroke-width="1"/><line x1="90" y1="204" x2="370" y2="204" stroke="#e3e8f0" stroke-width="1"/><line x1="90" y1="286" x2="370" y2="286" stroke="#e3e8f0" stroke-width="1"/><line x1="90" y1="368" x2="370" y2="368" stroke="#e3e8f0" stroke-width="1"/>
-  <path d="M 100.0 40 L 159.0 122 L 200.6 204 L 213.9 286 L 222.9 368 L 237.1 368 L 246.1 286 L 259.4 204 L 301.0 122 L 360.0 40 Z" fill="url(#funnelGrad)"/>
-  <line x1="159.0" y1="122" x2="301.0" y2="122" stroke="#ffffff" stroke-width="2" opacity=".55"/><line x1="200.6" y1="204" x2="259.4" y2="204" stroke="#ffffff" stroke-width="2" opacity=".55"/><line x1="213.9" y1="286" x2="246.1" y2="286" stroke="#ffffff" stroke-width="2" opacity=".55"/>
-  <text x="10" y="36" font-family="Bricolage Grotesque, sans-serif" font-size="14" font-weight="700" fill="#0a1226" dominant-baseline="middle">INSTALLS</text><text x="450" y="36" font-family="Bricolage Grotesque, sans-serif" font-size="16" font-weight="800" fill="#0a1226" text-anchor="end" dominant-baseline="middle">42,662</text>
-  <text x="10" y="118" font-family="Bricolage Grotesque, sans-serif" font-size="14" font-weight="700" fill="#0a1226" dominant-baseline="middle">PRDCT CLICKED</text><text x="450" y="118" font-family="Bricolage Grotesque, sans-serif" font-size="16" font-weight="800" fill="#0a1226" text-anchor="end" dominant-baseline="middle">12,720</text><text x="450" y="133" font-family="Bricolage Grotesque, sans-serif" font-size="10" font-weight="700" text-anchor="end" style="fill:var(--good)">29.8% of installs</text>
-  <text x="10" y="200" font-family="Bricolage Grotesque, sans-serif" font-size="14" font-weight="700" fill="#0a1226" dominant-baseline="middle">ADD TO CART</text><text x="450" y="200" font-family="Bricolage Grotesque, sans-serif" font-size="16" font-weight="800" fill="#0a1226" text-anchor="end" dominant-baseline="middle">2,180</text><text x="450" y="215" font-family="Bricolage Grotesque, sans-serif" font-size="10" font-weight="700" text-anchor="end" style="fill:var(--warn)">17.1% of clicks</text>
-  <text x="10" y="282" font-family="Bricolage Grotesque, sans-serif" font-size="14" font-weight="700" fill="#0a1226" dominant-baseline="middle">SIGN-UP</text><text x="450" y="282" font-family="Bricolage Grotesque, sans-serif" font-size="16" font-weight="800" fill="#0a1226" text-anchor="end" dominant-baseline="middle">658</text><text x="450" y="297" font-family="Bricolage Grotesque, sans-serif" font-size="10" font-weight="700" text-anchor="end" style="fill:var(--good)">30.2% of carts</text>
-  <text x="10" y="364" font-family="Bricolage Grotesque, sans-serif" font-size="14" font-weight="700" fill="#0a1226" dominant-baseline="middle">PURCHASE</text><text x="450" y="364" font-family="Bricolage Grotesque, sans-serif" font-size="16" font-weight="800" fill="#0a1226" text-anchor="end" dominant-baseline="middle">127</text><text x="450" y="379" font-family="Bricolage Grotesque, sans-serif" font-size="10" font-weight="700" text-anchor="end" style="fill:var(--warn)">19.3% of sign-ups</text>
+  <line x1="90" y1="40" x2="370" y2="40" stroke="#e3e8f0" stroke-width="1"/><line x1="90" y1="210" x2="370" y2="210" stroke="#e3e8f0" stroke-width="1"/><line x1="90" y1="380" x2="370" y2="380" stroke="#e3e8f0" stroke-width="1"/>
+  <path d="M 100 40 L 188.5 210 L 217 380 L 243 380 L 271.5 210 L 360 40 Z" fill="url(#funnelGrad)"/>
+  <line x1="188.5" y1="210" x2="271.5" y2="210" stroke="#ffffff" stroke-width="2" opacity=".55"/>
+  <text x="10" y="36" font-family="Bricolage Grotesque, sans-serif" font-size="14" font-weight="700" fill="#0a1226" dominant-baseline="middle">INSTALLS</text><text x="450" y="36" font-family="Bricolage Grotesque, sans-serif" font-size="16" font-weight="800" fill="#0a1226" text-anchor="end" dominant-baseline="middle">2,405</text>
+  <text x="10" y="206" font-family="Bricolage Grotesque, sans-serif" font-size="14" font-weight="700" fill="#0a1226" dominant-baseline="middle">ADD TO CART</text><text x="450" y="206" font-family="Bricolage Grotesque, sans-serif" font-size="16" font-weight="800" fill="#0a1226" text-anchor="end" dominant-baseline="middle">245</text><text x="450" y="221" font-family="Bricolage Grotesque, sans-serif" font-size="10" font-weight="700" text-anchor="end" style="fill:var(--warn)">10.2% of installs</text>
+  <text x="10" y="376" font-family="Bricolage Grotesque, sans-serif" font-size="14" font-weight="700" fill="#0a1226" dominant-baseline="middle">PURCHASE</text><text x="450" y="376" font-family="Bricolage Grotesque, sans-serif" font-size="16" font-weight="800" fill="#0a1226" text-anchor="end" dominant-baseline="middle">24</text><text x="450" y="391" font-family="Bricolage Grotesque, sans-serif" font-size="10" font-weight="700" text-anchor="end" style="fill:var(--bad)">9.8% of carts</text>
 </svg>
 
         <div class="funnel-highlights">
@@ -570,7 +601,7 @@ footer a { color: var(--ink); text-decoration: none; font-weight: 500; }
           <ul class="ops-list">
             <li><strong>Paid spend:</strong> &euro;57,614.94 invested since 04/02/2026 drove 2,405 installs this week (523 organic).</li>
             <li><strong>Retention:</strong> 7,578 weekly active users, with retention down to 14.32% (&darr; 26% WoW).</li>
-            <li><strong>Funnel:</strong> biggest drop-off is Product Clicked &rarr; Add to Cart (17.1%); Sign-up &rarr; Purchase recovers to 19.3%.</li>
+            <li><strong>Funnel:</strong> installs convert to Add to Cart at 10.2%, and Add to Cart to Purchase at 9.8% &mdash; both stages down sharply WoW, cart-to-purchase is the priority to fix.</li>
             <li><strong>Top ad:</strong> &ldquo;IMG 2&rdquo; delivered 40 website leads at &euro;1.61 CPR, the strongest result of the top 5.</li>
             <li><strong>Video creatives:</strong> &ldquo;For Her &ndash; VID 2&rdquo; and &ldquo;General &ndash; VID 1&rdquo; drove the bulk of website purchases, at &euro;4.71&ndash;&euro;9.00 CPR.</li>
           </ul>
