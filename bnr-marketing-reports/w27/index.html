@@ -265,8 +265,6 @@ footer a { color: var(--ink); text-decoration: none; font-weight: 500; }
   .masthead nav, .print-btn { display: none !important; }
   .page-section { padding: 10px 0; min-height: auto; }
   .pb { page-break-after: always; }
-  .chart-wrap { height: 200px; }
-  .chart-tall { height: 240px; }
   footer { background: white; }
   .lightbox { display: none !important; }
   .print-btn { display: none; }
@@ -343,8 +341,13 @@ footer a { color: var(--ink); text-decoration: none; font-weight: 500; }
   .card { padding: 14px 16px; }
   .card-title { font-size: 15px; margin-bottom: 2px; }
   .card-sub { font-size: 11px; margin-bottom: 10px; }
-  .chart-wrap { height: 150px; }
-  .chart-tall { height: 190px; }
+  /* 220px, not smaller: this chart is 5 horizontal bars plus an axis, and
+     the earlier 150px compressed all 5 into overlapping bars and colliding
+     value labels. Cards stack full-width for print now (see .two-col-eq
+     below), so there's no side-by-side width constraint forcing this short
+     anymore, there's room to keep it legible. */
+  .chart-wrap { height: 220px; }
+  .chart-tall { height: 260px; }
 
   /* .two-col-eq's two cards (Clicks by ad / CTR by ad) are meant to sit
      side by side via flex:1 1 45%, but page-break-inside:avoid on .card
