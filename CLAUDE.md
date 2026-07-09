@@ -79,15 +79,23 @@ happens to land first on a new page, so spacing fixes that looked right in one s
 another. A dedicated print layout sidesteps all of it: no shared CSS to fight, no canvases to
 resize, no page-break math, because every `.pv-page` is curated to fit on one page by construction.
 
-**Fixed to 3 pages**, each a `.pv-page` inside `#print-view`:
-1. Cover + Business & Revenue: KPI grid, top sellers as CSS bars (`.pv-bar-row`, width is the
-   only per-bar value that changes), category mix as two CSS `conic-gradient` pies (`.pv-pie`,
-   see below), sales team notes.
+**Fixed to 3 pages**, each a `.pv-page` inside `#print-view`. Content here should match the web
+version as closely as the 3-page ceiling allows, don't pre-emptively cut sellers/rows/prose to
+save space, only trim if a render actually overflows to a 4th page:
+1. Cover + Business & Revenue: KPI grid, full top-sellers list as CSS bars (`.pv-bar-row` with
+   the `.pv-bars.compact` modifier for tighter row height when the list runs to ~10 sellers,
+   width is the only per-bar value that changes), category mix as two CSS `conic-gradient` pies
+   (`.pv-pie`, see below), sales team notes with the full "Les bonnes nouvelles" / "A Fixer"
+   text (not a trimmed subset).
 2. App Growth + Top Ads: KPI grid, the conversion funnel (the same hand-built SVG used on
    screen, copy it as-is since it's pure vector and prints reliably with no JS involved), Top 5
-   Ads as a plain `<table class="pv-table">` (no thumbnails, no bar charts).
-3. Overview & Operations: Weekly Highlights as a 2-column bullet list (`.pv-hl-list`), Plan of
-   Action, Blocking Points.
+   Ads as a full `<table class="pv-table pv-table-ads">` with the same columns as the screen
+   ranking (Spend, Impr., Clicks, CTR, CPC, Results) plus a small thumbnail per row (reuse the
+   Cloudinary URLs, see "Ad thumbnail images" below), and two CSS bar-chart blocks below the
+   table ("Clicks by ad" / "CTR by ad", `.pv-bars.compact.small` inside a `.pv-pie-row`) mirroring
+   the screen's ad performance charts.
+3. Overview & Operations: Weekly Highlights as a 2-column bullet list (`.pv-hl-list`), full Plan
+   of Action grid, Blocking Points.
 
 **Pie charts use CSS `conic-gradient`, not Chart.js.** A `background: conic-gradient(...)` on a
 round `div` (`.pv-pie`) renders identically in print and on screen, no canvas, no resize
