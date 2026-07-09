@@ -84,6 +84,16 @@ Fix: every chart created via `safeChart()` is pushed into a global `allCharts` a
 `allCharts` array and both listeners) in the script block of every future week's report, and add
 any new chart creation through `safeChart()` so it gets registered automatically.
 
+**The ad ranking table's desktop column widths overflow the print page.** `.ads-ranking
+.ranking-row`'s fixed-pixel columns add up to ~668px before the flexible "Ad" column gets any
+room at all, more than A4's printable width. It also inherits `.card`'s generous desktop padding
+and the 74px thumbnail, making it far too tall to share a page with anything else (this is why
+"Clicks by ad" and "CTR by ad" used to each get shoved onto their own near-empty page). Fixed with
+print-only overrides: a much narrower `grid-template-columns`, smaller row padding/thumb/fonts,
+and a compact `.card { padding: 14px 16px; }` plus smaller `.chart-wrap` height so the ranking
+table and both chart cards fit on one page. If you touch the ranking table's screen layout, check
+whether the print column widths still add up under the (fixed, ~718px usable) A4 content width.
+
 **Print header band.** The screen masthead (logo, nav links, Export PDF button) is hidden on
 print and replaced by a slim, single-line, repeating header: `Wasal · WNN B&R + Marketing Report
 · <date range>`, pinned with `position: fixed; top: 0;` so Chrome repeats it on every printed
@@ -92,21 +102,41 @@ page. The date range lives in a dedicated `<span class="print-date-inline">` ins
 independently of the visible brand text. Update that span's date range each week alongside the
 other per-week date mentions (cover-kicker, cover-meta, footer, page-label).
 
-**The fixed header overlaps content unless every card gets extra top margin.** A bigger `@page`
-top margin does *not* create clearance under the fixed header: in Chrome's print/PDF pagination,
-`position: fixed` elements and normal flowing content are both anchored to the page's *content
-box* (inside the margin), so growing the margin pushes the header and the content it would
-overlap down together, netting zero gap. Verified this by rendering the actual PDF at several
-margin values and measuring pixel offsets, not by guessing.
+**The fixed header overlaps content unless every card gets extra top spacing, and it must be
+padding, not margin.** Two things stacked here, both confirmed by rendering the actual PDF and
+inspecting it (pypdfium2 to page images), not by guessing:
 
-The fix that actually works: give every `page-break-inside: avoid` card (`.card`, `.br-card`,
-`.growth-card`, `.funnel-card`, `.insight`, `.ranking`, plus `.page-label` and `.cover-kicker`)
-a `margin-top: 0.9cm` in print. A page can only ever break immediately *before* one of these
-(never mid-card, since they're avoid-break), so whichever one lands at the top of a page now has
-guaranteed clearance, without needing CSS to detect "is this element at the top of a page" (it
-can't). Side effect: a bit of extra vertical gap between rows that stay together mid-page, which
-is a fair trade for zero overlap. If you add a new print-avoid-break component, add it to this
-margin-top rule too, not just the page-break-inside:avoid one.
+1. A bigger `@page` top margin does *not* create clearance under the fixed header: `position:
+   fixed` print elements and normal flowing content are both anchored to the page's *content box*
+   (inside the margin), so growing the margin pushes the header and the content it would overlap
+   down together, netting zero gap.
+2. `margin-top` on the card itself doesn't work either, even though that seems like the obvious
+   fix. Chrome's print engine discards a box's top margin by default whenever that box happens to
+   be the first fragment on a new page (CSS Fragmentation's `margin-break: discard`, which
+   Chromium doesn't let you opt out of since it never implemented the `margin-break` property).
+   That's exactly the situation this needed to protect, so `margin-top` silently did nothing for
+   whichever card started a page, while looking like it worked for cards that weren't at a page
+   boundary.
+
+The fix that actually works: `padding-top` instead of `margin-top`, since padding is not
+discarded the same way. Apply `padding-top: 1.3cm` in print to every `page-break-inside: avoid`
+card (`.card`, `.br-card`, `.growth-card`, `.funnel-card`, `.insight`, `.ranking`, `.kpi-card`,
+`.key-finding`). This rule must be the *last* thing touching these classes' padding in the
+stylesheet (equal specificity, source order decides), since several compact-sizing rules earlier
+in the print block set the full `padding` shorthand for the same classes and would otherwise wipe
+it out.
+
+For the `.page-label` / `.cover-kicker` pills, don't put `padding-top` directly on the pill
+itself (it distorts the rounded pill shape). Put `padding-top: 1.3cm` on `.page-section` instead:
+a fragmented box's own padding-top only ever renders on its *first* fragment, never on later
+continuation pages, which is exactly where these pills sit (once per section, right at the
+start), so it reaches them without needing to touch the pill's own box.
+
+Side effect: a bit of extra vertical gap wherever this padding lands, whether or not that
+specific box turned out to be at a page boundary. That's a fair trade for guaranteed correctness,
+since CSS genuinely cannot detect "is this element about to start a printed page" ahead of time.
+If you add a new print-avoid-break component, add it to the `padding-top` rule too (at the end of
+the print block), not just the `page-break-inside: avoid` one.
 
 ## Mobile responsiveness gotcha
 

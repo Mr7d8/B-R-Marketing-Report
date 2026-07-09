@@ -272,18 +272,6 @@ footer a { color: var(--ink); text-decoration: none; font-weight: 500; }
   .print-btn { display: none; }
   @page { margin: 1cm; size: A4; }
 
-  /* The fixed header band above anchors to each page's content box (inside
-     the margin), same as normal flow content, so a bigger @page margin does
-     NOT create clearance: the header and the content it would overlap move
-     down together. A page can only ever break immediately before one of the
-     page-break-inside:avoid cards below (never mid-card, that's the whole
-     point of marking them avoid), so giving every one of them a top margin
-     clears the header wherever a break actually lands, without needing to
-     detect "is this the top of a page" (CSS can't). */
-  .card, .kpi-card, .insight, .ranking, .key-finding,
-  .funnel-card, .growth-card, .br-card, .page-label, .cover-kicker {
-    margin-top: 0.9cm;
-  }
 
   /* Chrome's print engine cannot split a CSS grid container across a page:
      if one doesn't fit in the remaining space, it jumps whole to the next
@@ -349,6 +337,58 @@ footer a { color: var(--ink); text-decoration: none; font-weight: 500; }
   .insight-body { font-size: 11px; }
   .plan-grid .br-card { padding: 12px 14px; }
   .ops-list-sm li { font-size: 10px; }
+
+  /* Generic .card (chart cards, etc): compact so two side-by-side charts
+     actually fit on one page instead of each taking a page to itself. */
+  .card { padding: 14px 16px; }
+  .card-title { font-size: 15px; margin-bottom: 2px; }
+  .card-sub { font-size: 11px; margin-bottom: 10px; }
+  .chart-wrap { height: 150px; }
+  .chart-tall { height: 190px; }
+  .two-col-eq { gap: 14px; }
+
+  /* Ad ranking table: full desktop column widths (668px of fixed columns)
+     overflow the print page width, and the default padding/thumb size
+     make the table too tall to share a page with anything else. */
+  .ranking { margin-bottom: 12px; }
+  .ranking-row { padding: 8px 10px; gap: 8px; }
+  .ranking-row.header { padding: 6px 10px; }
+  .ads-ranking .ranking-row, .ads-ranking .ranking-row.header {
+    grid-template-columns: 24px 40px 1fr 52px 56px 48px 44px 48px 56px;
+  }
+  .rank-thumb { width: 36px; height: 36px; border-radius: 8px; }
+  .rank-num { font-size: 16px; }
+  .rank-num.top1 { width: 24px; height: 24px; font-size: 11px; }
+  .rank-title { font-size: 11px; margin-bottom: 2px; }
+  .rank-meta { font-size: 8px; gap: 4px; }
+  .tag { font-size: 7px; padding: 2px 6px; }
+  .metric-big { font-size: 11px; }
+  .metric-lbl { font-size: 7px; }
+
+  /* Chrome discards a box's top MARGIN by default whenever that box lands
+     as the first fragment on a new printed page (CSS Fragmentation's
+     margin-break:discard, which Chromium doesn't let you turn off since it
+     doesn't implement the margin-break property at all). That's exactly
+     the box margin-top was supposed to protect, so it silently did nothing
+     for whichever card happened to start a page. PADDING is not discarded
+     the same way, so use padding-top instead. This rule has to be the LAST
+     one touching these classes' padding in this stylesheet (equal
+     specificity, source order wins), since several rules above it already
+     set the full padding shorthand for the same classes. */
+  .card, .kpi-card, .insight, .ranking, .key-finding,
+  .funnel-card, .growth-card, .br-card {
+    padding-top: 1.3cm;
+  }
+
+  /* Same idea for the page-label/cover-kicker pills: padding-top directly
+     on a pill would distort its rounded shape, so give the *section* they
+     open extra top padding instead. A fragmented box's own padding-top
+     only renders on its first fragment (never on later continuation
+     pages), which is exactly where the pill sits, so this reaches it
+     without needing padding-top on the pill itself. */
+  .page-section {
+    padding-top: 1.3cm;
+  }
 }
 
 @keyframes riseIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
