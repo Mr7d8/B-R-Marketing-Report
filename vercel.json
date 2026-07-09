@@ -1,0 +1,6 @@
+{
+  "rewrites": [
+    { "source": "/", "destination": "/bnr-marketing-reports/index.html" },
+    { "source": "/(.*)", "destination": "/bnr-marketing-reports/$1" }
+  ]
+}
