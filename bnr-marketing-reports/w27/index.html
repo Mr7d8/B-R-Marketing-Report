@@ -326,8 +326,12 @@ footer a { color: var(--ink); text-decoration: none; font-weight: 500; }
   .br-card { padding: 12px; }
   .br-value-xl { font-size: 22px; margin-top: 6px; }
   .br-value-lg { font-size: 17px; }
-  .br-chart-sm { height: 110px; }
-  .br-top-sellers-wrap { height: 160px; }
+  /* No print-specific shrink for .br-chart-sm / .br-top-sellers-wrap: same
+     lesson as .chart-wrap above (see the print block near the ad ranking
+     table), the pie charts rendered tiny inside a mostly-blank card, and
+     the 10-category Top Sellers bar chart compressed into overlapping
+     bars with truncated labels. Keep the base desktop heights (190px /
+     320px) for print instead of guessing a smaller one. */
   .br-row1, .br-row2, .br-row3 { margin-top: 12px; gap: 10px; }
 
   /* Insight / plan cards: compact */
