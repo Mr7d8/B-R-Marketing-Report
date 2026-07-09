@@ -92,6 +92,22 @@ page. The date range lives in a dedicated `<span class="print-date-inline">` ins
 independently of the visible brand text. Update that span's date range each week alongside the
 other per-week date mentions (cover-kicker, cover-meta, footer, page-label).
 
+**The fixed header overlaps content unless every card gets extra top margin.** A bigger `@page`
+top margin does *not* create clearance under the fixed header: in Chrome's print/PDF pagination,
+`position: fixed` elements and normal flowing content are both anchored to the page's *content
+box* (inside the margin), so growing the margin pushes the header and the content it would
+overlap down together, netting zero gap. Verified this by rendering the actual PDF at several
+margin values and measuring pixel offsets, not by guessing.
+
+The fix that actually works: give every `page-break-inside: avoid` card (`.card`, `.br-card`,
+`.growth-card`, `.funnel-card`, `.insight`, `.ranking`, plus `.page-label` and `.cover-kicker`)
+a `margin-top: 0.9cm` in print. A page can only ever break immediately *before* one of these
+(never mid-card, since they're avoid-break), so whichever one lands at the top of a page now has
+guaranteed clearance, without needing CSS to detect "is this element at the top of a page" (it
+can't). Side effect: a bit of extra vertical gap between rows that stay together mid-page, which
+is a fair trade for zero overlap. If you add a new print-avoid-break component, add it to this
+margin-top rule too, not just the page-break-inside:avoid one.
+
 ## Mobile responsiveness gotcha
 
 CSS specificity ties are broken by **source order**, not by which media query "sounds" more
@@ -103,6 +119,22 @@ here for `.br-row1/2/3`, `.funnel-split`, and `.growth-cards.kpi-row`.
 Rule of thumb: put mobile/print overrides for a component **after** that component's own CSS
 block in the file, not in an early shared media-query block. When adding a new responsive
 override, grep for the component's base rule and confirm the override comes after it.
+
+## Ad thumbnail images (Top 5 Ads page)
+
+Meta Ads creative thumbnails often arrive as direct `scontent-*.fbcdn.net` URLs copied from Ads
+Manager. These are signed, temporary CDN links (the `oh=`/`oe=` query params encode an expiry)
+and go dead within days, which is why old weeks' thumbnails eventually show as blank/broken
+placeholders even though the report itself still loads fine.
+
+Fix: re-host each thumbnail on Cloudinary before it expires, right when building that week's
+report. Use `upload-asset` with the `fbcdn.net` URL directly as `file`, since the upload happens
+from Cloudinary's own servers, not wherever the report is being edited from, so it isn't subject
+to whatever network policy blocks that host locally. Upload each ad's image once (folder
+`wasal-bnr-report/wNN/`, one `public_id` per ad), then point both the `<img src>` and the
+matching `data-lb-src` (they're the same URL twice per ranking row, once for the inline
+thumbnail, once for the lightbox) at the returned `secure_url`. Do this before the original
+signed URL expires, not after, since an already-expired URL can no longer be fetched by anyone.
 
 ## Style rules
 
