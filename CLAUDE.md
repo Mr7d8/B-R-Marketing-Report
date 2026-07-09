@@ -62,103 +62,43 @@ honest.
 
 ## Export PDF / print
 
-Chrome's print engine **cannot split a CSS grid container across a page break**. If a grid
-doesn't fit the remaining space on a page, the whole grid jumps to the next page and leaves the
-current one mostly blank. This bit us on the funnel and the Business & Revenue cards.
+**The exported PDF is a separate, purpose-built layout, not a reflow of the screen page.**
+`window.print()` renders a hidden `#print-view` block (plain HTML/CSS, three `.pv-page` divs,
+`page-break-after: always` between them) while the interactive sections (`.masthead`, `main`,
+`footer`) get `display: none` for print. `#print-view` itself is `display: none` by default and
+only switched to `display: block` inside `@media print`, so it never shows on screen.
 
-Fix already in place (`@media print` block in each report's `<style>`), keep it if you copy this
-template forward:
-- Multi-card row grids (`.br-row1/2/3`, `.br-pies`, `.growth-cards`, `.plan-grid`,
-  `.insight-grid`, `.two-col*`, `.three-col`) are switched to `display: flex !important;
-  flex-wrap: wrap;` for print, since flex children *can* wrap across a page break.
-- Single-card components (`.card`, `.br-card`, `.growth-card`, `.funnel-card`, `.insight`,
-  `.ranking`) keep `page-break-inside: avoid` so they still print intact.
-- Print-only compact sizing (smaller fonts/padding, capped funnel SVG width ~240px, shorter chart
-  heights) so blocks actually fit together instead of relying on avoiding breaks alone.
-- If you add a new grid-based section, add it to both lists above, then verify by actually
-  rendering the exported PDF (Playwright `page.pdf()` plus `pypdfium2` to render pages to
-  images). Don't just eyeball the screen view, print pagination is a separate layout pass.
+This replaced an earlier approach that tried to make the *same* interactive DOM reflow for print
+(shrinking cards, converting grids to flex, chasing Chart.js resize timing, etc). That fought
+Chrome's print engine on multiple fronts at once and kept breaking in new ways with every fix:
+CSS grid containers refuse to split across a page break, so an oversized one jumps whole to the
+next page and leaves the current one blank; Chart.js canvases don't resize themselves when the
+print stylesheet changes their container, so charts overflowed or rendered tiny depending on
+which way the CSS was adjusted; and `margin-top` is silently discarded by Chrome on whatever box
+happens to land first on a new page, so spacing fixes that looked right in one spot failed in
+another. A dedicated print layout sidesteps all of it: no shared CSS to fight, no canvases to
+resize, no page-break math, because every `.pv-page` is curated to fit on one page by construction.
 
-**Chart.js canvases do not resize themselves for print.** Chart.js sizes each canvas to its
-container once, at creation time, and never re-measures unless something calls `.resize()`. The
-print stylesheet changes container widths (grid to flex, narrower columns), but the canvas keeps
-its on-screen pixel size, so charts overflow their card or clip axis labels in the exported PDF.
-Fix: every chart created via `safeChart()` is pushed into a global `allCharts` array, and
-`beforeprint`/`afterprint` listeners call `.resize()` on all of them. Keep this pattern (the
-`allCharts` array and both listeners) in the script block of every future week's report, and add
-any new chart creation through `safeChart()` so it gets registered automatically. Even with
-resize() firing correctly, `beforeprint` alone isn't reliable in every Chrome version (the print
-dialog can open before the print stylesheet finishes reflowing, so resize() reads stale
-dimensions), so also listen on `matchMedia('print').addEventListener('change', ...)` and fire a
-couple of delayed re-resizes as a safety net. All of that is already wired up, keep it if you
-copy this template forward.
+**Fixed to 3 pages**, each a `.pv-page` inside `#print-view`:
+1. Cover + Business & Revenue: KPI grid, top sellers as CSS bars (`.pv-bar-row`, width is the
+   only per-bar value that changes), category mix as an inline text line, sales team notes.
+2. App Growth + Top Ads: KPI grid, the conversion funnel (the same hand-built SVG used on
+   screen, copy it as-is since it's pure vector and prints reliably with no JS involved), Top 5
+   Ads as a plain `<table class="pv-table">` (no thumbnails, no bar charts).
+3. Overview & Operations: Weekly Highlights as a 2-column bullet list (`.pv-hl-list`), Plan of
+   Action, Blocking Points.
 
-**Don't shrink `.chart-wrap`/`.chart-tall` for print on multi-category charts.** Tried 150px,
-then 220px, for the 5-category horizontal bar charts (Clicks by ad / CTR by ad). Both still
-compressed the 5 bars into overlapping bars with colliding value labels, confirmed each time by
-looking at the actual exported chart, not just the reserved container size (the space can look
-fine in a screenshot of the empty card while the chart drawn inside it is still cramped). Chart.js
-needs meaningfully more vertical room per horizontal-bar category than a quick per-bar estimate
-suggests. Current fix: don't override `.chart-wrap`/`.chart-tall` for print at all, just keep the
-base desktop height (320px / 420px). These cards stack full-width per page for print now (see
-below), so there's no side-by-side width pressure pushing for a shorter chart, and a legible chart
-on its own page beats a compact, unreadable one. If a future week's report needs a print-specific
-chart height again, verify it by checking what the chart actually looks like at that height (a
-real screenshot or exported PDF), not by estimating pixels-per-bar.
+**Updating for a new week:** edit the numbers directly inside `#print-view` (near the end of the
+file, before `</body>`) using the small `.pv-*` component classes already defined in the
+`@media print` block (`.pv-kpi-grid`/`.pv-kpi`, `.pv-bar-row`, `.pv-table`, `.pv-note-box`,
+`.pv-plan-grid`, `.pv-hl-list`). Don't try to make the screen sections themselves print well,
+that's the trap that caused all the churn above. If a week's content doesn't fit 3 pages, cut
+prose rather than shrinking fonts/padding to the point of illegibility, print pagination has no
+slack for guessing.
 
-**The ad ranking table's desktop column widths overflow the print page.** `.ads-ranking
-.ranking-row`'s fixed-pixel columns add up to ~668px before the flexible "Ad" column gets any
-room at all, more than A4's printable width. It also inherits `.card`'s generous desktop padding
-and the 74px thumbnail, making it far too tall to share a page with anything else (this is why
-"Clicks by ad" and "CTR by ad" used to each get shoved onto their own near-empty page). Fixed with
-print-only overrides: a much narrower `grid-template-columns`, smaller row padding/thumb/fonts,
-and a compact `.card { padding: 14px 16px; }` plus smaller `.chart-wrap` height so the ranking
-table and both chart cards fit on one page. If you touch the ranking table's screen layout, check
-whether the print column widths still add up under the (fixed, ~718px usable) A4 content width.
-
-**Print header band.** The screen masthead (logo, nav links, Export PDF button) is hidden on
-print and replaced by a slim, single-line, repeating header: `Wasal · WNN B&R + Marketing Report
-· <date range>`, pinned with `position: fixed; top: 0;` so Chrome repeats it on every printed
-page. The date range lives in a dedicated `<span class="print-date-inline">` inside
-`.brand-lock` (hidden on screen via `display: none`, shown only in print) so it can be updated
-independently of the visible brand text. Update that span's date range each week alongside the
-other per-week date mentions (cover-kicker, cover-meta, footer, page-label).
-
-**The fixed header overlaps content unless every card gets extra top spacing, and it must be
-padding, not margin.** Two things stacked here, both confirmed by rendering the actual PDF and
-inspecting it (pypdfium2 to page images), not by guessing:
-
-1. A bigger `@page` top margin does *not* create clearance under the fixed header: `position:
-   fixed` print elements and normal flowing content are both anchored to the page's *content box*
-   (inside the margin), so growing the margin pushes the header and the content it would overlap
-   down together, netting zero gap.
-2. `margin-top` on the card itself doesn't work either, even though that seems like the obvious
-   fix. Chrome's print engine discards a box's top margin by default whenever that box happens to
-   be the first fragment on a new page (CSS Fragmentation's `margin-break: discard`, which
-   Chromium doesn't let you opt out of since it never implemented the `margin-break` property).
-   That's exactly the situation this needed to protect, so `margin-top` silently did nothing for
-   whichever card started a page, while looking like it worked for cards that weren't at a page
-   boundary.
-
-The fix that actually works: `padding-top` instead of `margin-top`, since padding is not
-discarded the same way. Apply `padding-top: 1.3cm` in print to every `page-break-inside: avoid`
-card (`.card`, `.br-card`, `.growth-card`, `.funnel-card`, `.insight`, `.ranking`, `.kpi-card`,
-`.key-finding`). This rule must be the *last* thing touching these classes' padding in the
-stylesheet (equal specificity, source order decides), since several compact-sizing rules earlier
-in the print block set the full `padding` shorthand for the same classes and would otherwise wipe
-it out.
-
-For the `.page-label` / `.cover-kicker` pills, don't put `padding-top` directly on the pill
-itself (it distorts the rounded pill shape). Put `padding-top: 1.3cm` on `.page-section` instead:
-a fragmented box's own padding-top only ever renders on its *first* fragment, never on later
-continuation pages, which is exactly where these pills sit (once per section, right at the
-start), so it reaches them without needing to touch the pill's own box.
-
-Side effect: a bit of extra vertical gap wherever this padding lands, whether or not that
-specific box turned out to be at a page boundary. That's a fair trade for guaranteed correctness,
-since CSS genuinely cannot detect "is this element about to start a printed page" ahead of time.
-If you add a new print-avoid-break component, add it to the `padding-top` rule too (at the end of
-the print block), not just the `page-break-inside: avoid` one.
+**Verify by rendering the actual PDF** (Playwright `page.pdf()` plus `pypdfium2` to render pages
+to images), not by eyeballing the screen view or trusting that reserved container space matches
+what a chart/table actually draws inside it, print is a separate layout pass with its own quirks.
 
 ## Mobile responsiveness gotcha
 

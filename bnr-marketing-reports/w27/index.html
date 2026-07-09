@@ -64,7 +64,7 @@ body {
   display: flex; justify-content: space-between; align-items: center; gap: 20px;
 }
 .brand-lock { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 14px; letter-spacing: -.01em; }
-.print-date-inline { display: none; }
+#print-view { display: none; }
 .brand-dot {
   width: 26px; height: 26px; border-radius: 8px; background: var(--gradient);
   box-shadow: var(--shadow-pop); display: flex; align-items: center; justify-content: center;
@@ -252,163 +252,82 @@ footer a { color: var(--ink); text-decoration: none; font-weight: 500; }
 }
 
 /* PRINT */
+/* The exported PDF is a separate, purpose-built 3-page layout, not a
+   reflow of the interactive screen page. Trying to make Chrome's print
+   engine reshape the same DOM (CSS grids that refuse to split across a
+   page, Chart.js canvases that don't resize for print, margins that get
+   silently discarded at page breaks) turned into an unwinnable, endlessly
+   recurring fight. Simpler and reliable instead: hide the screen content
+   for print and show #print-view, built from plain print-safe HTML (no
+   CSS grid spanning a break, no Chart.js canvases, explicit page breaks,
+   one page's worth of curated content per page). Keep this pattern for
+   future weeks: update the numbers inside #print-view, don't try to make
+   the screen sections themselves print well. */
 @media print {
-  body { background: white; font-size: 12px; }
-  .masthead {
-    display: block; position: fixed; top: 0; left: 0; right: 0;
-    background: white; border-bottom: 1px solid var(--line);
-    padding: 4px 0; z-index: 1000;
-  }
-  .masthead-inner { padding: 0 1cm; }
-  .brand-lock { font-size: 9px; gap: 6px; font-weight: 500; }
-  .brand-dot { width: 14px; height: 14px; font-size: 8px; border-radius: 4px; }
-  .print-date-inline { display: inline; color: var(--ink-mute); font-weight: 400; }
-  .masthead nav, .print-btn { display: none !important; }
-  .page-section { padding: 10px 0; min-height: auto; }
-  .pb { page-break-after: always; }
-  footer { background: white; }
-  .lightbox { display: none !important; }
-  .print-btn { display: none; }
-  @page { margin: 1cm; size: A4; }
+  @page { margin: 1.2cm; size: A4; }
+  body { background: white; }
+  .masthead, main, footer { display: none !important; }
+  #print-view { display: block !important; }
 
+  .pv-page { page-break-after: always; }
+  .pv-page:last-child { page-break-after: auto; }
 
-  /* Chrome's print engine cannot split a CSS grid container across a page:
-     if one doesn't fit in the remaining space, it jumps whole to the next
-     page and leaves the current one mostly blank. Individual cards below
-     are kept intact (they're small, this is harmless); the multi-card ROW
-     containers (.br-row*, .br-pies) are switched to flexbox further down
-     instead, since flex CAN wrap across a page boundary in Chrome. */
-  .card, .kpi-card, .insight, .ranking, .key-finding,
-  .funnel-card, .growth-card, .br-card {
-    page-break-inside: avoid; break-inside: avoid;
-  }
+  .pv-header { display: flex; align-items: center; gap: 8px; padding-bottom: 8px; border-bottom: 1px solid var(--line); margin-bottom: 16px; }
+  .pv-header .dot { width: 18px; height: 18px; border-radius: 5px; background: var(--gradient); color: #fff; font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .pv-header .name { font-size: 11px; font-weight: 600; }
+  .pv-header .date { font-size: 10px; color: var(--ink-mute); margin-left: auto; }
 
-  /* Row containers built with CSS grid: convert to flex for print so
-     Chrome can wrap their children across a page break instead of
-     shoving the whole row onto the next page. */
-  .br-row1, .br-row2, .br-row3, .br-pies, .growth-cards.kpi-row,
-  .plan-grid, .insight-grid, .insight-grid.cols-3, .two-col, .two-col-eq, .three-col {
-    display: flex !important;
-    flex-wrap: wrap;
-  }
-  .br-row1 > *, .br-row3 > *, .br-pies > *, .two-col > *, .two-col-eq > *,
-  .insight-grid > * { flex: 1 1 45%; }
-  .br-row2 > *, .three-col > *, .plan-grid > * { flex: 1 1 30%; }
-  .insight-grid.cols-3 > * { flex: 1 1 30%; }
-  .growth-cards.kpi-row > * { flex: 1 1 22%; }
+  .pv-title { font-size: 24px; font-weight: 700; letter-spacing: -.02em; margin-bottom: 2px; }
+  .pv-title .grad { background: var(--gradient-h); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .pv-subtitle { font-size: 11px; color: var(--ink-mute); margin-bottom: 16px; }
 
-  h2.display-l { font-size: 24px; margin-bottom: 8px; }
-  .lede { font-size: 13px; margin-bottom: 16px; }
-  .page-label { margin-bottom: 12px; }
+  .pv-section-label { font-size: 9px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-mute); font-weight: 700; margin: 16px 0 6px; }
+  .pv-section-label:first-child { margin-top: 0; }
 
-  /* Conversion funnel: compact so funnel + highlights fit as one unit */
-  .funnel-card { padding: 12px 16px 10px; margin-top: 8px; }
-  .funnel-card .card-title-lg { font-size: 14px; }
-  .funnel-card .card-sub-sm { font-size: 11px; margin-bottom: 0; }
-  .funnel-split { gap: 16px; margin-top: 4px; }
-  .funnel-svg-wrap { max-width: 240px; margin: 0 auto; display: block; }
-  .funnel-highlights { padding-left: 16px; padding-top: 0; }
-  .funnel-highlights .card-title { font-size: 12px; }
-  .funnel-highlights .card-sub { font-size: 10px; margin-bottom: 8px; }
-  .ops-list { gap: 6px; }
-  .ops-list li { font-size: 10px; line-height: 1.35; padding-left: 14px; }
+  .pv-kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  .pv-kpi { border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; }
+  .pv-kpi .l { font-size: 8px; letter-spacing: .04em; text-transform: uppercase; color: var(--ink-mute); font-weight: 600; }
+  .pv-kpi .v { font-size: 16px; font-weight: 800; letter-spacing: -.02em; margin-top: 2px; }
+  .pv-kpi .s { font-size: 8px; color: var(--ink-mute); margin-top: 1px; }
+  .pv-kpi .d { font-size: 9px; font-weight: 700; margin-left: 4px; }
+  .pv-kpi .d.down { color: var(--bad); }
+  .pv-kpi .d.up { color: var(--good); }
 
-  /* App Growth KPI tiles: compact */
-  .growth-cards.kpi-row { gap: 6px; }
-  .growth-card.compact { padding: 8px 10px; }
-  .growth-card.compact .growth-metric-value { font-size: 15px; }
-  .growth-pill { padding: 3px 8px; margin-bottom: 4px; }
-  .growth-pill .pill-main { font-size: 10px; }
-  .growth-pill .pill-sub { font-size: 8px; }
-  .growth-delta { font-size: 10px; margin-left: 4px; }
+  .pv-bars { display: flex; flex-direction: column; gap: 6px; }
+  .pv-bar-row { display: flex; align-items: center; gap: 8px; font-size: 10px; }
+  .pv-bar-row .name { width: 130px; flex-shrink: 0; color: var(--ink-soft); text-align: right; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .pv-bar-row .track { flex: 1; background: var(--paper-3); border-radius: 4px; height: 12px; position: relative; overflow: hidden; }
+  .pv-bar-row .fill { height: 100%; background: var(--gradient-h); border-radius: 4px; }
+  .pv-bar-row .val { width: 52px; flex-shrink: 0; font-weight: 700; font-size: 10px; }
 
-  /* Business & Revenue cards: compact */
-  .br-card { padding: 12px; }
-  .br-value-xl { font-size: 22px; margin-top: 6px; }
-  .br-value-lg { font-size: 17px; }
-  /* No print-specific shrink for .br-chart-sm / .br-top-sellers-wrap: same
-     lesson as .chart-wrap above (see the print block near the ad ranking
-     table), the pie charts rendered tiny inside a mostly-blank card, and
-     the 10-category Top Sellers bar chart compressed into overlapping
-     bars with truncated labels. Keep the base desktop heights (190px /
-     320px) for print instead of guessing a smaller one. */
-  .br-row1, .br-row2, .br-row3 { margin-top: 12px; gap: 10px; }
+  .pv-catmix { font-size: 10px; color: var(--ink-soft); line-height: 1.7; }
+  .pv-catmix strong { color: var(--ink); }
 
-  /* Insight / plan cards: compact */
-  .insight { padding: 14px 16px; }
-  .insight-title { font-size: 15px; margin-bottom: 6px; }
-  .insight-body { font-size: 11px; }
-  .plan-grid .br-card { padding: 12px 14px; }
-  .ops-list-sm li { font-size: 10px; }
+  .pv-two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 
-  /* Generic .card (chart cards, etc): compact so both charts fit on one
-     page without wasted space. */
-  .card { padding: 14px 16px; }
-  .card-title { font-size: 15px; margin-bottom: 2px; }
-  .card-sub { font-size: 11px; margin-bottom: 10px; }
-  /* No print-specific shrink here: 150px, then 220px, both still
-     compressed the 5-category horizontal bar charts into overlapping bars
-     with colliding value labels (confirmed from the actual exported PDF
-     both times). Stop guessing at a smaller number and just keep the
-     original desktop height (320px base .chart-wrap, 420px .chart-tall) in
-     print too. Cards stack full-width per page now (see .two-col-eq
-     below), so there's no side-by-side width constraint pushing for a
-     shorter chart, and legibility matters more than saving a page. */
+  .pv-note-box { border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; }
+  .pv-note-box.good { border-left: 3px solid var(--good); }
+  .pv-note-box.warn { border-left: 3px solid var(--warn); }
+  .pv-note-box.bad { border-left: 3px solid var(--bad); }
+  .pv-note-box .t { font-size: 10px; font-weight: 700; margin-bottom: 4px; }
+  .pv-note-box ul { margin: 0; padding-left: 14px; font-size: 9.5px; color: var(--ink-soft); line-height: 1.55; }
+  .pv-note-box p { font-size: 9.5px; color: var(--ink-soft); line-height: 1.55; margin: 0; }
 
-  /* .two-col-eq's two cards (Clicks by ad / CTR by ad) are meant to sit
-     side by side via flex:1 1 45%, but page-break-inside:avoid on .card
-     means Chrome is free to put each one on a different page if the pair
-     doesn't fit the remaining space together. When that happens, the 45%
-     flex-basis becomes meaningless (45% of what, when the card is alone
-     on a page?) and the card's box stops tracking its own chart content,
-     leaving a tall card with a small chart adrift inside it. Stack them
-     as full-width blocks instead so each card's height always matches its
-     own content, on whichever page it lands on. */
-  .two-col-eq { flex-direction: column; gap: 14px; }
-  .two-col-eq > * { flex: 1 1 auto; width: 100%; }
+  .pv-table { width: 100%; border-collapse: collapse; font-size: 9.5px; }
+  .pv-table th { text-align: left; font-size: 8px; letter-spacing: .04em; text-transform: uppercase; color: var(--ink-mute); font-weight: 700; padding: 4px 6px; border-bottom: 1px solid var(--line); }
+  .pv-table td { padding: 6px; border-bottom: 1px solid var(--line); }
+  .pv-table th.num, .pv-table td.num { text-align: right; }
+  .pv-table .rank { color: var(--ink-fade); font-weight: 700; }
 
-  /* Ad ranking table: full desktop column widths (668px of fixed columns)
-     overflow the print page width, and the default padding/thumb size
-     make the table too tall to share a page with anything else. */
-  .ranking { margin-bottom: 12px; }
-  .ranking-row { padding: 8px 10px; gap: 8px; }
-  .ranking-row.header { padding: 6px 10px; }
-  .ads-ranking .ranking-row, .ads-ranking .ranking-row.header {
-    grid-template-columns: 24px 40px 1fr 52px 56px 48px 44px 48px 56px;
-  }
-  .rank-thumb { width: 36px; height: 36px; border-radius: 8px; }
-  .rank-num { font-size: 16px; }
-  .rank-num.top1 { width: 24px; height: 24px; font-size: 11px; }
-  .rank-title { font-size: 11px; margin-bottom: 2px; }
-  .rank-meta { font-size: 8px; gap: 4px; }
-  .tag { font-size: 7px; padding: 2px 6px; }
-  .metric-big { font-size: 11px; }
-  .metric-lbl { font-size: 7px; }
+  .pv-funnel-wrap { max-width: 270px; margin: 4px auto 0; }
 
-  /* Chrome discards a box's top MARGIN by default whenever that box lands
-     as the first fragment on a new printed page (CSS Fragmentation's
-     margin-break:discard, which Chromium doesn't let you turn off since it
-     doesn't implement the margin-break property at all). That's exactly
-     the box margin-top was supposed to protect, so it silently did nothing
-     for whichever card happened to start a page. PADDING is not discarded
-     the same way, so use padding-top instead. This rule has to be the LAST
-     one touching these classes' padding in this stylesheet (equal
-     specificity, source order wins), since several rules above it already
-     set the full padding shorthand for the same classes. */
-  .card, .kpi-card, .insight, .ranking, .key-finding,
-  .funnel-card, .growth-card, .br-card {
-    padding-top: 1.3cm;
-  }
+  .pv-plan-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px 16px; }
+  .pv-plan-item .t { font-size: 10px; font-weight: 700; margin-bottom: 3px; }
+  .pv-plan-item ul { margin: 0; padding-left: 12px; font-size: 9px; color: var(--ink-soft); line-height: 1.5; }
 
-  /* Same idea for the page-label/cover-kicker pills: padding-top directly
-     on a pill would distort its rounded shape, so give the *section* they
-     open extra top padding instead. A fragmented box's own padding-top
-     only renders on its first fragment (never on later continuation
-     pages), which is exactly where the pill sits, so this reaches it
-     without needing padding-top on the pill itself. */
-  .page-section {
-    padding-top: 1.3cm;
-  }
+  .pv-hl-list { columns: 2; column-gap: 20px; margin: 0; padding-left: 14px; font-size: 9.5px; color: var(--ink-soft); line-height: 1.6; }
+  .pv-hl-list li { break-inside: avoid; margin-bottom: 4px; }
+  .pv-hl-list strong { color: var(--ink); }
 }
 
 @keyframes riseIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
@@ -503,7 +422,6 @@ footer a { color: var(--ink); text-decoration: none; font-weight: 500; }
     <div class="brand-lock">
       <div class="brand-dot">W</div>
       <span>Wasal &middot; W27 B&amp;R + Marketing Report</span>
-      <span class="print-date-inline">&middot; Jun 29 to Jul 5, 2026</span>
     </div>
     <nav>
       <a href="#p-summary" class="active">Summary</a>
@@ -899,45 +817,12 @@ Chart.defaults.font.size = 11;
 Chart.defaults.color = '#6b7388';
 Chart.defaults.borderColor = '#e3e8f0';
 
-var allCharts = [];
+// The exported PDF renders #print-view (plain HTML/CSS, no canvases), not
+// these screen charts, so there's no print-resize concern here anymore.
 function safeChart(id, config) {
   const el = document.getElementById(id);
   if (!el) return null;
-  var chart = new Chart(el, config);
-  allCharts.push(chart);
-  return chart;
-}
-
-// Chart.js sizes each canvas to its container at creation time and does not
-// re-measure on its own when the print stylesheet changes that container's
-// width, so charts render at their on-screen size and overflow or clip in
-// the exported PDF. Force a resize right before the browser prints.
-//
-// beforeprint alone isn't reliable in every Chrome version: window.print()
-// can open a blocking print dialog before the print stylesheet has finished
-// reflowing, so a resize() called synchronously in beforeprint sometimes
-// still reads the old (screen-size) container dimensions. Cover this from
-// multiple angles: matchMedia('print') fires exactly when the print media
-// state flips (a different signal than the print dialog lifecycle), and a
-// couple of delayed re-resizes catch cases where layout settles a frame or
-// two after either event fires. Calling resize() extra times is harmless.
-function resizeAllCharts() {
-  allCharts.forEach(function(c) { if (c) c.resize(); });
-}
-window.addEventListener('beforeprint', function() {
-  resizeAllCharts();
-  setTimeout(resizeAllCharts, 50);
-  setTimeout(resizeAllCharts, 200);
-});
-window.addEventListener('afterprint', resizeAllCharts);
-if (window.matchMedia) {
-  var printMql = window.matchMedia('print');
-  var onPrintChange = function(e) {
-    resizeAllCharts();
-    if (e.matches) { setTimeout(resizeAllCharts, 50); }
-  };
-  if (printMql.addEventListener) { printMql.addEventListener('change', onPrintChange); }
-  else if (printMql.addListener) { printMql.addListener(onPrintChange); }
+  return new Chart(el, config);
 }
 
 function linGrad(ctx, stops, vertical) {
@@ -1134,5 +1019,177 @@ document.addEventListener('click', function(e) {
 document.addEventListener('keydown', function(e) { if (e.key === 'Escape') { closeLightbox(); } });
 
 </script>
+<div id="print-view">
+
+  <div class="pv-page">
+    <div class="pv-header">
+      <div class="dot">W</div>
+      <div class="name">Wasal &middot; W27 B&amp;R + Marketing Report</div>
+      <div class="date">Jun 29 to Jul 5, 2026</div>
+    </div>
+    <div class="pv-title">B&amp;R + <span class="grad">Marketing</span> Report</div>
+    <div class="pv-subtitle">Week 27 &middot; Business &amp; Revenue &middot; Source: Sales team</div>
+
+    <div class="pv-section-label">Business &amp; Revenue</div>
+    <div class="pv-kpi-grid">
+      <div class="pv-kpi"><div class="l">GMV Week</div><div class="v">83,975 dhs</div></div>
+      <div class="pv-kpi"><div class="l">SKU</div><div class="v">+1,732</div><div class="s">Total 180.3K</div></div>
+      <div class="pv-kpi"><div class="l">Brands</div><div class="v">+74</div><div class="s">Total 5,261</div></div>
+      <div class="pv-kpi"><div class="l">Sellers</div><div class="v">+5</div><div class="s">Total 646</div></div>
+      <div class="pv-kpi"><div class="l">Sales Goal (GMV)</div><div class="v">12%</div></div>
+      <div class="pv-kpi"><div class="l">CRR</div><div class="v">0,25%</div></div>
+      <div class="pv-kpi"><div class="l">AOV &middot; WoW</div><div class="v">480 DHS</div><div class="s">Prior: 588 DHS</div></div>
+      <div class="pv-kpi"><div class="l">Gross Orders</div><div class="v">209</div></div>
+    </div>
+
+    <div class="pv-section-label">Top Sellers (GMV)</div>
+    <div class="pv-bars">
+      <div class="pv-bar-row"><div class="name">Be Pretty by Fatym</div><div class="track"><div class="fill" style="width:100%"></div></div><div class="val">32,000</div></div>
+      <div class="pv-bar-row"><div class="name">Beauty Mall</div><div class="track"><div class="fill" style="width:10%"></div></div><div class="val">3,200</div></div>
+      <div class="pv-bar-row"><div class="name">Digitronics</div><div class="track"><div class="fill" style="width:8.1%"></div></div><div class="val">2,600</div></div>
+      <div class="pv-bar-row"><div class="name">World Market</div><div class="track"><div class="fill" style="width:6.6%"></div></div><div class="val">2,100</div></div>
+      <div class="pv-bar-row"><div class="name">Sao Eleven</div><div class="track"><div class="fill" style="width:5.3%"></div></div><div class="val">1,700</div></div>
+    </div>
+
+    <div class="pv-section-label">Category Mix (GMV)</div>
+    <div class="pv-catmix"><strong>Beaut&eacute;</strong> 51% &middot; <strong>Fashion femme</strong> 19.2% &middot; <strong>Tech</strong> 15.8% &middot; <strong>Homme</strong> 4.8% &middot; <strong>Maison</strong> 3% &middot; <strong>Sport</strong> 2.6%</div>
+
+    <div class="pv-section-label">Sales Team Notes</div>
+    <div class="pv-two-col">
+      <div class="pv-note-box good">
+        <div class="t">Les bonnes nouvelles</div>
+        <p><strong>Signatures :</strong> cham&agrave;ty, keira, Maroc Vitamines, veranoclothing, superfood. <strong>Sujet chaud :</strong> pr&eacute;paration du P&amp;L Terranova + offre commerciale kak. Objectif SKU trimestre atteint (47). Module vente flash fix&eacute;.</p>
+      </div>
+      <div class="pv-note-box warn">
+        <div class="t">A Fixer</div>
+        <ul>
+          <li>Feuille de recrutement Chaima et Khaoula</li>
+          <li>Objectifs et grille bonus AKSAL GROUPE</li>
+          <li>UX module bunddle &agrave; d&eacute;ployer tiers one</li>
+          <li>Profil AKWA group toujours pas valid&eacute;</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="pv-page">
+    <div class="pv-header">
+      <div class="dot">W</div>
+      <div class="name">Wasal &middot; W27 B&amp;R + Marketing Report</div>
+      <div class="date">Jun 29 to Jul 5, 2026</div>
+    </div>
+    <div class="pv-title">App <span class="grad">Growth</span> &amp; Top Ads</div>
+    <div class="pv-subtitle">Week 27 &middot; AppsFlyer + Meta Ads</div>
+
+    <div class="pv-section-label">App Growth</div>
+    <div class="pv-kpi-grid">
+      <div class="pv-kpi"><div class="l">Active Users</div><div class="v">7,578<span class="d down">&darr;7%</span></div></div>
+      <div class="pv-kpi"><div class="l">Installs</div><div class="v">2,405<span class="d down">&darr;37%</span></div></div>
+      <div class="pv-kpi"><div class="l">Organic Installs</div><div class="v">523<span class="d down">&darr;63%</span></div></div>
+      <div class="pv-kpi"><div class="l">Add To Cart</div><div class="v">245<span class="d down">&darr;85%</span></div></div>
+      <div class="pv-kpi"><div class="l">Sessions</div><div class="v">19.87K<span class="d down">&darr;46%</span></div></div>
+      <div class="pv-kpi"><div class="l">Purchases</div><div class="v">24<span class="d down">&darr;97%</span></div></div>
+      <div class="pv-kpi"><div class="l">Retention (W1)</div><div class="v">14.32%<span class="d down">&darr;26%</span></div></div>
+      <div class="pv-kpi"><div class="l">Budget Spent</div><div class="v" style="font-size:14px;">&euro;1,096.11</div></div>
+    </div>
+
+    <div class="pv-section-label">Conversion Funnel</div>
+    <div class="pv-funnel-wrap">
+<svg viewBox="0 0 460 420" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;">
+  <defs>
+    <linearGradient id="funnelGradPrint" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#00c4cc"/>
+      <stop offset="50%" stop-color="#00a3ff"/>
+      <stop offset="100%" stop-color="#7b61ff"/>
+    </linearGradient>
+  </defs>
+  <line x1="90" y1="40" x2="370" y2="40" stroke="#e3e8f0" stroke-width="1"/><line x1="90" y1="154" x2="370" y2="154" stroke="#e3e8f0" stroke-width="1"/><line x1="90" y1="267" x2="370" y2="267" stroke="#e3e8f0" stroke-width="1"/><line x1="90" y1="380" x2="370" y2="380" stroke="#e3e8f0" stroke-width="1"/>
+  <path d="M 100 40 L 188.5 154 L 214.3 267 L 217 380 L 243 380 L 245.7 267 L 271.5 154 L 360 40 Z" fill="url(#funnelGradPrint)"/>
+  <line x1="188.5" y1="154" x2="271.5" y2="154" stroke="#ffffff" stroke-width="2" opacity=".55"/><line x1="214.3" y1="267" x2="245.7" y2="267" stroke="#ffffff" stroke-width="2" opacity=".55"/>
+  <text x="10" y="36" font-family="Bricolage Grotesque, sans-serif" font-size="14" font-weight="700" fill="#0a1226" dominant-baseline="middle">INSTALLS</text><text x="450" y="36" font-family="Bricolage Grotesque, sans-serif" font-size="16" font-weight="800" fill="#0a1226" text-anchor="end" dominant-baseline="middle">2,405</text>
+  <text x="10" y="150" font-family="Bricolage Grotesque, sans-serif" font-size="14" font-weight="700" fill="#0a1226" dominant-baseline="middle">ADD TO CART</text><text x="450" y="150" font-family="Bricolage Grotesque, sans-serif" font-size="16" font-weight="800" fill="#0a1226" text-anchor="end" dominant-baseline="middle">245</text><text x="450" y="165" font-family="Bricolage Grotesque, sans-serif" font-size="10" font-weight="700" text-anchor="end" fill="#f59e0b">10.2% of installs</text>
+  <text x="10" y="263" font-family="Bricolage Grotesque, sans-serif" font-size="14" font-weight="700" fill="#0a1226" dominant-baseline="middle">CHECKOUT</text><text x="450" y="263" font-family="Bricolage Grotesque, sans-serif" font-size="16" font-weight="800" fill="#0a1226" text-anchor="end" dominant-baseline="middle">35</text><text x="450" y="278" font-family="Bricolage Grotesque, sans-serif" font-size="10" font-weight="700" text-anchor="end" fill="#f59e0b">14.3% of carts</text>
+  <text x="10" y="376" font-family="Bricolage Grotesque, sans-serif" font-size="14" font-weight="700" fill="#0a1226" dominant-baseline="middle">PURCHASE</text><text x="450" y="376" font-family="Bricolage Grotesque, sans-serif" font-size="16" font-weight="800" fill="#0a1226" text-anchor="end" dominant-baseline="middle">24</text><text x="450" y="391" font-family="Bricolage Grotesque, sans-serif" font-size="10" font-weight="700" text-anchor="end" fill="#10b981">68.6% of checkouts</text>
+</svg>
+    </div>
+
+    <div class="pv-section-label">Top 5 Ads</div>
+    <table class="pv-table">
+      <thead><tr><th>#</th><th>Ad</th><th class="num">Spend</th><th class="num">CTR</th><th class="num">Results</th></tr></thead>
+      <tbody>
+        <tr><td class="rank">1</td><td>IMG 2 <span style="color:var(--ink-mute);">&middot; Image</span></td><td class="num">&euro;64.53</td><td class="num">1.64%</td><td class="num">40 leads &middot; &euro;1.61/res</td></tr>
+        <tr><td class="rank">2</td><td>General - IMG 1 - nw <span style="color:var(--ink-mute);">&middot; Image</span></td><td class="num">&euro;60.89</td><td class="num">0.74%</td><td class="num">16 purch. &middot; &euro;3.81/res</td></tr>
+        <tr><td class="rank">3</td><td>For Her - VID 2 <span style="color:var(--ink-mute);">&middot; Video</span></td><td class="num">&euro;47.13</td><td class="num">1.89%</td><td class="num">10 purch. &middot; &euro;4.71/res</td></tr>
+        <tr><td class="rank">4</td><td>General - VID 1 <span style="color:var(--ink-mute);">&middot; Video</span></td><td class="num">&euro;72.00</td><td class="num">0.52%</td><td class="num">8 purch. &middot; &euro;9.00/res</td></tr>
+        <tr><td class="rank">5</td><td>IMG 3 <span style="color:var(--ink-mute);">&middot; Image</span></td><td class="num">&euro;6.47</td><td class="num">1.54%</td><td class="num">4 leads &middot; &euro;1.62/res</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="pv-page">
+    <div class="pv-header">
+      <div class="dot">W</div>
+      <div class="name">Wasal &middot; W27 B&amp;R + Marketing Report</div>
+      <div class="date">Jun 29 to Jul 5, 2026</div>
+    </div>
+    <div class="pv-title">Overview &amp; <span class="grad">Operations</span></div>
+    <div class="pv-subtitle">Week 27 &middot; Outside Digital Performance</div>
+
+    <div class="pv-section-label">Weekly Highlights</div>
+    <ul class="pv-hl-list">
+      <li><strong>Shop N Shop:</strong> delivered for L&rsquo;Or&eacute;al, all deliverables complete.</li>
+      <li><strong>CMS Project:</strong> preliminary Cahier des Charges done with Nassira.</li>
+      <li><strong>Aksal Fidelization:</strong> proposal accepted, awaiting next steps.</li>
+      <li><strong>Marketing Ops:</strong> monthly review &amp; action plan workshop completed.</li>
+      <li><strong>Offline Campaign:</strong> Merhba50 + Spin &amp; Win (e-bike) live this week.</li>
+      <li><strong>OOH:</strong> 6s live now, 12s creative this week, 1.5mo run planned.</li>
+      <li><strong>Back-to-School:</strong> campaign workbook due Friday.</li>
+      <li><strong>Creator Activation:</strong> SIIF Wasalers have vouchers + tracking codes.</li>
+      <li><strong>Social Media:</strong> SIIF giveaways ongoing through the campaign.</li>
+      <li><strong>Creative Production:</strong> stable output from W Studio.</li>
+    </ul>
+
+    <div class="pv-section-label">Plan of Action</div>
+    <div class="pv-plan-grid">
+      <div class="pv-plan-item">
+        <div class="t">Media Planning</div>
+        <ul><li>Finalize 2-month Media &amp; Digital Strategy</li><li>Channel split, budgets, A/B roadmap</li></ul>
+      </div>
+      <div class="pv-plan-item">
+        <div class="t">Mystery Box</div>
+        <ul><li>Packaging &amp; workflow pending approval</li><li>Finalize KV &amp; mechanics</li><li>Target launch last week of July</li></ul>
+      </div>
+      <div class="pv-plan-item">
+        <div class="t">Brand Development</div>
+        <ul><li>Update Wasal Tone of Voice</li><li>Simplify Brand Guidelines</li></ul>
+      </div>
+      <div class="pv-plan-item">
+        <div class="t">Content Strategy</div>
+        <ul><li>Min. 120 W Moments/month</li><li>Strengthen organic content</li></ul>
+      </div>
+      <div class="pv-plan-item">
+        <div class="t">Marketing Automation</div>
+        <ul><li>Automate W Moments moderation</li><li>AI creative workflows for W Studio</li></ul>
+      </div>
+    </div>
+
+    <div class="pv-section-label">Blocking Points</div>
+    <div class="pv-two-col">
+      <div class="pv-note-box bad">
+        <div class="t">Affiliate Program</div>
+        <p>Auto-Entrepreneur status unresolved, delaying creator onboarding. Alternatives under review.</p>
+      </div>
+      <div class="pv-note-box bad">
+        <div class="t">Mystery Box</div>
+        <p>Final approval required before production, packing and launch can begin.</p>
+      </div>
+    </div>
+    <div class="pv-note-box bad" style="margin-top:8px;">
+      <div class="t">Content Production Budget</div>
+      <p>40,000 MAD cash budget needed for upcoming video productions. Current social content shows creative fatigue, fresh hero assets needed to sustain engagement and paid media performance.</p>
+    </div>
+  </div>
+
+</div>
 </body>
 </html>
