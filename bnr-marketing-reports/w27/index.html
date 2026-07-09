@@ -179,6 +179,7 @@ h3.display-m { font-size: clamp(22px, 2.6vw, 32px); line-height: 1.1; letter-spa
 
 /* INSIGHT CARDS */
 .insight-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-top: 24px; }
+.insight-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
 .insight { background: var(--paper); border: 1px solid var(--line); border-radius: 20px; padding: 28px 32px 28px 28px; position: relative; box-shadow: var(--shadow); transition: all .3s; overflow: hidden; }
 .insight:hover { transform: translateY(-2px); box-shadow: var(--shadow-lift); }
 .insight::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--gradient); }
@@ -192,6 +193,18 @@ h3.display-m { font-size: clamp(22px, 2.6vw, 32px); line-height: 1.1; letter-spa
 .insight-body li { position: relative; padding-left: 16px; }
 .insight-body li::before { content: ""; position: absolute; left: 0; top: 8px; width: 5px; height: 5px; border-radius: 50%; background: var(--warn); }
 .insight.good .insight-body li::before { background: var(--good); }
+
+/* OPS / PLAN LISTS */
+.ops-list { list-style: none; display: flex; flex-direction: column; gap: 14px; margin-top: 4px; }
+.ops-list li { position: relative; padding-left: 20px; font-size: 14px; color: var(--ink-soft); line-height: 1.55; }
+.ops-list li::before { content: ""; position: absolute; left: 0; top: 8px; width: 6px; height: 6px; border-radius: 50%; background: var(--gradient); }
+.ops-list li strong { color: var(--ink); font-weight: 600; }
+
+.plan-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 20px; }
+.plan-grid .br-card { padding: 20px 22px; }
+.ops-list-sm { list-style: none; display: flex; flex-direction: column; gap: 8px; margin-top: 14px; }
+.ops-list-sm li { position: relative; padding-left: 16px; font-size: 13px; color: var(--ink-soft); line-height: 1.5; }
+.ops-list-sm li::before { content: ""; position: absolute; left: 0; top: 7px; width: 5px; height: 5px; border-radius: 50%; background: var(--c-blue); }
 
 /* KEY FINDING BANNER */
 .key-finding { background: var(--gradient); color: white; padding: 32px 40px; border-radius: 20px; margin: 32px 0; position: relative; overflow: hidden; box-shadow: var(--shadow-pop); }
@@ -225,7 +238,7 @@ footer a { color: var(--ink); text-decoration: none; font-weight: 500; }
   .display-xl { font-size: 44px; }
   h2.display-l { font-size: 32px; }
   .kpi-strip { grid-template-columns: repeat(2, 1fr); }
-  .two-col, .two-col-eq, .three-col, .insight-grid, .kpi-framework { grid-template-columns: 1fr; }
+  .two-col, .two-col-eq, .three-col, .insight-grid, .insight-grid.cols-3, .plan-grid, .kpi-framework { grid-template-columns: 1fr; }
   .cover-meta { grid-template-columns: 1fr 1fr; gap: 24px; }
   .cover-meta-item, .cover-meta-item + .cover-meta-item { padding: 16px 0; border-left: none; border-top: 1px solid var(--line); }
   .ranking-row { grid-template-columns: 36px 64px 1fr; gap: 12px; padding: 14px; }
@@ -321,6 +334,7 @@ footer a { color: var(--ink); text-decoration: none; font-weight: 500; }
       <a href="#p-summary" class="active">Summary</a>
       <a href="#p-br">Business &amp; Revenue</a>
       <a href="#p-growth">App Growth</a>
+      <a href="#p-overview">Overview</a>
       <a href="#p-topads">Top 5 Ads</a>
     </nav>
     <button class="print-btn" onclick="window.print()">
@@ -545,9 +559,93 @@ footer a { color: var(--ink); text-decoration: none; font-weight: 500; }
   </div>
 </section>
 
+<section class="page-section pb" id="p-overview">
+  <div class="page">
+    <div class="page-label"><span class="chip">Page 03</span> Overview W27 &middot; Outside Digital Performance</div>
+    <h2 class="display-l">Overview W27 <span class="grad">(Outside Digital)</span></h2>
+    <p class="lede">Key marketing, brand and operations updates from the week, alongside the plan of action and current blocking points.</p>
+
+    <div class="card" style="margin-bottom: 32px;">
+      <div class="card-title">Weekly Highlights</div>
+      <div class="card-sub">Outside digital performance &middot; W27</div>
+      <ul class="ops-list">
+        <li><strong>Shop N Shop Delivered:</strong> Successfully launched the Shop N Shop activation for L&rsquo;Or&eacute;al, completing all planned marketing deliverables.</li>
+        <li><strong>CMS Project:</strong> Preliminary Cahier des Charges completed with Nassira and shared for review.</li>
+        <li><strong>Aksal Fidelization:</strong> Proposal accepted. Awaiting next implementation steps and execution timeline.</li>
+        <li><strong>Marketing Operations:</strong> Monthly Marketing Review and Action Plan workshop completed with the team to align priorities and execution.</li>
+        <li><strong>Offline Campaign Launch:</strong> Offline budget activated. Merhba50 flyer distribution starts this week alongside the Spin &amp; Win activation, now featuring an electric bike instead of the car.</li>
+        <li><strong>OOH Campaign:</strong> 6-second digital OOH campaign is live. 12-second creative rollout scheduled this week pending final visual approvals, with a planned 1.5-month visibility period.</li>
+        <li><strong>Campaign Preparation:</strong> Back-to-School Campaign Management workbook will be finalized and delivered by Friday.</li>
+        <li><strong>Creator Activation:</strong> SIIF Wasalers received vouchers and individual tracking codes linked to the Merhba50 campaign to measure creator performance.</li>
+        <li><strong>Social Media:</strong> Multiple giveaway activations planned throughout the SIIF campaign to maintain engagement and acquisition momentum.</li>
+        <li><strong>Creative Production:</strong> Ad asset production remains stable with consistent creative output from W Studio.</li>
+      </ul>
+    </div>
+
+    <h3 class="display-m">Plan of <span class="grad">Action</span></h3>
+    <div class="plan-grid">
+      <div class="br-card">
+        <div class="card-title">Media Planning</div>
+        <ul class="ops-list-sm">
+          <li>Finalize the detailed 2-month Media &amp; Digital Marketing Strategy.</li>
+          <li>Channel split, budgets, audience segmentation, A/B testing roadmap and performance framework.</li>
+        </ul>
+      </div>
+      <div class="br-card">
+        <div class="card-title">Mystery Box</div>
+        <ul class="ops-list-sm">
+          <li>Prepare packaging and operational workflow pending approval.</li>
+          <li>Finalize KV and campaign mechanics.</li>
+          <li>Target test launch during the last week of July.</li>
+        </ul>
+      </div>
+      <div class="br-card">
+        <div class="card-title">Brand Development</div>
+        <ul class="ops-list-sm">
+          <li>Update Wasal Tone of Voice.</li>
+          <li>Simplify and modernize Brand Guidelines for day-to-day operational use.</li>
+        </ul>
+      </div>
+      <div class="br-card">
+        <div class="card-title">Content Strategy</div>
+        <ul class="ops-list-sm">
+          <li>Minimum target set at 120 W Moments/month, including seller-generated Moments.</li>
+          <li>Continue strengthening organic content production.</li>
+        </ul>
+      </div>
+      <div class="br-card">
+        <div class="card-title">Marketing Automation</div>
+        <ul class="ops-list-sm">
+          <li>Automate W Moments moderation workflow.</li>
+          <li>Develop AI-powered creative production workflows to increase W Studio output and production speed.</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3 class="display-m" style="margin-top: 36px;">Blocking <span class="grad">Points</span></h3>
+    <div class="insight-grid cols-3">
+      <div class="insight bad">
+        <div class="insight-kicker">Affiliate Program</div>
+        <div class="insight-title">Auto-Entrepreneur status</div>
+        <div class="insight-body">Auto-Entrepreneur legal status remains unresolved, delaying creator onboarding. Alternative legal structures are currently under review.</div>
+      </div>
+      <div class="insight bad">
+        <div class="insight-kicker">Mystery Box</div>
+        <div class="insight-title">Approval pending</div>
+        <div class="insight-body">Final approval required before production, packing and campaign launch can begin.</div>
+      </div>
+      <div class="insight bad">
+        <div class="insight-kicker">Content Production Budget</div>
+        <div class="insight-title">40,000 MAD needed</div>
+        <div class="insight-body">Cash budget required for upcoming video productions. Current social media content is showing creative fatigue, and fresh hero assets are needed to sustain engagement, paid media performance, and campaign effectiveness.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="page-section pb" id="p-topads">
   <div class="page">
-    <div class="page-label"><span class="chip">Page 03</span> Top 5 Ads &middot; Jun 29 to Jul 4, 2026</div>
+    <div class="page-label"><span class="chip">Page 04</span> Top 5 Ads &middot; Jun 29 to Jul 4, 2026</div>
     <h2 class="display-l">Best performing <span class="grad">ads</span></h2>
     <p class="lede">Ranked by results delivered over the period. Thumbnails open in a lightbox. Source: Meta Ads, WASAL ad account.</p>
     <div class="ranking ads-ranking"><div class="ranking-row header"><div>Rank</div><div></div><div>Ad</div><div style="text-align:right;">Spend</div><div style="text-align:right;">Impr.</div><div style="text-align:right;">Clicks</div><div style="text-align:right;">CTR</div><div style="text-align:right;">CPC</div><div style="text-align:right;">Results</div></div><div class="ranking-row"><div class="rank-num top1">1</div><div class="rank-thumb" data-lb-src="https://scontent-sea5-1.xx.fbcdn.net/v/t45.1600-4/660956822_2427926947631040_6354081356144384020_n.png?_nc_cat=107&amp;ccb=1-7&amp;_nc_ohc=o_LZw9QH4BMQ7kNvwEW8Ejf&amp;_nc_oc=AdohEBCURYKcwGp_5wV7PylYJPA_DYK7CvctmNA5rVc6eq-a_0l47S0KSyxUo9FWkHA&amp;_nc_zt=1&amp;_nc_ht=scontent-sea5-1.xx&amp;edm=AEZPnVgEAAAA&amp;_nc_gid=9D-t4YeDLqc0HaNQXePuFA&amp;_nc_tpa=Q5bMBQHrAq53r1f2IpblUJMDH4eeCKpp2HYWygzYxFaA3DDgzTAb1psDauxlfBqHdekJgHqYAt18kcoPaw&amp;stp=c0.5000x0.5000f_dst-emg0_p64x64_q75_tt6&amp;ur=52f3c4&amp;_nc_sid=58080a&amp;oh=00_AQCxv6iMiN0Z9qiNOORvuuEATRCWx1IYt-vNfz_sSZMCnQ&amp;oe=6A52E8AD" data-lb-title="IMG 2" data-lb-stats="Spend &euro;64.53 &middot; 40 Website leads &middot; CPR &euro;1.61"><img src="https://scontent-sea5-1.xx.fbcdn.net/v/t45.1600-4/660956822_2427926947631040_6354081356144384020_n.png?_nc_cat=107&amp;ccb=1-7&amp;_nc_ohc=o_LZw9QH4BMQ7kNvwEW8Ejf&amp;_nc_oc=AdohEBCURYKcwGp_5wV7PylYJPA_DYK7CvctmNA5rVc6eq-a_0l47S0KSyxUo9FWkHA&amp;_nc_zt=1&amp;_nc_ht=scontent-sea5-1.xx&amp;edm=AEZPnVgEAAAA&amp;_nc_gid=9D-t4YeDLqc0HaNQXePuFA&amp;_nc_tpa=Q5bMBQHrAq53r1f2IpblUJMDH4eeCKpp2HYWygzYxFaA3DDgzTAb1psDauxlfBqHdekJgHqYAt18kcoPaw&amp;stp=c0.5000x0.5000f_dst-emg0_p64x64_q75_tt6&amp;ur=52f3c4&amp;_nc_sid=58080a&amp;oh=00_AQCxv6iMiN0Z9qiNOORvuuEATRCWx1IYt-vNfz_sSZMCnQ&amp;oe=6A52E8AD" alt="" loading="lazy" /></div><div><div class="rank-title">IMG 2</div><div class="rank-meta"><span class="tag img">Image</span><span>Website leads &middot; Freq 1.96 &middot; CPM &euro;1.07</span></div></div><div class="metric-cell"><div class="metric-big">&euro;64.53</div><div class="metric-lbl">Spend</div></div><div class="metric-cell"><div class="metric-big">60,212</div><div class="metric-lbl">Impr.</div></div><div class="metric-cell"><div class="metric-big">990</div><div class="metric-lbl">Clicks</div></div><div class="metric-cell"><div class="metric-big">1.64%</div><div class="metric-lbl">CTR</div></div><div class="metric-cell"><div class="metric-big">&euro;0.07</div><div class="metric-lbl">CPC</div></div><div class="metric-cell"><div class="metric-big">40</div><div class="metric-lbl">Leads &middot; &euro;1.61/res</div></div></div><div class="ranking-row"><div class="rank-num top3">2</div><div class="rank-thumb" data-lb-src="https://scontent-sea5-1.xx.fbcdn.net/v/t45.1600-4/730688411_2505774703179597_148640905043510028_n.png?_nc_cat=107&amp;ccb=1-7&amp;_nc_ohc=zxQCtE3UDtwQ7kNvwGVg7Yi&amp;_nc_oc=Adp5MVs5Y3JWYUByIi3Lut1-6CF_3QNF1Uy24H22j2VQmYINnSdh-k1mEdXZzYMKGxU&amp;_nc_zt=1&amp;_nc_ht=scontent-sea5-1.xx&amp;edm=AEZPnVgEAAAA&amp;_nc_gid=9D-t4YeDLqc0HaNQXePuFA&amp;_nc_tpa=Q5bMBQFQXv84BLb0ieQ6lQPbtDZnZm_iJ54XYLEywXYwx57OeMx6zxdbyeveBvUgZ-IKWqycoK72rFQBuw&amp;stp=c0.5000x0.5000f_dst-emg0_p64x64_q75_tt6&amp;ur=52f3c4&amp;_nc_sid=58080a&amp;oh=00_AQD6lYDgaK4z7swQfDSaJnnVB661jqx5e2VFQDDYWPyrwg&amp;oe=6A52DFB5" data-lb-title="General - IMG 1 - nw" data-lb-stats="Spend &euro;60.89 &middot; 16 Website purchases &middot; CPR &euro;3.81"><img src="https://scontent-sea5-1.xx.fbcdn.net/v/t45.1600-4/730688411_2505774703179597_148640905043510028_n.png?_nc_cat=107&amp;ccb=1-7&amp;_nc_ohc=zxQCtE3UDtwQ7kNvwGVg7Yi&amp;_nc_oc=Adp5MVs5Y3JWYUByIi3Lut1-6CF_3QNF1Uy24H22j2VQmYINnSdh-k1mEdXZzYMKGxU&amp;_nc_zt=1&amp;_nc_ht=scontent-sea5-1.xx&amp;edm=AEZPnVgEAAAA&amp;_nc_gid=9D-t4YeDLqc0HaNQXePuFA&amp;_nc_tpa=Q5bMBQFQXv84BLb0ieQ6lQPbtDZnZm_iJ54XYLEywXYwx57OeMx6zxdbyeveBvUgZ-IKWqycoK72rFQBuw&amp;stp=c0.5000x0.5000f_dst-emg0_p64x64_q75_tt6&amp;ur=52f3c4&amp;_nc_sid=58080a&amp;oh=00_AQD6lYDgaK4z7swQfDSaJnnVB661jqx5e2VFQDDYWPyrwg&amp;oe=6A52DFB5" alt="" loading="lazy" /></div><div><div class="rank-title">General - IMG 1 - nw</div><div class="rank-meta"><span class="tag img">Image</span><span>Website purchases &middot; Freq 2.22 &middot; CPM &euro;1.10</span></div></div><div class="metric-cell"><div class="metric-big">&euro;60.89</div><div class="metric-lbl">Spend</div></div><div class="metric-cell"><div class="metric-big">55,376</div><div class="metric-lbl">Impr.</div></div><div class="metric-cell"><div class="metric-big">412</div><div class="metric-lbl">Clicks</div></div><div class="metric-cell"><div class="metric-big">0.74%</div><div class="metric-lbl">CTR</div></div><div class="metric-cell"><div class="metric-big">&euro;0.15</div><div class="metric-lbl">CPC</div></div><div class="metric-cell"><div class="metric-big">16</div><div class="metric-lbl">Purchases &middot; &euro;3.81/res</div></div></div><div class="ranking-row"><div class="rank-num top3">3</div><div class="rank-thumb" data-lb-src="https://scontent-sea5-1.xx.fbcdn.net/v/t15.5256-10/729768827_27735977282662244_8972751192623902865_n.jpg?_nc_cat=103&amp;ccb=1-7&amp;_nc_ohc=LPjxF1D1iqgQ7kNvwEiIYk6&amp;_nc_oc=Adr4If6gxtSCAo7vGRoCX7AO946EvEiMGCnw2fBCwe84t6P5qwmZw6Ti39q8t1gDMl4&amp;_nc_zt=23&amp;_nc_ht=scontent-sea5-1.xx&amp;edm=AEZPnVgEAAAA&amp;_nc_gid=9D-t4YeDLqc0HaNQXePuFA&amp;_nc_tpa=Q5bMBQFqKPwMgd6_qGgf2ye7CeqOKuDJb1MuzcCDps4jHHC8P0Vb89imdJ_ABA_jFRlTGV4cKbh-orDGBw&amp;stp=c0.5000x0.5000f_dst-emg0_p64x64_q75_tt6&amp;ur=b696e2&amp;_nc_sid=58080a&amp;oh=00_AQCvqXyByoMQyXhzM7lfeVceBhHT5aLc8g3IER88Co8Qrg&amp;oe=6A52E0BE" data-lb-title="For Her - VID 2" data-lb-stats="Spend &euro;47.13 &middot; 10 Website purchases &middot; CPR &euro;4.71"><img src="https://scontent-sea5-1.xx.fbcdn.net/v/t15.5256-10/729768827_27735977282662244_8972751192623902865_n.jpg?_nc_cat=103&amp;ccb=1-7&amp;_nc_ohc=LPjxF1D1iqgQ7kNvwEiIYk6&amp;_nc_oc=Adr4If6gxtSCAo7vGRoCX7AO946EvEiMGCnw2fBCwe84t6P5qwmZw6Ti39q8t1gDMl4&amp;_nc_zt=23&amp;_nc_ht=scontent-sea5-1.xx&amp;edm=AEZPnVgEAAAA&amp;_nc_gid=9D-t4YeDLqc0HaNQXePuFA&amp;_nc_tpa=Q5bMBQFqKPwMgd6_qGgf2ye7CeqOKuDJb1MuzcCDps4jHHC8P0Vb89imdJ_ABA_jFRlTGV4cKbh-orDGBw&amp;stp=c0.5000x0.5000f_dst-emg0_p64x64_q75_tt6&amp;ur=b696e2&amp;_nc_sid=58080a&amp;oh=00_AQCvqXyByoMQyXhzM7lfeVceBhHT5aLc8g3IER88Co8Qrg&amp;oe=6A52E0BE" alt="" loading="lazy" /></div><div><div class="rank-title">For Her - VID 2</div><div class="rank-meta"><span class="tag vid">Video</span><span>Website purchases &middot; Freq 1.72 &middot; CPM &euro;2.06</span></div></div><div class="metric-cell"><div class="metric-big">&euro;47.13</div><div class="metric-lbl">Spend</div></div><div class="metric-cell"><div class="metric-big">22,911</div><div class="metric-lbl">Impr.</div></div><div class="metric-cell"><div class="metric-big">434</div><div class="metric-lbl">Clicks</div></div><div class="metric-cell"><div class="metric-big">1.89%</div><div class="metric-lbl">CTR</div></div><div class="metric-cell"><div class="metric-big">&euro;0.11</div><div class="metric-lbl">CPC</div></div><div class="metric-cell"><div class="metric-big">10</div><div class="metric-lbl">Purchases &middot; &euro;4.71/res</div></div></div><div class="ranking-row"><div class="rank-num">4</div><div class="rank-thumb" data-lb-src="https://scontent-sea5-1.xx.fbcdn.net/v/t15.5256-10/730776139_3581820811967001_8105324168369693619_n.jpg?_nc_cat=108&amp;ccb=1-7&amp;_nc_ohc=LGeJldFGnFYQ7kNvwEVR4fF&amp;_nc_oc=AdoXTSZHSXu5JqUK-nsU02TAfQgQZUeZkbteArvHpHSDs0K0G91nQ2YtaBwknIi6Fug&amp;_nc_zt=23&amp;_nc_ht=scontent-sea5-1.xx&amp;edm=AEZPnVgEAAAA&amp;_nc_gid=9D-t4YeDLqc0HaNQXePuFA&amp;_nc_tpa=Q5bMBQEsDnb6GcXCHG9JfmukoidSdEaT_pcWY-grk3lg5vuHZz0hHp06qpYA6Cp84INSqkrAT4JTMbKM4g&amp;stp=c0.5000x0.5000f_dst-emg0_p64x64_q75_tt6&amp;ur=b696e2&amp;_nc_sid=58080a&amp;oh=00_AQAMXSwJy001BlvNey6tLvwf4reb1BaJICzZ6TxLkJrsfg&amp;oe=6A52E2A9" data-lb-title="General - VID 1" data-lb-stats="Spend &euro;72.00 &middot; 8 Website purchases &middot; CPR &euro;9.00"><img src="https://scontent-sea5-1.xx.fbcdn.net/v/t15.5256-10/730776139_3581820811967001_8105324168369693619_n.jpg?_nc_cat=108&amp;ccb=1-7&amp;_nc_ohc=LGeJldFGnFYQ7kNvwEVR4fF&amp;_nc_oc=AdoXTSZHSXu5JqUK-nsU02TAfQgQZUeZkbteArvHpHSDs0K0G91nQ2YtaBwknIi6Fug&amp;_nc_zt=23&amp;_nc_ht=scontent-sea5-1.xx&amp;edm=AEZPnVgEAAAA&amp;_nc_gid=9D-t4YeDLqc0HaNQXePuFA&amp;_nc_tpa=Q5bMBQEsDnb6GcXCHG9JfmukoidSdEaT_pcWY-grk3lg5vuHZz0hHp06qpYA6Cp84INSqkrAT4JTMbKM4g&amp;stp=c0.5000x0.5000f_dst-emg0_p64x64_q75_tt6&amp;ur=b696e2&amp;_nc_sid=58080a&amp;oh=00_AQAMXSwJy001BlvNey6tLvwf4reb1BaJICzZ6TxLkJrsfg&amp;oe=6A52E2A9" alt="" loading="lazy" /></div><div><div class="rank-title">General - VID 1</div><div class="rank-meta"><span class="tag vid">Video</span><span>Website purchases &middot; Freq 2.34 &middot; CPM &euro;1.00</span></div></div><div class="metric-cell"><div class="metric-big">&euro;72.00</div><div class="metric-lbl">Spend</div></div><div class="metric-cell"><div class="metric-big">71,918</div><div class="metric-lbl">Impr.</div></div><div class="metric-cell"><div class="metric-big">376</div><div class="metric-lbl">Clicks</div></div><div class="metric-cell"><div class="metric-big">0.52%</div><div class="metric-lbl">CTR</div></div><div class="metric-cell"><div class="metric-big">&euro;0.19</div><div class="metric-lbl">CPC</div></div><div class="metric-cell"><div class="metric-big">8</div><div class="metric-lbl">Purchases &middot; &euro;9.00/res</div></div></div><div class="ranking-row"><div class="rank-num">5</div><div class="rank-thumb" data-lb-src="https://scontent-sea5-1.xx.fbcdn.net/v/t45.1600-4/660717776_2427925884297813_2840627844238299239_n.png?_nc_cat=111&amp;ccb=1-7&amp;_nc_ohc=v10G84nP5SgQ7kNvwEA56cQ&amp;_nc_oc=Adp3A9kxuWiyj31dV_DCTQsdfW7S_JXgsdlJijMA1fjT1d3aa9OIRQ8UlX2QNvPeb0U&amp;_nc_zt=1&amp;_nc_ht=scontent-sea5-1.xx&amp;edm=AEZPnVgEAAAA&amp;_nc_gid=9D-t4YeDLqc0HaNQXePuFA&amp;_nc_tpa=Q5bMBQFds9tUWtfZMsRh5RDbC9f8tQtJI28DwOvNyMdoWTykN5GG15s7JYLmD3btNuLkB-4280_IERRXrg&amp;stp=c0.5000x0.5000f_dst-emg0_p64x64_q75_tt6&amp;ur=52f3c4&amp;_nc_sid=58080a&amp;oh=00_AQDTkxGn4BAzNvTyVI_IwSEA4s8_tQtgxAdcMXlM8W_-GQ&amp;oe=6A52D623" data-lb-title="IMG 3" data-lb-stats="Spend &euro;6.47 &middot; 4 Website leads &middot; CPR &euro;1.62"><img src="https://scontent-sea5-1.xx.fbcdn.net/v/t45.1600-4/660717776_2427925884297813_2840627844238299239_n.png?_nc_cat=111&amp;ccb=1-7&amp;_nc_ohc=v10G84nP5SgQ7kNvwEA56cQ&amp;_nc_oc=Adp3A9kxuWiyj31dV_DCTQsdfW7S_JXgsdlJijMA1fjT1d3aa9OIRQ8UlX2QNvPeb0U&amp;_nc_zt=1&amp;_nc_ht=scontent-sea5-1.xx&amp;edm=AEZPnVgEAAAA&amp;_nc_gid=9D-t4YeDLqc0HaNQXePuFA&amp;_nc_tpa=Q5bMBQFds9tUWtfZMsRh5RDbC9f8tQtJI28DwOvNyMdoWTykN5GG15s7JYLmD3btNuLkB-4280_IERRXrg&amp;stp=c0.5000x0.5000f_dst-emg0_p64x64_q75_tt6&amp;ur=52f3c4&amp;_nc_sid=58080a&amp;oh=00_AQDTkxGn4BAzNvTyVI_IwSEA4s8_tQtgxAdcMXlM8W_-GQ&amp;oe=6A52D623" alt="" loading="lazy" /></div><div><div class="rank-title">IMG 3</div><div class="rank-meta"><span class="tag img">Image</span><span>Website leads &middot; Freq 1.53 &middot; CPM &euro;1.35</span></div></div><div class="metric-cell"><div class="metric-big">&euro;6.47</div><div class="metric-lbl">Spend</div></div><div class="metric-cell"><div class="metric-big">4,805</div><div class="metric-lbl">Impr.</div></div><div class="metric-cell"><div class="metric-big">74</div><div class="metric-lbl">Clicks</div></div><div class="metric-cell"><div class="metric-big">1.54%</div><div class="metric-lbl">CTR</div></div><div class="metric-cell"><div class="metric-big">&euro;0.09</div><div class="metric-lbl">CPC</div></div><div class="metric-cell"><div class="metric-big">4</div><div class="metric-lbl">Leads &middot; &euro;1.62/res</div></div></div></div>
