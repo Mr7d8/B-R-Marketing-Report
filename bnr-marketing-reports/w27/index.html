@@ -264,7 +264,7 @@ footer a { color: var(--ink); text-decoration: none; font-weight: 500; }
    future weeks: update the numbers inside #print-view, don't try to make
    the screen sections themselves print well. */
 @media print {
-  @page { margin: 1.2cm; size: A4; }
+  @page { margin: 1.8cm; size: A4; }
   body { background: white; }
   .masthead, main, footer { display: none !important; }
   #print-view { display: block !important; }
@@ -300,8 +300,16 @@ footer a { color: var(--ink); text-decoration: none; font-weight: 500; }
   .pv-bar-row .fill { height: 100%; background: var(--gradient-h); border-radius: 4px; }
   .pv-bar-row .val { width: 52px; flex-shrink: 0; font-weight: 700; font-size: 10px; }
 
-  .pv-catmix { font-size: 10px; color: var(--ink-soft); line-height: 1.7; }
-  .pv-catmix strong { color: var(--ink); }
+  /* Pure CSS conic-gradient pies, deliberately not Chart.js: a background
+     image renders identically in print and on screen, no canvas, no
+     resize dependency, nothing that can go wrong between the two contexts. */
+  .pv-pie-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .pv-pie-card { text-align: center; }
+  .pv-pie-card .t { font-size: 10px; font-weight: 700; margin-bottom: 10px; }
+  .pv-pie { width: 108px; height: 108px; border-radius: 50%; margin: 0 auto 10px; }
+  .pv-pie-legend { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 8px; font-size: 7.5px; color: var(--ink-soft); }
+  .pv-pie-legend span { display: inline-flex; align-items: center; gap: 3px; white-space: nowrap; }
+  .pv-pie-legend i { display: inline-block; width: 6px; height: 6px; border-radius: 2px; flex-shrink: 0; }
 
   .pv-two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 
@@ -1051,8 +1059,34 @@ document.addEventListener('keydown', function(e) { if (e.key === 'Escape') { clo
       <div class="pv-bar-row"><div class="name">Sao Eleven</div><div class="track"><div class="fill" style="width:5.3%"></div></div><div class="val">1,700</div></div>
     </div>
 
-    <div class="pv-section-label">Category Mix (GMV)</div>
-    <div class="pv-catmix"><strong>Beaut&eacute;</strong> 51% &middot; <strong>Fashion femme</strong> 19.2% &middot; <strong>Tech</strong> 15.8% &middot; <strong>Homme</strong> 4.8% &middot; <strong>Maison</strong> 3% &middot; <strong>Sport</strong> 2.6%</div>
+    <div class="pv-section-label">Category Mix</div>
+    <div class="pv-pie-row">
+      <div class="pv-pie-card">
+        <div class="t">GMV par Cat&eacute;gorie</div>
+        <div class="pv-pie" style="background: conic-gradient(#00c4cc 0% 52.9%, #00a3ff 52.9% 72.8%, #5b5fff 72.8% 89.2%, #7b61ff 89.2% 94.2%, #8b3dff 94.2% 97.3%, #00d9a3 97.3% 100%);"></div>
+        <div class="pv-pie-legend">
+          <span><i style="background:#00c4cc"></i>Beaut&eacute; 51%</span>
+          <span><i style="background:#00a3ff"></i>Fashion femme 19.2%</span>
+          <span><i style="background:#5b5fff"></i>Tech 15.8%</span>
+          <span><i style="background:#7b61ff"></i>Homme 4.8%</span>
+          <span><i style="background:#8b3dff"></i>Maison 3%</span>
+          <span><i style="background:#00d9a3"></i>Sport 2.6%</span>
+        </div>
+      </div>
+      <div class="pv-pie-card">
+        <div class="t">SKU par Cat&eacute;gorie</div>
+        <div class="pv-pie" style="background: conic-gradient(#00c4cc 0% 31.2%, #00a3ff 31.2% 50.1%, #5b5fff 50.1% 65.5%, #7b61ff 65.5% 72%, #8b3dff 72% 76.8%, #00d9a3 76.8% 78.8%, #ffb020 78.8% 100%);"></div>
+        <div class="pv-pie-legend">
+          <span><i style="background:#00c4cc"></i>Beaut&eacute; 31.2%</span>
+          <span><i style="background:#00a3ff"></i>Fashion 18.9%</span>
+          <span><i style="background:#5b5fff"></i>Maison 15.4%</span>
+          <span><i style="background:#7b61ff"></i>Jardinage 6.5%</span>
+          <span><i style="background:#8b3dff"></i>Tech 4.8%</span>
+          <span><i style="background:#00d9a3"></i>Culture &amp; Loisirs 2%</span>
+          <span><i style="background:#ffb020"></i>Autre 21.2%</span>
+        </div>
+      </div>
+    </div>
 
     <div class="pv-section-label">Sales Team Notes</div>
     <div class="pv-two-col">

@@ -81,20 +81,33 @@ resize, no page-break math, because every `.pv-page` is curated to fit on one pa
 
 **Fixed to 3 pages**, each a `.pv-page` inside `#print-view`:
 1. Cover + Business & Revenue: KPI grid, top sellers as CSS bars (`.pv-bar-row`, width is the
-   only per-bar value that changes), category mix as an inline text line, sales team notes.
+   only per-bar value that changes), category mix as two CSS `conic-gradient` pies (`.pv-pie`,
+   see below), sales team notes.
 2. App Growth + Top Ads: KPI grid, the conversion funnel (the same hand-built SVG used on
    screen, copy it as-is since it's pure vector and prints reliably with no JS involved), Top 5
    Ads as a plain `<table class="pv-table">` (no thumbnails, no bar charts).
 3. Overview & Operations: Weekly Highlights as a 2-column bullet list (`.pv-hl-list`), Plan of
    Action, Blocking Points.
 
+**Pie charts use CSS `conic-gradient`, not Chart.js.** A `background: conic-gradient(...)` on a
+round `div` (`.pv-pie`) renders identically in print and on screen, no canvas, no resize
+dependency, nothing that can go wrong between the two contexts, which is the entire reason this
+print rewrite exists. To build one: cumulative-sum the category values, divide each cumulative
+point by the *sum of all values* (not literally 100, category breakdowns rarely round to exactly
+100) to get gradient-stop percentages, e.g. for values `[51, 19.2, 15.8]` summing to 96.4, stop 1
+ends at `51/96.4*100 = 52.9%`. Pair each slice with a legend chip (`.pv-pie-legend`) showing the
+*raw* value (51%, not the renormalized 52.9%) since that's the number sales actually reported.
+Reuse the same 7-color palette as the screen charts (teal `#00c4cc`, blue `#00a3ff`, indigo
+`#5b5fff`, violet `#7b61ff`, purple `#8b3dff`, mint `#00d9a3`, amber `#ffb020`) in category order
+so the print and screen versions of the same chart use matching colors per category.
+
 **Updating for a new week:** edit the numbers directly inside `#print-view` (near the end of the
 file, before `</body>`) using the small `.pv-*` component classes already defined in the
-`@media print` block (`.pv-kpi-grid`/`.pv-kpi`, `.pv-bar-row`, `.pv-table`, `.pv-note-box`,
-`.pv-plan-grid`, `.pv-hl-list`). Don't try to make the screen sections themselves print well,
-that's the trap that caused all the churn above. If a week's content doesn't fit 3 pages, cut
-prose rather than shrinking fonts/padding to the point of illegibility, print pagination has no
-slack for guessing.
+`@media print` block (`.pv-kpi-grid`/`.pv-kpi`, `.pv-bar-row`, `.pv-pie`, `.pv-table`,
+`.pv-note-box`, `.pv-plan-grid`, `.pv-hl-list`). Don't try to make the screen sections themselves
+print well, that's the trap that caused all the churn above. If a week's content doesn't fit 3
+pages, cut prose rather than shrinking fonts/padding to the point of illegibility, print
+pagination has no slack for guessing.
 
 **Verify by rendering the actual PDF** (Playwright `page.pdf()` plus `pypdfium2` to render pages
 to images), not by eyeballing the screen view or trusting that reserved container space matches
