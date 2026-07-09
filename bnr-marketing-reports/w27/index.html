@@ -189,6 +189,9 @@ h3.display-m { font-size: clamp(22px, 2.6vw, 32px); line-height: 1.1; letter-spa
 .insight-title { font-size: 20px; font-weight: 600; line-height: 1.2; margin-bottom: 12px; letter-spacing: -.02em; }
 .insight-body { font-size: 14px; color: var(--ink-soft); line-height: 1.6; }
 .insight-body strong { color: var(--ink); font-weight: 600; }
+.insight-body li { position: relative; padding-left: 16px; }
+.insight-body li::before { content: ""; position: absolute; left: 0; top: 8px; width: 5px; height: 5px; border-radius: 50%; background: var(--warn); }
+.insight.good .insight-body li::before { background: var(--good); }
 
 /* KEY FINDING BANNER */
 .key-finding { background: var(--gradient); color: white; padding: 32px 40px; border-radius: 20px; margin: 32px 0; position: relative; overflow: hidden; box-shadow: var(--shadow-pop); }
@@ -431,6 +434,57 @@ footer a { color: var(--ink); text-decoration: none; font-weight: 500; }
             <div class="card-title">SKU par Catégorie</div>
             <div class="br-chart-sm"><canvas id="chart-sku-cat"></canvas></div>
           </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="insight-grid">
+      <div class="insight good">
+        <div class="insight-kicker">Les bonnes nouvelles</div>
+        <div class="insight-title">Signatures &amp; pipeline commercial</div>
+        <div class="insight-body">
+          <div style="margin-bottom: 12px;">
+            <strong>Signatures :</strong>
+            <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px;">
+              <span class="cvr-chip hot">chamàty</span>
+              <span class="cvr-chip hot">keira</span>
+              <span class="cvr-chip hot">MAROC VITAMINES</span>
+              <span class="cvr-chip hot">veranoclothing</span>
+              <span class="cvr-chip hot">superfood</span>
+            </div>
+          </div>
+          <div style="margin-bottom: 16px;">
+            <strong>Intéressés :</strong>
+            <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px;">
+              <span class="tag" style="background: var(--paper-3); color: var(--ink-soft);">Cookmaster</span>
+              <span class="tag" style="background: var(--paper-3); color: var(--ink-soft);">Anfa retail</span>
+              <span class="tag" style="background: var(--paper-3); color: var(--ink-soft);">Petit Bateau</span>
+              <span class="tag" style="background: var(--paper-3); color: var(--ink-soft);">MB STUDIO Z</span>
+              <span class="tag" style="background: var(--paper-3); color: var(--ink-soft);">Planet sport</span>
+              <span class="tag" style="background: var(--paper-3); color: var(--ink-soft);">Moxe</span>
+              <span class="tag" style="background: var(--paper-3); color: var(--ink-soft);">Wabi sabi</span>
+            </div>
+          </div>
+          <p>Validation de Ma Franchise, formation effectuée, intégration de ETAM en attente validation Cedric avec new contrat.</p>
+          <p style="margin-top: 8px;">Création des SIS L&rsquo;or&eacute;al.</p>
+          <p style="margin-top: 8px;"><strong>Sujet chaud :</strong> pr&eacute;paration du P&amp;L Terranova + offre commerciale kak.</p>
+          <p style="margin-top: 8px;"><strong>Atteinte objectif SKU trimestre :</strong> 47.</p>
+          <p style="margin-top: 8px;">Module vente flash fix&eacute;.</p>
+        </div>
+      </div>
+      <div class="insight warn">
+        <div class="insight-kicker">A Fixer</div>
+        <div class="insight-title">Points en attente</div>
+        <div class="insight-body">
+          <ul style="list-style: none; display: flex; flex-direction: column; gap: 10px;">
+            <li>En attente feuille de recrutement sign&eacute;es de Chaima et Khaoula.</li>
+            <li>En attente des objectifs AKSAL GROUPE et aussi la grille pour les bonus annuel.</li>
+            <li>UX module bunddle &agrave; d&eacute;ployer pour tiers one.</li>
+            <li>Parcours kenzup &agrave; fixer.</li>
+            <li>Incubation program avec CRC en attente carte sim (bon de commande &agrave; faire signer).</li>
+            <li>Profile particulier toujours pas valid&eacute; par AKWA group, d&eacute;sactivation des stores.</li>
+            <li>Outil pour les &eacute;quipes en attente (onedrive, process NDF, moyens generaux....).</li>
+          </ul>
         </div>
       </div>
     </div>
