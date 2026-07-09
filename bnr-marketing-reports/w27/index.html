@@ -338,14 +338,25 @@ footer a { color: var(--ink); text-decoration: none; font-weight: 500; }
   .plan-grid .br-card { padding: 12px 14px; }
   .ops-list-sm li { font-size: 10px; }
 
-  /* Generic .card (chart cards, etc): compact so two side-by-side charts
-     actually fit on one page instead of each taking a page to itself. */
+  /* Generic .card (chart cards, etc): compact so both charts fit on one
+     page without wasted space. */
   .card { padding: 14px 16px; }
   .card-title { font-size: 15px; margin-bottom: 2px; }
   .card-sub { font-size: 11px; margin-bottom: 10px; }
   .chart-wrap { height: 150px; }
   .chart-tall { height: 190px; }
-  .two-col-eq { gap: 14px; }
+
+  /* .two-col-eq's two cards (Clicks by ad / CTR by ad) are meant to sit
+     side by side via flex:1 1 45%, but page-break-inside:avoid on .card
+     means Chrome is free to put each one on a different page if the pair
+     doesn't fit the remaining space together. When that happens, the 45%
+     flex-basis becomes meaningless (45% of what, when the card is alone
+     on a page?) and the card's box stops tracking its own chart content,
+     leaving a tall card with a small chart adrift inside it. Stack them
+     as full-width blocks instead so each card's height always matches its
+     own content, on whichever page it lands on. */
+  .two-col-eq { flex-direction: column; gap: 14px; }
+  .two-col-eq > * { flex: 1 1 auto; width: 100%; }
 
   /* Ad ranking table: full desktop column widths (668px of fixed columns)
      overflow the print page width, and the default padding/thumb size
@@ -892,12 +903,33 @@ function safeChart(id, config) {
 // re-measure on its own when the print stylesheet changes that container's
 // width, so charts render at their on-screen size and overflow or clip in
 // the exported PDF. Force a resize right before the browser prints.
+//
+// beforeprint alone isn't reliable in every Chrome version: window.print()
+// can open a blocking print dialog before the print stylesheet has finished
+// reflowing, so a resize() called synchronously in beforeprint sometimes
+// still reads the old (screen-size) container dimensions. Cover this from
+// multiple angles: matchMedia('print') fires exactly when the print media
+// state flips (a different signal than the print dialog lifecycle), and a
+// couple of delayed re-resizes catch cases where layout settles a frame or
+// two after either event fires. Calling resize() extra times is harmless.
+function resizeAllCharts() {
+  allCharts.forEach(function(c) { if (c) c.resize(); });
+}
 window.addEventListener('beforeprint', function() {
-  allCharts.forEach(function(c) { if (c) c.resize(); });
+  resizeAllCharts();
+  setTimeout(resizeAllCharts, 50);
+  setTimeout(resizeAllCharts, 200);
 });
-window.addEventListener('afterprint', function() {
-  allCharts.forEach(function(c) { if (c) c.resize(); });
-});
+window.addEventListener('afterprint', resizeAllCharts);
+if (window.matchMedia) {
+  var printMql = window.matchMedia('print');
+  var onPrintChange = function(e) {
+    resizeAllCharts();
+    if (e.matches) { setTimeout(resizeAllCharts, 50); }
+  };
+  if (printMql.addEventListener) { printMql.addEventListener('change', onPrintChange); }
+  else if (printMql.addListener) { printMql.addListener(onPrintChange); }
+}
 
 function linGrad(ctx, stops, vertical) {
   const area = ctx.chart.chartArea || { top: 0, bottom: 300, left: 0, right: 400 };
