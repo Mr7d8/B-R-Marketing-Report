@@ -238,7 +238,8 @@ footer a { color: var(--ink); text-decoration: none; font-weight: 500; }
   .display-xl { font-size: 44px; }
   h2.display-l { font-size: 32px; }
   .kpi-strip { grid-template-columns: repeat(2, 1fr); }
-  .two-col, .two-col-eq, .three-col, .insight-grid, .insight-grid.cols-3, .plan-grid, .kpi-framework { grid-template-columns: 1fr; }
+  .two-col, .two-col-eq, .three-col, .insight-grid, .insight-grid.cols-3, .plan-grid, .funnel-split, .kpi-framework { grid-template-columns: 1fr; }
+  .funnel-highlights { border-left: none; padding-left: 0; border-top: 1px solid var(--line); padding-top: 20px; margin-top: 4px; }
   .cover-meta { grid-template-columns: 1fr 1fr; gap: 24px; }
   .cover-meta-item, .cover-meta-item + .cover-meta-item { padding: 16px 0; border-left: none; border-top: 1px solid var(--line); }
   .ranking-row { grid-template-columns: 36px 64px 1fr; gap: 12px; padding: 14px; }
@@ -290,6 +291,10 @@ footer a { color: var(--ink); text-decoration: none; font-weight: 500; }
 .funnel-card .card-title-lg { font-size: 19px; font-weight: 700; color: var(--ink); letter-spacing: -.01em; }
 .funnel-card .card-sub-sm { font-size: 13px; color: var(--ink-mute); margin-top: 2px; margin-bottom: 4px; }
 .funnel-svg-wrap { width: 100%; }
+.funnel-split { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-top: 8px; align-items: start; }
+.funnel-highlights { border-left: 1px solid var(--line); padding-left: 28px; padding-top: 4px; }
+.funnel-highlights .card-title { font-size: 15px; margin-bottom: 2px; }
+.funnel-highlights .card-sub { margin-bottom: 16px; }
 
 /* BUSINESS & REVENUE */
 .br-row1 { display: grid; grid-template-columns: 1fr 2fr; gap: 16px; margin-top: 28px; }
@@ -539,8 +544,9 @@ footer a { color: var(--ink); text-decoration: none; font-weight: 500; }
     <div class="funnel-card">
       <div class="card-title-lg">Conversion Funnel Overview</div>
       <div class="card-sub-sm">Last 7 days</div>
-      
-<svg class="funnel-svg-wrap" viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg">
+
+      <div class="funnel-split">
+        <svg class="funnel-svg-wrap" viewBox="0 0 460 420" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <linearGradient id="funnelGrad" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%" stop-color="#00c4cc"/>
@@ -549,12 +555,28 @@ footer a { color: var(--ink); text-decoration: none; font-weight: 500; }
       <stop offset="100%" stop-color="#7b61ff"/>
     </linearGradient>
   </defs>
-  <line x1="150" y1="40" x2="550" y2="40" stroke="#e3e8f0" stroke-width="1"/><line x1="150" y1="122" x2="550" y2="122" stroke="#e3e8f0" stroke-width="1"/><line x1="150" y1="204" x2="550" y2="204" stroke="#e3e8f0" stroke-width="1"/><line x1="150" y1="286" x2="550" y2="286" stroke="#e3e8f0" stroke-width="1"/><line x1="150" y1="368" x2="550" y2="368" stroke="#e3e8f0" stroke-width="1"/>
-  <path d="M 220.0 40 L 279.0 122 L 320.6 204 L 333.9 286 L 342.9 368 L 357.1 368 L 366.1 286 L 379.4 204 L 421.0 122 L 480.0 40 Z" fill="url(#funnelGrad)"/>
-  <line x1="279.0" y1="122" x2="421.0" y2="122" stroke="#ffffff" stroke-width="2" opacity=".55"/><line x1="320.6" y1="204" x2="379.4" y2="204" stroke="#ffffff" stroke-width="2" opacity=".55"/><line x1="333.9" y1="286" x2="366.1" y2="286" stroke="#ffffff" stroke-width="2" opacity=".55"/>
-  <text x="40" y="45" font-family="Bricolage Grotesque, sans-serif" font-size="15" font-weight="700" fill="#0a1226" dominant-baseline="middle">INSTALLS</text><text x="660" y="45" font-family="Bricolage Grotesque, sans-serif" font-size="16" font-weight="800" fill="#0a1226" text-anchor="end" dominant-baseline="middle">42662</text><text x="40" y="127" font-family="Bricolage Grotesque, sans-serif" font-size="15" font-weight="700" fill="#0a1226" dominant-baseline="middle">PRDCT CLICKED</text><text x="660" y="127" font-family="Bricolage Grotesque, sans-serif" font-size="16" font-weight="800" fill="#0a1226" text-anchor="end" dominant-baseline="middle">12720</text><text x="40" y="209" font-family="Bricolage Grotesque, sans-serif" font-size="15" font-weight="700" fill="#0a1226" dominant-baseline="middle">ADD TO CART</text><text x="660" y="209" font-family="Bricolage Grotesque, sans-serif" font-size="16" font-weight="800" fill="#0a1226" text-anchor="end" dominant-baseline="middle">2180</text><text x="40" y="291" font-family="Bricolage Grotesque, sans-serif" font-size="15" font-weight="700" fill="#0a1226" dominant-baseline="middle">SIGN-UP</text><text x="660" y="291" font-family="Bricolage Grotesque, sans-serif" font-size="16" font-weight="800" fill="#0a1226" text-anchor="end" dominant-baseline="middle">658</text><text x="40" y="373" font-family="Bricolage Grotesque, sans-serif" font-size="15" font-weight="700" fill="#0a1226" dominant-baseline="middle">PURCHASE</text><text x="660" y="373" font-family="Bricolage Grotesque, sans-serif" font-size="16" font-weight="800" fill="#0a1226" text-anchor="end" dominant-baseline="middle">127</text>
+  <line x1="90" y1="40" x2="370" y2="40" stroke="#e3e8f0" stroke-width="1"/><line x1="90" y1="122" x2="370" y2="122" stroke="#e3e8f0" stroke-width="1"/><line x1="90" y1="204" x2="370" y2="204" stroke="#e3e8f0" stroke-width="1"/><line x1="90" y1="286" x2="370" y2="286" stroke="#e3e8f0" stroke-width="1"/><line x1="90" y1="368" x2="370" y2="368" stroke="#e3e8f0" stroke-width="1"/>
+  <path d="M 100.0 40 L 159.0 122 L 200.6 204 L 213.9 286 L 222.9 368 L 237.1 368 L 246.1 286 L 259.4 204 L 301.0 122 L 360.0 40 Z" fill="url(#funnelGrad)"/>
+  <line x1="159.0" y1="122" x2="301.0" y2="122" stroke="#ffffff" stroke-width="2" opacity=".55"/><line x1="200.6" y1="204" x2="259.4" y2="204" stroke="#ffffff" stroke-width="2" opacity=".55"/><line x1="213.9" y1="286" x2="246.1" y2="286" stroke="#ffffff" stroke-width="2" opacity=".55"/>
+  <text x="10" y="36" font-family="Bricolage Grotesque, sans-serif" font-size="14" font-weight="700" fill="#0a1226" dominant-baseline="middle">INSTALLS</text><text x="450" y="36" font-family="Bricolage Grotesque, sans-serif" font-size="16" font-weight="800" fill="#0a1226" text-anchor="end" dominant-baseline="middle">42,662</text>
+  <text x="10" y="118" font-family="Bricolage Grotesque, sans-serif" font-size="14" font-weight="700" fill="#0a1226" dominant-baseline="middle">PRDCT CLICKED</text><text x="450" y="118" font-family="Bricolage Grotesque, sans-serif" font-size="16" font-weight="800" fill="#0a1226" text-anchor="end" dominant-baseline="middle">12,720</text><text x="450" y="133" font-family="Bricolage Grotesque, sans-serif" font-size="10" font-weight="700" text-anchor="end" style="fill:var(--good)">29.8% of installs</text>
+  <text x="10" y="200" font-family="Bricolage Grotesque, sans-serif" font-size="14" font-weight="700" fill="#0a1226" dominant-baseline="middle">ADD TO CART</text><text x="450" y="200" font-family="Bricolage Grotesque, sans-serif" font-size="16" font-weight="800" fill="#0a1226" text-anchor="end" dominant-baseline="middle">2,180</text><text x="450" y="215" font-family="Bricolage Grotesque, sans-serif" font-size="10" font-weight="700" text-anchor="end" style="fill:var(--warn)">17.1% of clicks</text>
+  <text x="10" y="282" font-family="Bricolage Grotesque, sans-serif" font-size="14" font-weight="700" fill="#0a1226" dominant-baseline="middle">SIGN-UP</text><text x="450" y="282" font-family="Bricolage Grotesque, sans-serif" font-size="16" font-weight="800" fill="#0a1226" text-anchor="end" dominant-baseline="middle">658</text><text x="450" y="297" font-family="Bricolage Grotesque, sans-serif" font-size="10" font-weight="700" text-anchor="end" style="fill:var(--good)">30.2% of carts</text>
+  <text x="10" y="364" font-family="Bricolage Grotesque, sans-serif" font-size="14" font-weight="700" fill="#0a1226" dominant-baseline="middle">PURCHASE</text><text x="450" y="364" font-family="Bricolage Grotesque, sans-serif" font-size="16" font-weight="800" fill="#0a1226" text-anchor="end" dominant-baseline="middle">127</text><text x="450" y="379" font-family="Bricolage Grotesque, sans-serif" font-size="10" font-weight="700" text-anchor="end" style="fill:var(--warn)">19.3% of sign-ups</text>
 </svg>
 
+        <div class="funnel-highlights">
+          <div class="card-title">Weekly Highlights</div>
+          <div class="card-sub">Performance Marketing &middot; Last 7 days</div>
+          <ul class="ops-list">
+            <li><strong>Paid spend:</strong> &euro;57,614.94 invested since 04/02/2026 drove 42,662 installs this week.</li>
+            <li><strong>Retention:</strong> 50.97K weekly active users, holding at 13.16% retention/week.</li>
+            <li><strong>Funnel:</strong> biggest drop-off is Product Clicked &rarr; Add to Cart (17.1%); Sign-up &rarr; Purchase recovers to 19.3%.</li>
+            <li><strong>Top ad:</strong> &ldquo;IMG 2&rdquo; delivered 40 website leads at &euro;1.61 CPR, the strongest result of the top 5.</li>
+            <li><strong>Video creatives:</strong> &ldquo;For Her &ndash; VID 2&rdquo; and &ldquo;General &ndash; VID 1&rdquo; drove the bulk of website purchases, at &euro;4.71&ndash;&euro;9.00 CPR.</li>
+          </ul>
+        </div>
+      </div>
     </div>
   </div>
 </section>
