@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Wasal &middot; W27 B&amp;R + Marketing Report</title>
+<link rel="icon" type="image/png" href="/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&display=swap" rel="stylesheet">
@@ -341,13 +342,14 @@ footer a { color: var(--ink); text-decoration: none; font-weight: 500; }
   .card { padding: 14px 16px; }
   .card-title { font-size: 15px; margin-bottom: 2px; }
   .card-sub { font-size: 11px; margin-bottom: 10px; }
-  /* 220px, not smaller: this chart is 5 horizontal bars plus an axis, and
-     the earlier 150px compressed all 5 into overlapping bars and colliding
-     value labels. Cards stack full-width for print now (see .two-col-eq
-     below), so there's no side-by-side width constraint forcing this short
-     anymore, there's room to keep it legible. */
-  .chart-wrap { height: 220px; }
-  .chart-tall { height: 260px; }
+  /* No print-specific shrink here: 150px, then 220px, both still
+     compressed the 5-category horizontal bar charts into overlapping bars
+     with colliding value labels (confirmed from the actual exported PDF
+     both times). Stop guessing at a smaller number and just keep the
+     original desktop height (320px base .chart-wrap, 420px .chart-tall) in
+     print too. Cards stack full-width per page now (see .two-col-eq
+     below), so there's no side-by-side width constraint pushing for a
+     shorter chart, and legibility matters more than saving a page. */
 
   /* .two-col-eq's two cards (Clicks by ad / CTR by ad) are meant to sit
      side by side via flex:1 1 45%, but page-break-inside:avoid on .card

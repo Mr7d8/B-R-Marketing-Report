@@ -19,7 +19,11 @@ separate report family, separate repo, separate deploy.
 2. Copy the incoming `wasal_week[NN]_bnr_marketing_report.html` into that folder as `index.html`.
 3. Add a new card to `bnr-marketing-reports/index.html` at the top of `.reports-grid`, mark it
    `latest`, and demote the previous latest card to a plain card.
-4. Commit and push to `main` (this repo has no PR workflow by default, push directly unless told
+4. Add the favicon link to the new week's `<head>`: `<link rel="icon" type="image/png"
+   href="/favicon.png">`, right after `<title>`. The favicon itself lives once at
+   `bnr-marketing-reports/favicon.png` (site root via `vercel.json`'s rewrites), no need to copy
+   it per week, just link to it.
+5. Commit and push to `main` (this repo has no PR workflow by default, push directly unless told
    otherwise). Vercel redeploys automatically.
 
 ## Report page structure (per week's index.html)
@@ -82,7 +86,25 @@ its on-screen pixel size, so charts overflow their card or clip axis labels in t
 Fix: every chart created via `safeChart()` is pushed into a global `allCharts` array, and
 `beforeprint`/`afterprint` listeners call `.resize()` on all of them. Keep this pattern (the
 `allCharts` array and both listeners) in the script block of every future week's report, and add
-any new chart creation through `safeChart()` so it gets registered automatically.
+any new chart creation through `safeChart()` so it gets registered automatically. Even with
+resize() firing correctly, `beforeprint` alone isn't reliable in every Chrome version (the print
+dialog can open before the print stylesheet finishes reflowing, so resize() reads stale
+dimensions), so also listen on `matchMedia('print').addEventListener('change', ...)` and fire a
+couple of delayed re-resizes as a safety net. All of that is already wired up, keep it if you
+copy this template forward.
+
+**Don't shrink `.chart-wrap`/`.chart-tall` for print on multi-category charts.** Tried 150px,
+then 220px, for the 5-category horizontal bar charts (Clicks by ad / CTR by ad). Both still
+compressed the 5 bars into overlapping bars with colliding value labels, confirmed each time by
+looking at the actual exported chart, not just the reserved container size (the space can look
+fine in a screenshot of the empty card while the chart drawn inside it is still cramped). Chart.js
+needs meaningfully more vertical room per horizontal-bar category than a quick per-bar estimate
+suggests. Current fix: don't override `.chart-wrap`/`.chart-tall` for print at all, just keep the
+base desktop height (320px / 420px). These cards stack full-width per page for print now (see
+below), so there's no side-by-side width pressure pushing for a shorter chart, and a legible chart
+on its own page beats a compact, unreadable one. If a future week's report needs a print-specific
+chart height again, verify it by checking what the chart actually looks like at that height (a
+real screenshot or exported PDF), not by estimating pixels-per-bar.
 
 **The ad ranking table's desktop column widths overflow the print page.** `.ads-ranking
 .ranking-row`'s fixed-pixel columns add up to ~668px before the flexible "Ad" column gets any
