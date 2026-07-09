@@ -1,4 +1,4 @@
-# WBusinessMarketingReport (B&R + Marketing Report) — Claude Memory
+# WBusinessMarketingReport (B&R + Marketing Report), Claude Memory
 
 Weekly "B&R + Marketing Report" (Business & Revenue + App Growth + Meta Ads) for Wasal.
 Sibling of the WSocialReport repo (same design system, same Vercel-on-push pattern), but a
@@ -19,31 +19,32 @@ separate report family, separate repo, separate deploy.
 2. Copy the incoming `wasal_week[NN]_bnr_marketing_report.html` into that folder as `index.html`.
 3. Add a new card to `bnr-marketing-reports/index.html` at the top of `.reports-grid`, mark it
    `latest`, and demote the previous latest card to a plain card.
-4. Commit and push to `main` (this repo has no PR workflow by default — push directly unless
-   told otherwise). Vercel redeploys automatically.
+4. Commit and push to `main` (this repo has no PR workflow by default, push directly unless told
+   otherwise). Vercel redeploys automatically.
 
 ## Report page structure (per week's index.html)
 
 Fixed page order, each `<section class="page-section pb" id="...">`:
 1. Summary / cover (`#p-summary`)
-2. Business & Revenue (`#p-br`) — GMV, SKU/brand/seller growth, sales goals, top sellers, category
+2. Business & Revenue (`#p-br`): GMV, SKU/brand/seller growth, sales goals, top sellers, category
    pies. Sales-team qualitative notes ("Les bonnes nouvelles" / "A Fixer") go here as an
    `.insight-grid` at the bottom.
-3. App Growth (`#p-growth`) — AppsFlyer KPI tiles (`.growth-cards.kpi-row`, flat single-metric
-   cards) + Conversion Funnel Overview (`.funnel-split`: funnel SVG left, "Weekly Highlights ·
+3. App Growth (`#p-growth`): AppsFlyer KPI tiles (`.growth-cards.kpi-row`, flat single-metric
+   cards) plus Conversion Funnel Overview (`.funnel-split`: funnel SVG left, "Weekly Highlights ·
    Performance Marketing" list right).
-4. Overview / Outside Digital Performance (`#p-overview`) — Weekly Highlights, Plan of Action
+4. Overview / Outside Digital Performance (`#p-overview`): Weekly Highlights, Plan of Action
    (`.plan-grid`), Blocking Points (`.insight-grid.cols-3`, red accent).
-5. Top 5 Ads (`#p-topads`) — Meta Ads ranking table + clicks/CTR charts.
+5. Top 5 Ads (`#p-topads`): Meta Ads ranking table plus clicks/CTR charts.
 
-Update the masthead nav links and the `Page 0N` chip in each `.page-label` if you add/reorder
+Update the masthead nav links and the `Page 0N` chip in each `.page-label` if you add or reorder
 pages. Keep the sticky masthead nav order in sync with section order.
 
 ## Conversion funnel data rules
 
 The funnel is a hand-built SVG (not a charting library), rebuilt per week from whatever stage
-figures are given. **Stages must be monotonically decreasing** (each stage's count must be ≤ the
-one above it) — that's what makes the shape and the "% of previous stage" rate labels honest.
+figures are given. **Stages must be monotonically decreasing**: each stage's count must be at or
+below the one above it. That's what makes the shape and the "% of previous stage" rate labels
+honest.
 
 - If new data only covers some stages, do not silently keep old figures for the others: check
   whether the mix still decreases top-to-bottom. If it doesn't, say so and ask for the missing
@@ -57,7 +58,7 @@ one above it) — that's what makes the shape and the "% of previous stage" rate
 
 ## Export PDF / print
 
-Chrome's print engine **cannot split a CSS grid container across a page break** — if a grid
+Chrome's print engine **cannot split a CSS grid container across a page break**. If a grid
 doesn't fit the remaining space on a page, the whole grid jumps to the next page and leaves the
 current one mostly blank. This bit us on the funnel and the Business & Revenue cards.
 
@@ -71,8 +72,25 @@ template forward:
 - Print-only compact sizing (smaller fonts/padding, capped funnel SVG width ~240px, shorter chart
   heights) so blocks actually fit together instead of relying on avoiding breaks alone.
 - If you add a new grid-based section, add it to both lists above, then verify by actually
-  rendering the exported PDF (Playwright `page.pdf()` + `pypdfium2` to render pages to images) —
-  don't just eyeball the screen view, print pagination is a separate layout pass.
+  rendering the exported PDF (Playwright `page.pdf()` plus `pypdfium2` to render pages to
+  images). Don't just eyeball the screen view, print pagination is a separate layout pass.
+
+**Chart.js canvases do not resize themselves for print.** Chart.js sizes each canvas to its
+container once, at creation time, and never re-measures unless something calls `.resize()`. The
+print stylesheet changes container widths (grid to flex, narrower columns), but the canvas keeps
+its on-screen pixel size, so charts overflow their card or clip axis labels in the exported PDF.
+Fix: every chart created via `safeChart()` is pushed into a global `allCharts` array, and
+`beforeprint`/`afterprint` listeners call `.resize()` on all of them. Keep this pattern (the
+`allCharts` array and both listeners) in the script block of every future week's report, and add
+any new chart creation through `safeChart()` so it gets registered automatically.
+
+**Print header band.** The screen masthead (logo, nav links, Export PDF button) is hidden on
+print and replaced by a slim, single-line, repeating header: `Wasal · WNN B&R + Marketing Report
+· <date range>`, pinned with `position: fixed; top: 0;` so Chrome repeats it on every printed
+page. The date range lives in a dedicated `<span class="print-date-inline">` inside
+`.brand-lock` (hidden on screen via `display: none`, shown only in print) so it can be updated
+independently of the visible brand text. Update that span's date range each week alongside the
+other per-week date mentions (cover-kicker, cover-meta, footer, page-label).
 
 ## Mobile responsiveness gotcha
 
@@ -90,11 +108,11 @@ override, grep for the component's base rule and confirm the override comes afte
 
 - Brand system: Bricolage Grotesque font, teal-to-violet gradient (`--gradient` /
   `--gradient-h`), light mode, card-based layout with a 3px gradient top-bar accent on every
-  card (`::before` pseudo-element). Match this exactly for new sections — don't introduce a new
+  card (`::before` pseudo-element). Match this exactly for new sections, don't introduce a new
   visual language.
-- **Never use em dashes (`—` / `&mdash;`)** anywhere in report content or copy. Use a comma, a
-  period, or "and" instead. En dashes (`–` / `&ndash;`) are fine for date ranges and are used
-  throughout ("Jun 29 – Jul 5").
+- **Never use em dashes (`—` / `&mdash;`)** anywhere in report content, copy, or this file. Use a
+  comma, a period, or "and" instead. En dashes (`–` / `&ndash;`) are fine for date ranges and are
+  used throughout ("Jun 29 – Jul 5").
 - Reuse existing CSS classes/components before inventing new ones: `.insight` (good/warn/bad
   accent cards), `.ops-list` / `.ops-list-sm` (bulleted highlight lists), `.growth-card` /
   `.growth-card.compact` (KPI tiles), `.br-card`, `.plan-grid`. Check the current week's

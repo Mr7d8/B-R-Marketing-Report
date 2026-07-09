@@ -63,6 +63,7 @@ body {
   display: flex; justify-content: space-between; align-items: center; gap: 20px;
 }
 .brand-lock { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 14px; letter-spacing: -.01em; }
+.print-date-inline { display: none; }
 .brand-dot {
   width: 26px; height: 26px; border-radius: 8px; background: var(--gradient);
   box-shadow: var(--shadow-pop); display: flex; align-items: center; justify-content: center;
@@ -252,7 +253,17 @@ footer a { color: var(--ink); text-decoration: none; font-weight: 500; }
 /* PRINT */
 @media print {
   body { background: white; font-size: 12px; }
-  .masthead { display: none; }
+  .masthead {
+    display: block; position: fixed; top: 0; left: 0; right: 0;
+    background: white; border-bottom: 1px solid var(--line);
+    padding: 4px 0; z-index: 1000;
+  }
+  .masthead-inner { padding: 0 1cm; }
+  .brand-lock { font-size: 9px; gap: 6px; font-weight: 500; }
+  .brand-dot { width: 14px; height: 14px; font-size: 8px; border-radius: 4px; }
+  .print-date-inline { display: inline; color: var(--ink-mute); font-weight: 400; }
+  .masthead nav, .print-btn { display: none !important; }
+  .page-section:first-of-type { padding-top: 26px; }
   .page-section { padding: 10px 0; min-height: auto; }
   .pb { page-break-after: always; }
   .chart-wrap { height: 200px; }
@@ -420,6 +431,7 @@ footer a { color: var(--ink); text-decoration: none; font-weight: 500; }
     <div class="brand-lock">
       <div class="brand-dot">W</div>
       <span>Wasal &middot; W27 B&amp;R + Marketing Report</span>
+      <span class="print-date-inline">&middot; Jun 29 to Jul 5, 2026</span>
     </div>
     <nav>
       <a href="#p-summary" class="active">Summary</a>
@@ -815,11 +827,25 @@ Chart.defaults.font.size = 11;
 Chart.defaults.color = '#6b7388';
 Chart.defaults.borderColor = '#e3e8f0';
 
+var allCharts = [];
 function safeChart(id, config) {
   const el = document.getElementById(id);
   if (!el) return null;
-  return new Chart(el, config);
+  var chart = new Chart(el, config);
+  allCharts.push(chart);
+  return chart;
 }
+
+// Chart.js sizes each canvas to its container at creation time and does not
+// re-measure on its own when the print stylesheet changes that container's
+// width, so charts render at their on-screen size and overflow or clip in
+// the exported PDF. Force a resize right before the browser prints.
+window.addEventListener('beforeprint', function() {
+  allCharts.forEach(function(c) { if (c) c.resize(); });
+});
+window.addEventListener('afterprint', function() {
+  allCharts.forEach(function(c) { if (c) c.resize(); });
+});
 
 function linGrad(ctx, stops, vertical) {
   const area = ctx.chart.chartArea || { top: 0, bottom: 300, left: 0, right: 400 };
