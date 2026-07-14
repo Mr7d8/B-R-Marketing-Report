@@ -55,6 +55,11 @@ honest.
   figures rather than shipping a funnel that implies more sign-ups than carts, etc.
 - Rate label color thresholds (already in CSS via `var(--good)/var(--warn)/var(--bad)`):
   `>=25%` good (green), `10-24.9%` warn (amber), `<10%` bad (red).
+- Rate label placement and wording: right-aligned, stacked directly beneath that stage's value
+  (same `x`, `y` of the value line + 15), not centered inside the funnel body. Phrase each label
+  as "`X%` of `<previous stage, lowercase, short>`" (e.g. "8.5% of installs", "15.5% of carts",
+  "29.6% of checkouts"), not the generic "X% of previous". This applies to both the on-screen
+  funnel SVG and the print-view funnel SVG, which otherwise share identical markup.
 - Geometry: half-widths follow a sqrt scale relative to the top stage (`sqrt(value / value0)`),
   centered in the viewBox. See the current funnel SVG in any `wNN/index.html` for the worked
   example (stage y-positions evenly spaced, `maxHalfWidth` ~130, dividers between all but the
