@@ -355,8 +355,19 @@ footer a { color: var(--ink); text-decoration: none; font-weight: 500; }
 .br-split { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
 .br-split-col + .br-split-col { border-left: 1px solid var(--line); padding-left: 18px; }
 .br-sub { font-size: 12px; color: var(--ink-mute); margin-top: 2px; }
+.br-gauge-row { display: flex; align-items: center; gap: 22px; }
+.br-gauge-wrap { width: 110px; text-align: center; }
+.br-gauge-pct { font-size: 22px; font-weight: 800; color: var(--ink); margin-top: -34px; }
+.br-mini-label { font-size: 11px; letter-spacing: .04em; text-transform: uppercase; color: var(--ink-mute); font-weight: 600; text-align: center; margin-top: 4px; }
+.br-orders-block { text-align: left; }
+.br-pies { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.br-pie-card { text-align: center; }
+.br-pie-card .card-title { font-size: 14px; margin-bottom: 12px; }
+.br-chart-sm { position: relative; height: 190px; }
+.br-top-sellers-wrap { position: relative; height: 320px; }
 @media (max-width: 900px) {
-  .br-row1, .br-row2, .br-row3 { grid-template-columns: 1fr; }
+  .br-row1, .br-row2, .br-row3, .br-split, .br-pies { grid-template-columns: 1fr; }
+  .br-gauge-row { flex-wrap: wrap; }
 }
 
 .growth-cards.kpi-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 28px; }
@@ -446,24 +457,132 @@ footer a { color: var(--ink); text-decoration: none; font-weight: 500; }
 <section class="page-section page" id="p-br">
   <div class="page-label"><span class="chip">Page 01</span> Business &amp; Revenue</div>
   <h2 class="display-l">Business &amp; <span class="grad">Revenue</span></h2>
-  <p class="lede">Sales team GMV, SKU/Brands/Sellers, goal pacing, and category mix. Awaiting this week's numbers from the Sales team.</p>
+  <p class="lede">Sales team GMV, SKU/Brands/Sellers, goal pacing, and category mix for the week. Source: Sales team.</p>
 
   <div class="br-row1">
-    <div class="skeleton-card" style="min-height:220px;display:flex;flex-direction:column;justify-content:center;"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="color:var(--ink-fade);margin:0 auto;"><rect x="3" y="4" width="18" height="16" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M7 9h10M7 13h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><div class="sk-label">Data pending</div><div class="sk-field">GMV Week</div></div>
-    <div class="skeleton-card" style="min-height:220px;display:flex;flex-direction:column;justify-content:center;"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="color:var(--ink-fade);margin:0 auto;"><rect x="3" y="4" width="18" height="16" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M7 9h10M7 13h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><div class="sk-label">Data pending</div><div class="sk-field">SKU / Brands / Sellers</div></div>
+    <div class="br-card">
+      <div class="br-label">GMV Week</div>
+      <div class="br-value-xl">73,158 <span style="font-size:20px; font-weight:700; color:var(--ink-mute);">dhs</span></div>
+    </div>
+    <div class="br-card">
+      <div class="br-split">
+        <div class="br-split-col">
+          <div class="br-label">SKU</div>
+          <div class="br-sub">Total: 180.9K</div>
+          <div class="br-value-lg">+891</div>
+        </div>
+        <div class="br-split-col">
+          <div class="br-split">
+            <div>
+              <div class="br-label">Brands</div>
+              <div class="br-sub">Total: 5,411</div>
+              <div class="br-value-lg" style="font-size:24px;">+150</div>
+            </div>
+            <div>
+              <div class="br-label">Sellers</div>
+              <div class="br-sub">Total: 664</div>
+              <div class="br-value-lg" style="font-size:24px;">+18</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
+
   <div class="br-row2">
-    <div class="skeleton-card" style="min-height:160px;display:flex;flex-direction:column;justify-content:center;"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="color:var(--ink-fade);margin:0 auto;"><rect x="3" y="4" width="18" height="16" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M7 9h10M7 13h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><div class="sk-label">Data pending</div><div class="sk-field">Sales Goal (GMV) % + Gross Orders Lines</div></div>
-    <div class="skeleton-card" style="min-height:160px;display:flex;flex-direction:column;justify-content:center;"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="color:var(--ink-fade);margin:0 auto;"><rect x="3" y="4" width="18" height="16" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M7 9h10M7 13h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><div class="sk-label">Data pending</div><div class="sk-field">CRR</div></div>
-    <div class="skeleton-card" style="min-height:160px;display:flex;flex-direction:column;justify-content:center;"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="color:var(--ink-fade);margin:0 auto;"><rect x="3" y="4" width="18" height="16" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M7 9h10M7 13h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><div class="sk-label">Data pending</div><div class="sk-field">AOV, WoW</div></div>
+    <div class="br-card">
+      <div class="br-gauge-row">
+        <div class="br-gauge-wrap">
+          <div class="br-chart-sm" style="height:80px;"><canvas id="chart-sales-goal"></canvas></div>
+          <div class="br-gauge-pct">12%</div>
+          <div class="br-mini-label">Sales Goals (GMV)</div>
+        </div>
+        <div class="br-orders-block">
+          <div class="br-label">Gross Orders Lines</div>
+          <div class="br-value-xl" style="margin-top:6px;">135</div>
+        </div>
+      </div>
+    </div>
+    <div class="br-card">
+      <div class="br-label">CRR</div>
+      <div class="br-value-xl">0,25%</div>
+    </div>
+    <div class="br-card">
+      <div class="br-label">AOV &middot; WoW</div>
+      <div class="br-value-xl">541<span style="font-size:18px;">DHS</span></div>
+      <div class="br-sub">Prior: 480 DHS</div>
+    </div>
   </div>
+
   <div class="br-row3">
-    <div class="skeleton-card" style="min-height:300px;display:flex;flex-direction:column;justify-content:center;"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="color:var(--ink-fade);margin:0 auto;"><rect x="3" y="4" width="18" height="16" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M7 9h10M7 13h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><div class="sk-label">Data pending</div><div class="sk-field">Top Sellers by GMV</div></div>
-    <div class="skeleton-card" style="min-height:300px;display:flex;flex-direction:column;justify-content:center;"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="color:var(--ink-fade);margin:0 auto;"><rect x="3" y="4" width="18" height="16" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M7 9h10M7 13h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><div class="sk-label">Data pending</div><div class="sk-field">GMV / SKU par Categorie</div></div>
+    <div class="br-card">
+      <div class="card-title">Top Sellers (GMV)</div>
+      <div class="card-sub">Ranked by GMV, last 7 days</div>
+      <div class="br-top-sellers-wrap"><canvas id="chart-top-sellers"></canvas></div>
+    </div>
+    <div class="br-card">
+      <div class="br-pies">
+        <div class="br-pie-card">
+          <div class="card-title">GMV par Cat&eacute;gorie</div>
+          <div class="br-chart-sm"><canvas id="chart-gmv-cat"></canvas></div>
+        </div>
+        <div class="br-pie-card">
+          <div class="card-title">SKU par Cat&eacute;gorie</div>
+          <div class="br-chart-sm"><canvas id="chart-sku-cat"></canvas></div>
+        </div>
+      </div>
+    </div>
   </div>
+
   <div class="insight-grid" style="margin-top:24px;">
-    <div class="skeleton-card" style="min-height:160px;display:flex;flex-direction:column;justify-content:center;"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="color:var(--ink-fade);margin:0 auto;"><rect x="3" y="4" width="18" height="16" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M7 9h10M7 13h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><div class="sk-label">Data pending</div><div class="sk-field">Les bonnes nouvelles</div></div>
-    <div class="skeleton-card" style="min-height:160px;display:flex;flex-direction:column;justify-content:center;"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="color:var(--ink-fade);margin:0 auto;"><rect x="3" y="4" width="18" height="16" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M7 9h10M7 13h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><div class="sk-label">Data pending</div><div class="sk-field">A Fixer</div></div>
+    <div class="insight good">
+      <div class="insight-kicker">Les bonnes nouvelles</div>
+      <div class="insight-title">Signatures &amp; pipeline commercial</div>
+      <div class="insight-body">
+        <div style="margin-bottom: 12px;">
+          <strong>Signatures :</strong>
+          <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px;">
+            <span class="cvr-chip hot">cham&agrave;ty</span>
+            <span class="cvr-chip hot">keira</span>
+            <span class="cvr-chip hot">MAROC VITAMINES</span>
+            <span class="cvr-chip hot">veranoclothing</span>
+            <span class="cvr-chip hot">superfood</span>
+          </div>
+        </div>
+        <div style="margin-bottom: 16px;">
+          <strong>Int&eacute;ress&eacute;s :</strong>
+          <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px;">
+            <span class="tag" style="background: var(--paper-3); color: var(--ink-soft);">Cookmaster</span>
+            <span class="tag" style="background: var(--paper-3); color: var(--ink-soft);">Anfa retail</span>
+            <span class="tag" style="background: var(--paper-3); color: var(--ink-soft);">Petit Bateau</span>
+            <span class="tag" style="background: var(--paper-3); color: var(--ink-soft);">MB STUDIO Z</span>
+            <span class="tag" style="background: var(--paper-3); color: var(--ink-soft);">Planet sport</span>
+            <span class="tag" style="background: var(--paper-3); color: var(--ink-soft);">Moxe</span>
+            <span class="tag" style="background: var(--paper-3); color: var(--ink-soft);">Wabi sabi</span>
+          </div>
+        </div>
+        <p>Validation de Ma Franchise, formation effectu&eacute;e, int&eacute;gration de ETAM en attente validation Cedric avec new contrat.</p>
+        <p style="margin-top: 8px;">Cr&eacute;ation des SIS L&rsquo;or&eacute;al.</p>
+        <p style="margin-top: 8px;"><strong>Sujet chaud :</strong> pr&eacute;paration du P&amp;L Terranova + offre commerciale kak.</p>
+        <p style="margin-top: 8px;"><strong>Atteinte objectif SKU trimestre :</strong> 47.</p>
+        <p style="margin-top: 8px;">Module vente flash fix&eacute;.</p>
+      </div>
+    </div>
+    <div class="insight warn">
+      <div class="insight-kicker">A Fixer</div>
+      <div class="insight-title">Points en attente</div>
+      <div class="insight-body">
+        <ul style="list-style: none; display: flex; flex-direction: column; gap: 10px;">
+          <li>En attente feuille de recrutement sign&eacute;es de Chaima et Khaoula.</li>
+          <li>En attente des objectifs AKSAL GROUPE et aussi la grille pour les bonus annuel.</li>
+          <li>UX module bunddle &agrave; d&eacute;ployer pour tiers one.</li>
+          <li>Parcours kenzup &agrave; fixer.</li>
+          <li>Incubation program avec CRC en attente carte sim (bon de commande &agrave; faire signer).</li>
+          <li>Profile particulier toujours pas valid&eacute; par AKWA group, d&eacute;sactivation des stores.</li>
+          <li>Outil pour les &eacute;quipes en attente (onedrive, process NDF, moyens generaux....).</li>
+        </ul>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -557,11 +676,94 @@ footer a { color: var(--ink); text-decoration: none; font-weight: 500; }
     <div class="pv-subtitle">Week 28 &middot; Business &amp; Revenue &middot; Source: Sales team</div>
 
     <div class="pv-section-label">Business &amp; Revenue</div>
-    <div class="pv-note-box warn">
-      <div class="t">Data pending</div>
-      <p>GMV, SKU/Brand/Seller growth, sales goal pacing, CRR, AOV, top sellers and category mix had not been
-      reported by the Sales team at the time this report was generated. This page will be updated with this
-      week's figures once they arrive.</p>
+    <div class="pv-kpi-grid">
+      <div class="pv-kpi"><div class="l">GMV Week</div><div class="v">73,158 dhs</div></div>
+      <div class="pv-kpi"><div class="l">SKU</div><div class="v">+891</div><div class="s">Total 180.9K</div></div>
+      <div class="pv-kpi"><div class="l">Brands</div><div class="v">+150</div><div class="s">Total 5,411</div></div>
+      <div class="pv-kpi"><div class="l">Sellers</div><div class="v">+18</div><div class="s">Total 664</div></div>
+      <div class="pv-kpi"><div class="l">Sales Goal (GMV)</div><div class="v">12%</div></div>
+      <div class="pv-kpi"><div class="l">CRR</div><div class="v">0,25%</div></div>
+      <div class="pv-kpi"><div class="l">AOV &middot; WoW</div><div class="v">541 DHS</div><div class="s">Prior: 480 DHS</div></div>
+      <div class="pv-kpi"><div class="l">Gross Orders</div><div class="v">135</div></div>
+    </div>
+
+    <div class="pv-section-label">Top Sellers (GMV)</div>
+    <div class="pv-bars compact">
+      <div class="pv-bar-row"><div class="name">ETCEINFO</div><div class="track"><div class="fill" style="width:100%"></div></div><div class="val">35,702</div></div>
+      <div class="pv-bar-row"><div class="name">BEAUTY MALL</div><div class="track"><div class="fill" style="width:9.7%"></div></div><div class="val">3,457</div></div>
+      <div class="pv-bar-row"><div class="name">E-SELECT</div><div class="track"><div class="fill" style="width:5.5%"></div></div><div class="val">1,954</div></div>
+      <div class="pv-bar-row"><div class="name">ALDO</div><div class="track"><div class="fill" style="width:5.4%"></div></div><div class="val">1,912</div></div>
+      <div class="pv-bar-row"><div class="name">NOVA PARA</div><div class="track"><div class="fill" style="width:5.3%"></div></div><div class="val">1,884</div></div>
+      <div class="pv-bar-row"><div class="name">GROUPE SEB</div><div class="track"><div class="fill" style="width:4.5%"></div></div><div class="val">1,599</div></div>
+      <div class="pv-bar-row"><div class="name">WORLD MARKET PLACE</div><div class="track"><div class="fill" style="width:4%"></div></div><div class="val">1,439</div></div>
+      <div class="pv-bar-row"><div class="name">BIRKENSTOCK</div><div class="track"><div class="fill" style="width:3.9%"></div></div><div class="val">1,399</div></div>
+      <div class="pv-bar-row"><div class="name">WECORD</div><div class="track"><div class="fill" style="width:3.1%"></div></div><div class="val">1,100</div></div>
+      <div class="pv-bar-row"><div class="name">KARAWANE SHOP</div><div class="track"><div class="fill" style="width:2.8%"></div></div><div class="val">999</div></div>
+    </div>
+
+    <div class="pv-section-label">Category Mix</div>
+    <div class="pv-pie-row">
+      <div class="pv-pie-card">
+        <div class="t">GMV par Cat&eacute;gorie</div>
+        <div class="pv-pie-wrap">
+          <div class="pv-pie" style="background: conic-gradient(#00c4cc 0% 51.9%, #00a3ff 51.9% 75.9%, #5b5fff 75.9% 91.5%, #7b61ff 91.5% 95.5%, #8b3dff 95.5% 99%, #00d9a3 99% 100%);"></div>
+          <span class="pv-pie-label" style="left:106.9px;top:68.4px;">51.9%</span>
+          <span class="pv-pie-label" style="left:34.7px;top:92.3px;">24%</span>
+          <span class="pv-pie-label" style="left:31.1px;top:44.8px;">15.6%</span>
+        </div>
+        <div class="pv-pie-legend">
+          <span><i style="background:#00c4cc"></i>Tech 51.9%</span>
+          <span><i style="background:#00a3ff"></i>Beaut&eacute; 24%</span>
+          <span><i style="background:#5b5fff"></i>Fashion femme 15.6%</span>
+          <span><i style="background:#7b61ff"></i>Maison 4%</span>
+          <span><i style="background:#8b3dff"></i>Homme 3.5%</span>
+          <span><i style="background:#00d9a3"></i>Autre 1%</span>
+        </div>
+      </div>
+      <div class="pv-pie-card">
+        <div class="t">SKU par Cat&eacute;gorie</div>
+        <div class="pv-pie-wrap">
+          <div class="pv-pie" style="background: conic-gradient(#00c4cc 0% 41.2%, #00a3ff 41.2% 52.6%, #5b5fff 52.6% 63.5%, #7b61ff 63.5% 73.1%, #8b3dff 73.1% 79.6%, #00d9a3 79.6% 84.2%, #ffb020 84.2% 100%);"></div>
+          <span class="pv-pie-label" style="left:105.3px;top:54.8px;">41.2%</span>
+          <span class="pv-pie-label" style="left:73.9px;top:106.1px;">11.4%</span>
+          <span class="pv-pie-label" style="left:46.2px;top:101.8px;">10.9%</span>
+          <span class="pv-pie-label" style="left:28.7px;top:82.7px;">9.6%</span>
+          <span class="pv-pie-label" style="left:25.3px;top:62.5px;">6.5%</span>
+          <span class="pv-pie-label" style="left:46.5px;top:30px;">15.8%</span>
+        </div>
+        <div class="pv-pie-legend">
+          <span><i style="background:#00c4cc"></i>Beaut&eacute; 41.2%</span>
+          <span><i style="background:#00a3ff"></i>Maison 11.4%</span>
+          <span><i style="background:#5b5fff"></i>Fashion 10.9%</span>
+          <span><i style="background:#7b61ff"></i>Tech 9.6%</span>
+          <span><i style="background:#8b3dff"></i>Jardinage 6.5%</span>
+          <span><i style="background:#00d9a3"></i>Homme 4.6%</span>
+          <span><i style="background:#ffb020"></i>Autre 15.8%</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="pv-section-label">Sales Team Notes</div>
+    <div class="pv-two-col">
+      <div class="pv-note-box good">
+        <div class="t">Les bonnes nouvelles</div>
+        <p><strong>Signatures :</strong> cham&agrave;ty, keira, Maroc Vitamines, veranoclothing, superfood.<br>
+        <strong>Int&eacute;ress&eacute;s :</strong> Cookmaster, Anfa retail, Petit Bateau, MB Studio Z, Planet sport, Moxe, Wabi sabi.<br>
+        Validation de Ma Franchise, formation effectu&eacute;e, int&eacute;gration de ETAM en attente validation Cedric avec new contrat. Cr&eacute;ation des SIS L&rsquo;or&eacute;al.<br>
+        <strong>Sujet chaud :</strong> pr&eacute;paration du P&amp;L Terranova + offre commerciale kak. Objectif SKU trimestre atteint (47). Module vente flash fix&eacute;.</p>
+      </div>
+      <div class="pv-note-box warn">
+        <div class="t">A Fixer</div>
+        <ul>
+          <li>Feuille de recrutement sign&eacute;es de Chaima et Khaoula</li>
+          <li>Objectifs AKSAL GROUPE et grille des bonus annuel</li>
+          <li>UX module bunddle &agrave; d&eacute;ployer pour tiers one</li>
+          <li>Parcours kenzup &agrave; fixer</li>
+          <li>Incubation CRC : carte sim (bon de commande &agrave; signer)</li>
+          <li>Profil AKWA group toujours pas valid&eacute;, stores d&eacute;sactiv&eacute;s</li>
+          <li>Outils &eacute;quipes en attente (onedrive, NDF, moyens g&eacute;n&eacute;raux)</li>
+        </ul>
+      </div>
     </div>
   </div>
 
@@ -729,6 +931,103 @@ function safeChart(id, config) {
   if (!el) return null;
   return new Chart(el, config);
 }
+
+var cPurple = '#8b3dff';
+var palette = [cTeal, cBlue, cIndigo, cViolet, cPurple, '#00d9a3', '#ffb020'];
+
+var topSellerNames = ["ETCEINFO", "BEAUTY MALL", "E-SELECT", "ALDO", "NOVA PARA", "GROUPE SEB", "WORLD MARKET PLACE", "BIRKENSTOCK", "WECORD", "KARAWANE SHOP"];
+var topSellerValues = [35702, 3457, 1954, 1912, 1884, 1599, 1439, 1399, 1100, 999];
+var gmvCatLabels = ["Tech", "Beauté", "Fashion femme", "Maison", "Homme", "Autre"];
+var gmvCatValues = [51.9, 24.0, 15.6, 4.0, 3.5, 1.0];
+var skuCatLabels = ["Beauté", "Maison", "Fashion", "Tech", "Jardinage et bricolage", "Homme", "Autre"];
+var skuCatValues = [41.2, 11.4, 10.9, 9.6, 6.5, 4.6, 15.8];
+var salesGoalPct = 12;
+
+safeChart('chart-sales-goal', {
+  type: 'doughnut',
+  data: {
+    datasets: [{
+      data: [salesGoalPct, 100 - salesGoalPct],
+      backgroundColor: [cTeal, '#eef2f9'],
+      borderWidth: 0
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    circumference: 180, rotation: 270, cutout: '72%',
+    plugins: { legend: { display: false }, tooltip: { enabled: false } }
+  }
+});
+
+safeChart('chart-top-sellers', {
+  type: 'bar',
+  data: {
+    labels: topSellerNames,
+    datasets: [{
+      data: topSellerValues,
+      backgroundColor: function(ctx) { return linGrad(ctx, [[0, cTeal], [0.5, cBlue], [1, cViolet]], false); },
+      borderRadius: 6,
+      barThickness: 16
+    }]
+  },
+  options: {
+    indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+    layout: { padding: { right: 46 } },
+    plugins: {
+      legend: { display: false },
+      tooltip: { backgroundColor: '#0a1226', padding: 10, cornerRadius: 10, displayColors: false,
+        callbacks: { label: function(c) { return c.parsed.x.toLocaleString() + ' dhs'; } } },
+      datalabels: {
+        anchor: 'end', align: 'right', color: '#0a1226', font: { weight: '700', size: 10 },
+        formatter: function(v) { return v.toLocaleString(); }
+      }
+    },
+    scales: {
+      x: { grid: { color: '#e3e8f0' }, ticks: { font: { size: 10 } } },
+      y: { grid: { display: false }, ticks: { font: { size: 11, weight: '500' } } }
+    }
+  }
+});
+
+safeChart('chart-gmv-cat', {
+  type: 'pie',
+  data: {
+    labels: gmvCatLabels,
+    datasets: [{ data: gmvCatValues, backgroundColor: palette, borderWidth: 2, borderColor: '#fff' }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'bottom', labels: { boxWidth: 9, font: { size: 9 }, padding: 8 } },
+      tooltip: { backgroundColor: '#0a1226', padding: 10, cornerRadius: 10,
+        callbacks: { label: function(c) { return c.label + ': ' + c.parsed + '%'; } } },
+      datalabels: {
+        color: '#fff', font: { weight: '700', size: 10 },
+        formatter: function(v) { return v < 5 ? null : v + '%'; }
+      }
+    }
+  }
+});
+
+safeChart('chart-sku-cat', {
+  type: 'pie',
+  data: {
+    labels: skuCatLabels,
+    datasets: [{ data: skuCatValues, backgroundColor: palette, borderWidth: 2, borderColor: '#fff' }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'bottom', labels: { boxWidth: 9, font: { size: 9 }, padding: 8 } },
+      tooltip: { backgroundColor: '#0a1226', padding: 10, cornerRadius: 10,
+        callbacks: { label: function(c) { return c.label + ': ' + c.parsed + '%'; } } },
+      datalabels: {
+        color: '#fff', font: { weight: '700', size: 10 },
+        formatter: function(v) { return v < 5 ? null : v + '%'; }
+      }
+    }
+  }
+});
 
 safeChart('chart-ads-clicks', {
   type: 'bar',
