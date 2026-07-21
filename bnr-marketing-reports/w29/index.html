@@ -725,6 +725,7 @@ safeChart('chart-gmv-cat', {
       tooltip: { backgroundColor: '#0a1226', padding: 10, cornerRadius: 10,
         callbacks: { label: function(c) { return c.label + ': ' + c.parsed + '%'; } } },
       datalabels: {
+        display: 'auto',
         color: '#fff', font: { weight: '700', size: 10 },
         formatter: function(v) { return v < 5 ? null : v + '%'; }
       }
@@ -745,6 +746,7 @@ safeChart('chart-sku-cat', {
       tooltip: { backgroundColor: '#0a1226', padding: 10, cornerRadius: 10,
         callbacks: { label: function(c) { return c.label + ': ' + c.parsed + '%'; } } },
       datalabels: {
+        display: 'auto',
         color: '#fff', font: { weight: '700', size: 10 },
         formatter: function(v) { return v < 5 ? null : v + '%'; }
       }

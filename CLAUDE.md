@@ -201,6 +201,32 @@ confirm a Cloudinary upload succeeded from its API response (it returns `secure_
 etc. on success) rather than from a local screenshot, and confirm Chart.js configs are correct by
 pattern-matching against a previous week's already-deployed, working charts.
 
+## Chart.js pie/doughnut datalabels must not overlap
+
+The GMV/SKU category pies (`chart-gmv-cat`, `chart-sku-cat`) show permanent `%` labels on each
+slice via chartjs-plugin-datalabels, per the report-wide "always show values, no hover-only
+labels" rule. With several small categories clustered next to each other (e.g. Maison 7.1%,
+Beaut&eacute; 6.3%, Fashion femme 9.4% all adjacent), their centroid labels land close enough to
+visually overlap and become unreadable, this happened for real in W29.
+
+Fix: always set `display: 'auto'` on the `datalabels` block for pie/doughnut charts, alongside
+the existing `formatter` cutoff that hides labels below a minimum share:
+
+```js
+datalabels: {
+  display: 'auto',
+  color: '#fff', font: { weight: '700', size: 10 },
+  formatter: function(v) { return v < 5 ? null : v + '%'; }
+}
+```
+
+`display: 'auto'` is a chartjs-plugin-datalabels feature that hides a label if it would overlap
+an already-placed one, evaluated in dataset order, so keep category data sorted largest-first
+(as it already is) so the labels that survive are the biggest, most important slices. The full
+breakdown is never lost since the legend below each pie always lists every category and its
+percentage regardless of which inline labels got auto-hidden. This applies to every pie/doughnut
+chart in the report, not just this week's two.
+
 ## Style rules
 
 - Brand system: Bricolage Grotesque font, teal-to-violet gradient (`--gradient` /
