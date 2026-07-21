@@ -25,6 +25,13 @@ separate report family, separate repo, separate deploy.
    it per week, just link to it.
 5. Commit and push to `main` (this repo has no PR workflow by default, push directly unless told
    otherwise). Vercel redeploys automatically.
+   - If working on a feature branch (e.g. a Claude Code Remote session bound to one), a plain
+     `git push origin <branch>` can still result in GitHub auto-opening *and auto-merging* a PR
+     from it asynchronously, main can advance out from under you between pushes. Before pushing
+     to `main`, always `git fetch origin main` first and check whether it already contains your
+     latest branch commit. Then `git checkout -B main origin/main`, `git merge <branch>` (not a
+     bare fast-forward assumption), and `git push origin main`, switching back to the feature
+     branch afterward so the session's working branch stays what it was.
 
 ## Report page structure (per week's index.html)
 
@@ -35,10 +42,24 @@ Fixed page order, each `<section class="page-section pb" id="...">`:
    `.insight-grid` at the bottom.
 3. App Growth (`#p-growth`): AppsFlyer KPI tiles (`.growth-cards.kpi-row`, flat single-metric
    cards) plus Conversion Funnel Overview (`.funnel-split`: funnel SVG left, "Weekly Highlights ·
-   Performance Marketing" list right).
+   Performance Marketing" list right). **Always write this list yourself** from the week's own
+   AppsFlyer/Mixpanel numbers already on the same page (budget, active users, sessions, funnel
+   rates, retention, etc.), don't leave it as a pending skeleton just because no one supplied
+   prose bullets separately. This is a legitimate data-driven summary of figures already
+   verified elsewhere on the page, not a fabrication. This does not extend to Page 03's Weekly
+   Highlights below, see that section for why.
 4. Overview / Outside Digital Performance (`#p-overview`): Weekly Highlights, Plan of Action
-   (`.plan-grid`), Blocking Points (`.insight-grid.cols-3`, red accent).
-5. Top 5 Ads (`#p-topads`): Meta Ads ranking table plus clicks/CTR charts.
+   (`.plan-grid`), Blocking Points (`.insight-grid.cols-3`, red accent). Unlike Page 02's
+   highlights, this section covers business/ops initiatives (campaign launches, program
+   approvals, workstream status) that this report has no data source for. Leave it pending if
+   no one supplied it, writing something here means inventing specific business claims, not
+   summarizing numbers already in the report.
+5. Top 5 Ads (`#p-topads`): Meta Ads ranking table plus clicks/CTR charts. Ranking columns are
+   Spend, Impr., Clicks, CTR, **Cost/Result** (its own column, not folded into the Results
+   label), Results. When Meta returns duplicate/generic ad names (e.g. several ads literally
+   named "CRSL - 1"), fetch each ad's ad set name (one extra `ads_get_ad_entities` call at
+   `level=adset`) and use it as disambiguating context in the display name, e.g. "CRSL - 1 ·
+   High-Tech & Audio", so the ranking table and charts don't show indistinguishable duplicates.
 
 Update the masthead nav links and the `Page 0N` chip in each `.page-label` if you add or reorder
 pages. Keep the sticky masthead nav order in sync with section order.
@@ -64,6 +85,13 @@ honest.
   centered in the viewBox. See the current funnel SVG in any `wNN/index.html` for the worked
   example (stage y-positions evenly spaced, `maxHalfWidth` ~130, dividers between all but the
   final stage).
+- Blending two sources into one funnel (e.g. Mixpanel for the top stages, AppsFlyer's
+  `af_purchase` for the final one because Mixpanel didn't report a purchase stage that week) is
+  fine, it's better than shipping a funnel with a stage missing. But always add a small note
+  under the funnel spelling out which stages came from which source and why, plus any side
+  annotations that came with the data but aren't funnel stages themselves (a ratio between two
+  stages, a context-only count like "/checkout" visits). Don't let a blended funnel look like a
+  single clean source.
 
 ## Export PDF / print
 
@@ -95,10 +123,11 @@ save space, only trim if a render actually overflows to a 4th page:
 2. App Growth + Top Ads: KPI grid, the conversion funnel (the same hand-built SVG used on
    screen, copy it as-is since it's pure vector and prints reliably with no JS involved), Top 5
    Ads as a full `<table class="pv-table pv-table-ads">` with the same columns as the screen
-   ranking (Spend, Impr., Clicks, CTR, CPC, Results) plus a small thumbnail per row (reuse the
-   Cloudinary URLs, see "Ad thumbnail images" below), and two CSS bar-chart blocks below the
-   table ("Clicks by ad" / "CTR by ad", `.pv-bars.compact.small` inside a `.pv-pie-row`) mirroring
-   the screen's ad performance charts.
+   ranking (Spend, Impr., Clicks, CTR, Cost/Res., Results, in that order, don't drop Results
+   itself when adding Cost/Res.) plus a small thumbnail per row (reuse the Cloudinary URLs, see
+   "Ad thumbnail images" below), and two CSS bar-chart blocks below the table ("Clicks by ad" /
+   "CTR by ad", `.pv-bars.compact.small` inside a `.pv-pie-row`) mirroring the screen's ad
+   performance charts.
 3. Overview & Operations: Weekly Highlights as a 2-column bullet list (`.pv-hl-list`), full Plan
    of Action grid, Blocking Points.
 
@@ -153,6 +182,24 @@ to whatever network policy blocks that host locally. Upload each ad's image once
 matching `data-lb-src` (they're the same URL twice per ranking row, once for the inline
 thumbnail, once for the lightbox) at the returned `secure_url`. Do this before the original
 signed URL expires, not after, since an already-expired URL can no longer be fetched by anyone.
+
+**Cloudinary connector gotcha:** the connector can show as `connected: true` at the org level
+(via `ListConnectors`) while still being `enabledInChat: false` for the current session, in
+which case its tools never load no matter how many times you re-check. Ask the user to enable it
+for the current chat specifically (not just connect it), and don't loop on re-checking, ask once
+and let them confirm before retrying. If it truly isn't available this session, build the Top 5
+Ads page with real ranking data and a placeholder thumbnail icon rather than shipping a raw
+`fbcdn.net` URL, then re-host the thumbnails in a follow-up once the connector is live.
+
+**Local dev sandbox network limitations:** the environment this report is typically built in
+(Claude Code sandbox) blocks outbound requests to `cdn.jsdelivr.net` (Chart.js/datalabels),
+`*.fbcdn.net`, and `res.cloudinary.com` at the proxy level (`CONNECT tunnel failed, response
+403`). This means local Playwright screenshots/PDF renders will show broken Chart.js canvases
+and broken thumbnail `<img>` tags even when the code and the uploaded assets are both correct,
+production (Vercel, real browsers) has no such restriction. Don't mistake this for a real defect:
+confirm a Cloudinary upload succeeded from its API response (it returns `secure_url`, `bytes`,
+etc. on success) rather than from a local screenshot, and confirm Chart.js configs are correct by
+pattern-matching against a previous week's already-deployed, working charts.
 
 ## Style rules
 
