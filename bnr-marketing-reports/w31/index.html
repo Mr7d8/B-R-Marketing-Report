@@ -433,7 +433,7 @@ footer a { color: var(--ink); text-decoration: none; font-weight: 500; }
   <div class="cover-inner">
     <div class="cover-kicker">Weekly Report &middot; Week 31</div>
     <h1 class="display-xl">B&amp;R + <span class="grad">Marketing</span> Report</h1>
-    <p class="lede">Business &amp; Revenue, App Growth, Overview &amp; Ops, and Top 5 Meta Ads for Wasal, covering Jul 27 &ndash; Aug 2, 2026. App Growth, Overview &amp; Ops, and Top 5 Ads are filled in; Business &amp; Revenue is pending Sales team data.</p>
+    <p class="lede">Business &amp; Revenue, App Growth, Overview &amp; Ops, and Top 5 Meta Ads for Wasal, covering Jul 27 &ndash; Aug 2, 2026.</p>
     <div class="cover-meta">
       <div class="cover-meta-item">
         <div class="label">Period</div>
@@ -445,7 +445,7 @@ footer a { color: var(--ink); text-decoration: none; font-weight: 500; }
       </div>
       <div class="cover-meta-item">
         <div class="label">Data Sources</div>
-        <div class="value">AppsFlyer, Meta Ads<span class="sub">Sales Team pending</span></div>
+        <div class="value">Sales Team<span class="sub">AppsFlyer &middot; Meta Ads</span></div>
       </div>
       <div class="cover-meta-item">
         <div class="label">Prepared For</div>
@@ -457,13 +457,12 @@ footer a { color: var(--ink); text-decoration: none; font-weight: 500; }
 <section class="page-section page" id="p-br">
   <div class="page-label"><span class="chip">Page 01</span> Business &amp; Revenue</div>
   <h2 class="display-l">Business &amp; <span class="grad">Revenue</span></h2>
-  <p class="lede">Sales team GMV, SKU/Brands/Sellers, goal pacing, and category mix for the week. Source: Sales team. No submission received yet for Jul 27 &ndash; Aug 2, 2026.</p>
+  <p class="lede">Sales team GMV, SKU/Brands/Sellers, goal pacing, and category mix for the week. Source: Sales team, Jul 27 &ndash; Aug 2, 2026.</p>
 
-  <div class="insight-grid cols-3">
-    <div class="skeleton-card" style="min-height:180px;display:flex;flex-direction:column;justify-content:center;"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="color:var(--ink-fade);margin:0 auto;"><rect x="3" y="4" width="18" height="16" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M7 9h10M7 13h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><div class="sk-label">Data pending</div><div class="sk-field">GMV, SKU/Brands/Sellers, Sales Goal, CRR, AOV</div></div>
-    <div class="skeleton-card" style="min-height:180px;display:flex;flex-direction:column;justify-content:center;"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="color:var(--ink-fade);margin:0 auto;"><rect x="3" y="4" width="18" height="16" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M7 9h10M7 13h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><div class="sk-label">Data pending</div><div class="sk-field">Top Sellers &amp; Category Mix</div></div>
-    <div class="skeleton-card" style="min-height:180px;display:flex;flex-direction:column;justify-content:center;"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="color:var(--ink-fade);margin:0 auto;"><rect x="3" y="4" width="18" height="16" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M7 9h10M7 13h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><div class="sk-label">Data pending</div><div class="sk-field">Sales Team Notes</div></div>
-  </div>
+  <div class="br-row1"><div class="br-card"><div class="br-label">GMV Week</div><div class="br-value-xl">32.1K <span style="font-size:20px;font-weight:700;color:var(--ink-mute);">dhs</span></div></div><div class="br-card"><div class="br-split"><div class="br-split-col"><div class="br-label">SKU</div><div class="br-sub">Total: 193.6K</div><div class="br-value-lg">+1,879</div></div><div class="br-split-col"><div class="br-split"><div><div class="br-label">Brands</div><div class="br-sub">Total: 5,626</div><div class="br-value-lg" style="font-size:24px;">+35</div></div><div><div class="br-label">Sellers</div><div class="br-sub">Total: 679</div><div class="br-value-lg" style="font-size:24px;">+12</div></div></div></div></div></div></div>
+  <div class="br-row2"><div class="br-card"><div class="br-gauge-row"><div class="br-gauge-wrap"><div class="br-chart-sm" style="height:80px;"><canvas id="chart-sales-goal"></canvas></div><div class="br-gauge-pct">12,8%</div><div class="br-mini-label">Sales Goals (GMV)</div></div><div class="br-orders-block"><div class="br-label">Gross Orders Lines</div><div class="br-value-xl" style="margin-top:6px;">116</div></div></div></div><div class="br-card"><div class="br-label">CRR</div><div class="br-value-xl">0,88%</div></div><div class="br-card"><div class="br-label">AOV &middot; WoW</div><div class="br-value-xl">357<span style="font-size:18px;">DHS</span></div><div class="br-sub">Prior: 314 DHS</div></div></div>
+  <div class="br-row3"><div class="br-card"><div class="card-title">Top Sellers (GMV)</div><div class="card-sub">Ranked by GMV, last 7 days</div><div class="br-top-sellers-wrap"><canvas id="chart-top-sellers"></canvas></div></div><div class="br-card"><div class="br-pies"><div class="br-pie-card"><div class="card-title">GMV par Cat&eacute;gorie</div><div class="br-chart-sm"><canvas id="chart-gmv-cat"></canvas></div></div><div class="br-pie-card"><div class="card-title">SKU par Cat&eacute;gorie</div><div class="br-chart-sm"><canvas id="chart-sku-cat"></canvas></div></div><div class="card-sub" style="margin-top:12px;line-height:1.6;">Category shares are computed from the raw category series: GMV 32,005 dhs and SKU 193,892 across all categories. The GMV series totals 32,005 against the 32.1K dhs headline above, a gap of roughly 95 dhs, so the shares here describe the categorised portion of the week's GMV. Categories outside the ones tracked above are grouped as Autre.</div></div></div></div>
+  <div class="insight-grid" style="margin-top:24px;"><div class="insight good"><div class="insight-kicker">Les bonnes nouvelles</div><div class="insight-title">Signatures &amp; pipeline commercial</div><div class="insight-body"><div style="margin-bottom: 12px;"><strong>Signatures :</strong><div style="display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px;"><span class="cvr-chip hot">Ayor&eacute;a</span><span class="cvr-chip hot">Celest&eacute;a</span><span class="cvr-chip hot">CHKARTI</span><span class="cvr-chip hot">iblmarket</span><span class="cvr-chip hot">Librairie Al Mobadara</span><span class="cvr-chip hot">Mabokoo</span><span class="cvr-chip hot">mabooko</span><span class="cvr-chip hot">MAICHA KIDS</span><span class="cvr-chip hot">Maison Selora</span><span class="cvr-chip hot">MONTBLANC MAROC</span><span class="cvr-chip hot">NYS COLLECTION</span><span class="cvr-chip hot">SOEUR ET FRERES</span><span class="cvr-chip hot">wabi sabi</span><span class="cvr-chip hot">watewear</span></div></div><div style="margin-bottom: 16px;"><strong>Int&eacute;ress&eacute;s :</strong><div style="display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px;"><span class="tag" style="background: var(--paper-3); color: var(--ink-soft);">VINEZIA</span><span class="tag" style="background: var(--paper-3); color: var(--ink-soft);">Cookmaster</span><span class="tag" style="background: var(--paper-3); color: var(--ink-soft);">Allodeco</span><span class="tag" style="background: var(--paper-3); color: var(--ink-soft);">anfa retail</span><span class="tag" style="background: var(--paper-3); color: var(--ink-soft);">Diko silya</span><span class="tag" style="background: var(--paper-3); color: var(--ink-soft);">Forsa store</span><span class="tag" style="background: var(--paper-3); color: var(--ink-soft);">Galerie optic by yacout</span><span class="tag" style="background: var(--paper-3); color: var(--ink-soft);">Kishga</span><span class="tag" style="background: var(--paper-3); color: var(--ink-soft);">Lixus</span><span class="tag" style="background: var(--paper-3); color: var(--ink-soft);">Petit b&acirc;teau</span><span class="tag" style="background: var(--paper-3); color: var(--ink-soft);">Raza shop</span><span class="tag" style="background: var(--paper-3); color: var(--ink-soft);">rhome</span><span class="tag" style="background: var(--paper-3); color: var(--ink-soft);">Hunkemoller</span><span class="tag" style="background: var(--paper-3); color: var(--ink-soft);">le fumet de l'atlas</span><span class="tag" style="background: var(--paper-3); color: var(--ink-soft);">minek</span><span class="tag" style="background: var(--paper-3); color: var(--ink-soft);">nasamat</span><span class="tag" style="background: var(--paper-3); color: var(--ink-soft);">pikaboo</span><span class="tag" style="background: var(--paper-3); color: var(--ink-soft);">ShopMarocEnLigne</span></div></div><p>Catalogue ads lanc&eacute;. Carrousel ads performent bien : environ 4 euros le CPA.</p></div></div><div class="insight warn"><div class="insight-kicker">A Fixer</div><div class="insight-title">Points en attente</div><div class="insight-body"><ul style="list-style: none; display: flex; flex-direction: column; gap: 10px;"><li>En attente des objectifs AKSAL GROUPE et aussi la grille pour les bonus annuel.</li><li>UX module bunddle &agrave; deployer pour tiers one (sprint prochain).</li><li>Parcours kenzup &agrave; fixer.</li><li>Incubation program avec CRC en attente carte sim (bon de commande &agrave; faire signer).</li><li>Profile particulier toujours pas valid&eacute; par AKWA group, desactivation des stores.</li><li>Outil pour les &eacute;quipes en attente (onedrive, process NDF, moyens generaux....).</li></ul></div></div></div>
 </section>
 <section class="page-section page" id="p-growth">
   <div class="page-label"><span class="chip">Page 02</span> App Growth</div>
@@ -532,7 +531,7 @@ footer a { color: var(--ink); text-decoration: none; font-weight: 500; }
 <footer>
   <div class="footer-inner">
     <div>Wasal &middot; B&amp;R + Marketing Report &middot; Jul 27 &ndash; Aug 2, 2026</div>
-    <div>Data: AppsFlyer, Meta Ads &middot; Sales Team pending</div>
+    <div>Data: Sales Team &middot; AppsFlyer &middot; Meta Ads</div>
   </div>
 </footer>
 <div id="print-view">
@@ -543,13 +542,34 @@ footer a { color: var(--ink); text-decoration: none; font-weight: 500; }
 <div class="pv-subtitle">Week 31 &middot; Business &amp; Revenue &middot; Source: Sales team</div>
 
 <div class="pv-section-label">Business &amp; Revenue</div>
-<div class="pv-note-box warn"><div class="t">Data pending</div><p>No GMV, SKU/Brands/Sellers, Sales Goal, CRR, or AOV figures had been submitted by the Sales team at the time this report was generated.</p></div>
+<div class="pv-kpi-grid"><div class="pv-kpi"><div class="l">GMV Week</div><div class="v">32.1K dhs</div></div><div class="pv-kpi"><div class="l">SKU</div><div class="v">+1,879</div><div class="s">Total 193.6K</div></div><div class="pv-kpi"><div class="l">Brands</div><div class="v">+35</div><div class="s">Total 5,626</div></div><div class="pv-kpi"><div class="l">Sellers</div><div class="v">+12</div><div class="s">Total 679</div></div><div class="pv-kpi"><div class="l">Sales Goal (GMV)</div><div class="v">12,8%</div></div><div class="pv-kpi"><div class="l">CRR</div><div class="v">0,88%</div></div><div class="pv-kpi"><div class="l">AOV &middot; WoW</div><div class="v">357 DHS</div><div class="s">Prior: 314 DHS</div></div><div class="pv-kpi"><div class="l">Gross Orders</div><div class="v">116</div></div></div>
 
-<div class="pv-section-label">Top Sellers &amp; Category Mix</div>
-<div class="pv-note-box warn"><div class="t">Data pending</div><p>No top sellers ranking or GMV/SKU category mix had been submitted at the time this report was generated.</p></div>
+<div class="pv-section-label">Top Sellers (GMV)</div>
+<div class="pv-bars compact"><div class="pv-bar-row"><div class="name">BEAUTY MALL</div><div class="track"><div class="fill" style="width:100.0%"></div></div><div class="val">4,203</div></div><div class="pv-bar-row"><div class="name">ESHOPMAROC</div><div class="track"><div class="fill" style="width:48.5%"></div></div><div class="val">2,040</div></div><div class="pv-bar-row"><div class="name">NIKE</div><div class="track"><div class="fill" style="width:37.8%"></div></div><div class="val">1,589</div></div><div class="pv-bar-row"><div class="name">HAVAINANAS</div><div class="track"><div class="fill" style="width:33.7%"></div></div><div class="val">1,416</div></div><div class="pv-bar-row"><div class="name">THUNDERSHOP</div><div class="track"><div class="fill" style="width:32.5%"></div></div><div class="val">1,365</div></div><div class="pv-bar-row"><div class="name">E SELECT</div><div class="track"><div class="fill" style="width:24.7%"></div></div><div class="val">1,038</div></div><div class="pv-bar-row"><div class="name">BIENDELL</div><div class="track"><div class="fill" style="width:22.9%"></div></div><div class="val">963</div></div><div class="pv-bar-row"><div class="name">TAURUS</div><div class="track"><div class="fill" style="width:22.1%"></div></div><div class="val">928</div></div><div class="pv-bar-row"><div class="name">MAROC VITAMINE</div><div class="track"><div class="fill" style="width:22.1%"></div></div><div class="val">928</div></div></div>
+
+<div class="pv-section-label">Category Mix</div>
+<div class="pv-pie-row"><div class="pv-pie-card"><div class="t">GMV par Cat&eacute;gorie</div><div class="pv-pie-wrap"><div class="pv-pie" style="background: conic-gradient(#00c4cc 0.0% 36.8%, #00a3ff 36.8% 70.4%, #5b5fff 70.4% 79.0%, #7b61ff 79.0% 87.0%, #8b3dff 87.0% 94.5%, #00d9a3 94.5% 98.9%, #ffb020 98.9% 100.0%);"></div><span class="pv-pie-label" style="left:103.5px;top:49.5px;">36.8%</span><span class="pv-pie-label" style="left:56.8px;top:105.9px;">33.6%</span><span class="pv-pie-label" style="left:25.0px;top:66.7px;">8.6%</span><span class="pv-pie-label" style="left:30.1px;top:46.2px;">8.0%</span><span class="pv-pie-label" style="left:43.4px;top:31.8px;">7.5%</span></div><div class="pv-pie-legend"><span><i style="background:#00c4cc"></i>Beaut&eacute; 36.8%</span><span><i style="background:#00a3ff"></i>Tech 33.6%</span><span><i style="background:#5b5fff"></i>Maison 8.6%</span><span><i style="background:#7b61ff"></i>Sport 8.0%</span><span><i style="background:#8b3dff"></i>Fashion femme 7.5%</span><span><i style="background:#00d9a3"></i>Homme 4.4%</span><span><i style="background:#ffb020"></i>Autre 1.1%</span></div></div><div class="pv-pie-card"><div class="t">SKU par Cat&eacute;gorie</div><div class="pv-pie-wrap"><div class="pv-pie" style="background: conic-gradient(#00c4cc 0.0% 40.3%, #00a3ff 40.3% 51.7%, #5b5fff 51.7% 62.6%, #7b61ff 62.6% 73.1%, #8b3dff 73.1% 79.1%, #00d9a3 79.1% 84.1%, #ffb020 84.1% 100.0%);"></div><span class="pv-pie-label" style="left:105.1px;top:53.7px;">40.3%</span><span class="pv-pie-label" style="left:76.2px;top:105.7px;">11.3%</span><span class="pv-pie-label" style="left:48.2px;top:103.0px;">10.9%</span><span class="pv-pie-label" style="left:29.1px;top:83.8px;">10.5%</span><span class="pv-pie-label" style="left:25.1px;top:63.2px;">6.0%</span><span class="pv-pie-label" style="left:46.3px;top:30.0px;">15.9%</span></div><div class="pv-pie-legend"><span><i style="background:#00c4cc"></i>Beaut&eacute; 40.3%</span><span><i style="background:#00a3ff"></i>Tech 11.3%</span><span><i style="background:#5b5fff"></i>Maison 10.9%</span><span><i style="background:#7b61ff"></i>Fashion 10.5%</span><span><i style="background:#8b3dff"></i>Jardinage et bricolage 6.0%</span><span><i style="background:#00d9a3"></i>Culture &amp; Loisirs 5.0%</span><span><i style="background:#ffb020"></i>Autre 15.9%</span></div></div></div>
 
 <div class="pv-section-label">Sales Team Notes</div>
-<div class="pv-note-box warn"><div class="t">Data pending</div><p>No &quot;Les bonnes nouvelles&quot; or &quot;A Fixer&quot; notes had been submitted at the time this report was generated.</p></div>
+<div class="pv-two-col">
+  <div class="pv-note-box good">
+    <div class="t">Les bonnes nouvelles</div>
+    <p><strong>Signatures :</strong> Ayor&eacute;a, Celest&eacute;a, CHKARTI, iblmarket, Librairie Al Mobadara, Mabokoo, mabooko, MAICHA KIDS, Maison Selora, MONTBLANC MAROC, NYS COLLECTION, SOEUR ET FRERES, wabi sabi, watewear.<br>
+    <strong>Int&eacute;ress&eacute;s :</strong> VINEZIA, Cookmaster, Allodeco, anfa retail, Diko silya, Forsa store, Galerie optic by yacout, Kishga, Lixus, Petit b&acirc;teau, Raza shop, rhome, Hunkemoller, le fumet de l'atlas, minek, nasamat, pikaboo, ShopMarocEnLigne.<br>
+    Catalogue ads lanc&eacute;. Carrousel ads performent bien : environ 4 euros le CPA.</p>
+  </div>
+  <div class="pv-note-box warn">
+    <div class="t">A Fixer</div>
+    <ul>
+      <li>En attente des objectifs AKSAL GROUPE et aussi la grille pour les bonus annuel</li>
+      <li>UX module bunddle &agrave; deployer pour tiers one (sprint prochain)</li>
+      <li>Parcours kenzup &agrave; fixer</li>
+      <li>Incubation program avec CRC en attente carte sim (bon de commande &agrave; faire signer)</li>
+      <li>Profile particulier toujours pas valid&eacute; par AKWA group, desactivation des stores</li>
+      <li>Outil pour les &eacute;quipes en attente (onedrive, process NDF, moyens generaux....)</li>
+    </ul>
+  </div>
+</div>
 </div>
 
 <div class="pv-page">
@@ -615,6 +635,13 @@ footer a { color: var(--ink); text-decoration: none; font-weight: 500; }
 var adsNames = ["High-Tech & Audio", "Loisirs & Plein Air", "Soins & Beauté", "Mode Homme", "DPA Shoppers"];
 var adsClicks = [378, 163, 299, 84, 612];
 var adsCtr = [1.57, 1.73, 1.53, 1.82, 2.08];
+var topSellerNames = ["BEAUTY MALL", "ESHOPMAROC", "NIKE", "HAVAINANAS", "THUNDERSHOP", "E SELECT", "BIENDELL", "TAURUS", "MAROC VITAMINE"];
+var topSellerValues = [4203, 2040, 1589, 1416, 1365, 1038, 963, 928, 928];
+var gmvCatLabels = ["Beaute", "Tech", "Maison", "Sport", "Fashion femme", "Homme", "Autre"];
+var gmvCatValues = [36.8, 33.6, 8.6, 8.0, 7.5, 4.4, 1.1];
+var skuCatLabels = ["Beaute", "Tech", "Maison", "Fashion", "Jardinage et bricolage", "Culture & Loisirs", "Autre"];
+var skuCatValues = [40.3, 11.3, 10.9, 10.5, 6.0, 5.0, 15.9];
+var salesGoalPct = 12.8;
 
 Chart.register(ChartDataLabels);
 Chart.defaults.font.family = "'Bricolage Grotesque', sans-serif";
@@ -622,7 +649,8 @@ Chart.defaults.font.size = 11;
 Chart.defaults.color = '#6b7388';
 Chart.defaults.borderColor = '#e3e8f0';
 
-var cTeal = '#00c4cc', cBlue = '#00a3ff', cViolet = '#7b61ff';
+var cTeal = '#00c4cc', cBlue = '#00a3ff', cIndigo = '#5b5fff', cViolet = '#7b61ff', cPurple = '#8b3dff';
+var palette = [cTeal, cBlue, cIndigo, cViolet, cPurple, '#00d9a3', '#ffb020'];
 
 function linGrad(ctx, stops, vertical) {
   var area = ctx.chart.chartArea || { top: 0, bottom: 300, left: 0, right: 400 };
@@ -638,6 +666,94 @@ function safeChart(id, config) {
   if (!el) return null;
   return new Chart(el, config);
 }
+
+safeChart('chart-sales-goal', {
+  type: 'doughnut',
+  data: {
+    datasets: [{
+      data: [salesGoalPct, 100 - salesGoalPct],
+      backgroundColor: [cTeal, '#eef2f9'],
+      borderWidth: 0
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    circumference: 180, rotation: 270, cutout: '72%',
+    plugins: { legend: { display: false }, tooltip: { enabled: false } }
+  }
+});
+
+safeChart('chart-top-sellers', {
+  type: 'bar',
+  data: {
+    labels: topSellerNames,
+    datasets: [{
+      data: topSellerValues,
+      backgroundColor: function(ctx) { return linGrad(ctx, [[0, cTeal], [0.5, cBlue], [1, cViolet]], false); },
+      borderRadius: 6,
+      barThickness: 16
+    }]
+  },
+  options: {
+    indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+    layout: { padding: { right: 46 } },
+    plugins: {
+      legend: { display: false },
+      tooltip: { backgroundColor: '#0a1226', padding: 10, cornerRadius: 10, displayColors: false,
+        callbacks: { label: function(c) { return c.parsed.x.toLocaleString() + ' dhs'; } } },
+      datalabels: {
+        anchor: 'end', align: 'right', color: '#0a1226', font: { weight: '700', size: 10 },
+        formatter: function(v) { return v.toLocaleString(); }
+      }
+    },
+    scales: {
+      x: { grid: { color: '#e3e8f0' }, ticks: { font: { size: 10 } } },
+      y: { grid: { display: false }, ticks: { font: { size: 11, weight: '500' } } }
+    }
+  }
+});
+
+safeChart('chart-gmv-cat', {
+  type: 'pie',
+  data: {
+    labels: gmvCatLabels,
+    datasets: [{ data: gmvCatValues, backgroundColor: palette, borderWidth: 2, borderColor: '#fff' }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'bottom', labels: { boxWidth: 9, font: { size: 9 }, padding: 8 } },
+      tooltip: { backgroundColor: '#0a1226', padding: 10, cornerRadius: 10,
+        callbacks: { label: function(c) { return c.label + ': ' + c.parsed + '%'; } } },
+      datalabels: {
+        display: 'auto',
+        color: '#fff', font: { weight: '700', size: 10 },
+        formatter: function(v) { return v < 5 ? null : v + '%'; }
+      }
+    }
+  }
+});
+
+safeChart('chart-sku-cat', {
+  type: 'pie',
+  data: {
+    labels: skuCatLabels,
+    datasets: [{ data: skuCatValues, backgroundColor: palette, borderWidth: 2, borderColor: '#fff' }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'bottom', labels: { boxWidth: 9, font: { size: 9 }, padding: 8 } },
+      tooltip: { backgroundColor: '#0a1226', padding: 10, cornerRadius: 10,
+        callbacks: { label: function(c) { return c.label + ': ' + c.parsed + '%'; } } },
+      datalabels: {
+        display: 'auto',
+        color: '#fff', font: { weight: '700', size: 10 },
+        formatter: function(v) { return v < 5 ? null : v + '%'; }
+      }
+    }
+  }
+});
 
 safeChart('chart-ads-clicks', {
   type: 'bar',
