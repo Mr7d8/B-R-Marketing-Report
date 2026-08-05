@@ -7,6 +7,8 @@
 <link rel="icon" type="image/png" href="/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
 <style>
 :root {
   --c-teal: #00c4cc;
@@ -161,6 +163,7 @@ h3.display-m { font-size: clamp(22px, 2.6vw, 32px); line-height: 1.1; letter-spa
 .tag.story { background: rgba(123,97,255,.12); color: var(--c-violet); }
 .tag.carousel { background: rgba(0,196,204,.12); color: #008b92; }
 .tag.capsule { background: rgba(0,163,255,.1); color: var(--c-blue); }
+.tag.dpa { background: rgba(123,97,255,.12); color: var(--c-violet); }
 .metric-cell { text-align: right; }
 .metric-big { font-size: 20px; font-weight: 700; letter-spacing: -.02em; color: var(--ink); }
 .metric-lbl { font-size: 10px; color: var(--ink-mute); letter-spacing: .08em; text-transform: uppercase; margin-top: 2px; font-weight: 500; }
@@ -430,7 +433,7 @@ footer a { color: var(--ink); text-decoration: none; font-weight: 500; }
   <div class="cover-inner">
     <div class="cover-kicker">Weekly Report &middot; Week 31</div>
     <h1 class="display-xl">B&amp;R + <span class="grad">Marketing</span> Report</h1>
-    <p class="lede">Business &amp; Revenue, App Growth, Overview &amp; Ops, and Top 5 Meta Ads for Wasal, covering Jul 27 &ndash; Aug 2, 2026. App Growth is filled in from AppsFlyer; Business &amp; Revenue, Overview &amp; Ops, and Top 5 Ads are pending source data.</p>
+    <p class="lede">Business &amp; Revenue, App Growth, Overview &amp; Ops, and Top 5 Meta Ads for Wasal, covering Jul 27 &ndash; Aug 2, 2026. App Growth and Top 5 Ads are filled in from AppsFlyer and Meta Ads; Business &amp; Revenue and Overview &amp; Ops are pending source data.</p>
     <div class="cover-meta">
       <div class="cover-meta-item">
         <div class="label">Period</div>
@@ -442,7 +445,7 @@ footer a { color: var(--ink); text-decoration: none; font-weight: 500; }
       </div>
       <div class="cover-meta-item">
         <div class="label">Data Sources</div>
-        <div class="value">AppsFlyer<span class="sub">Sales Team &middot; Meta Ads pending</span></div>
+        <div class="value">AppsFlyer, Meta Ads<span class="sub">Sales Team pending</span></div>
       </div>
       <div class="cover-meta-item">
         <div class="label">Prepared For</div>
@@ -505,15 +508,28 @@ footer a { color: var(--ink); text-decoration: none; font-weight: 500; }
 <section class="page-section page" id="p-topads">
   <div class="page-label"><span class="chip">Page 04</span> Top 5 Ads</div>
   <h2 class="display-l">Top 5 <span class="grad">Ads</span></h2>
-  <p class="lede">Best performing Meta Ads by results, Jul 27 &ndash; Aug 2, 2026. No Meta Ads data received yet for this week.</p>
+  <p class="lede">Best performing Meta Ads by results, Jul 27 &ndash; Aug 2, 2026. Ad account 1737134693101957. Four are catalog carousel ads on a Website purchases objective; ad set names disambiguate the two both literally named &quot;CRSL - 1&quot;. The fifth is this week's Dynamic Product Ads (DPA) line, the single largest spend item but with zero attributed website purchases in this window, so its Cost/Result reads n/a.</p>
 
-  <div class="skeleton-card" style="min-height:220px;display:flex;flex-direction:column;justify-content:center;"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="color:var(--ink-fade);margin:0 auto;"><rect x="3" y="4" width="18" height="16" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M7 9h10M7 13h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><div class="sk-label">Data pending</div><div class="sk-field">Top 5 Ads Ranking &amp; Charts</div></div>
+  <div class="ranking funnel-ranking"><div class="ranking-row header"><div>#</div><div>Creative</div><div>Ad</div><div>Spend</div><div>Impressions</div><div>Clicks</div><div>CTR</div><div>Cost/Result</div><div>Results</div></div><div class="ranking-row"><div class="rank-num top1">1</div><div class="rank-thumb" data-lb-src="https://res.cloudinary.com/dm49t65oz/image/upload/v1785925607/wasal-bnr-report/w31/crsl-1-hightech-audio.png" data-lb-title="CRSL - 1, High-Tech &amp; Audio" data-lb-stats="Spend &euro;20.50 &middot; Results 6"><img src="https://res.cloudinary.com/dm49t65oz/image/upload/v1785925607/wasal-bnr-report/w31/crsl-1-hightech-audio.png" alt="CRSL - 1, High-Tech &amp; Audio" loading="lazy"></div><div><div class="rank-title">CRSL - 1 &middot; High-Tech &amp; Audio</div><div class="rank-meta"><span class="tag carousel">Carousel</span><span>Website purchases</span></div></div><div class="metric-cell"><div class="metric-big">&euro;20.50</div><div class="metric-lbl">Spend</div></div><div class="metric-cell"><div class="metric-big">24,074</div><div class="metric-lbl">Impr.</div></div><div class="metric-cell"><div class="metric-big">378</div><div class="metric-lbl">Clicks</div></div><div class="metric-cell"><span class="cvr-chip hot">1.57%</span></div><div class="metric-cell"><div class="metric-big">&euro;3.42</div><div class="metric-lbl">Cost/Result</div></div><div class="metric-cell"><div class="metric-big">6</div><div class="metric-lbl">Results</div></div></div><div class="ranking-row"><div class="rank-num top3">2</div><div class="rank-thumb" data-lb-src="https://res.cloudinary.com/dm49t65oz/image/upload/v1785925657/wasal-bnr-report/w31/crsl-1-loisirs-plein-air.png" data-lb-title="CRSL - 1, Loisirs &amp; Plein Air" data-lb-stats="Spend &euro;16.92 &middot; Results 6"><img src="https://res.cloudinary.com/dm49t65oz/image/upload/v1785925657/wasal-bnr-report/w31/crsl-1-loisirs-plein-air.png" alt="CRSL - 1, Loisirs &amp; Plein Air" loading="lazy"></div><div><div class="rank-title">CRSL - 1 &middot; Loisirs &amp; Plein Air</div><div class="rank-meta"><span class="tag carousel">Carousel</span><span>Website purchases</span></div></div><div class="metric-cell"><div class="metric-big">&euro;16.92</div><div class="metric-lbl">Spend</div></div><div class="metric-cell"><div class="metric-big">9,408</div><div class="metric-lbl">Impr.</div></div><div class="metric-cell"><div class="metric-big">163</div><div class="metric-lbl">Clicks</div></div><div class="metric-cell"><span class="cvr-chip hot">1.73%</span></div><div class="metric-cell"><div class="metric-big">&euro;2.82</div><div class="metric-lbl">Cost/Result</div></div><div class="metric-cell"><div class="metric-big">6</div><div class="metric-lbl">Results</div></div></div><div class="ranking-row"><div class="rank-num top3">3</div><div class="rank-thumb" data-lb-src="https://res.cloudinary.com/dm49t65oz/image/upload/v1785925617/wasal-bnr-report/w31/crsl-3-soins-beaute.jpg" data-lb-title="CRSL - 3, Soins &amp; Beaut&eacute;" data-lb-stats="Spend &euro;21.28 &middot; Results 3"><img src="https://res.cloudinary.com/dm49t65oz/image/upload/v1785925617/wasal-bnr-report/w31/crsl-3-soins-beaute.jpg" alt="CRSL - 3, Soins &amp; Beaut&eacute;" loading="lazy"></div><div><div class="rank-title">CRSL - 3 &middot; Soins &amp; Beaut&eacute;</div><div class="rank-meta"><span class="tag carousel">Carousel</span><span>Website purchases</span></div></div><div class="metric-cell"><div class="metric-big">&euro;21.28</div><div class="metric-lbl">Spend</div></div><div class="metric-cell"><div class="metric-big">19,576</div><div class="metric-lbl">Impr.</div></div><div class="metric-cell"><div class="metric-big">299</div><div class="metric-lbl">Clicks</div></div><div class="metric-cell"><span class="cvr-chip hot">1.53%</span></div><div class="metric-cell"><div class="metric-big">&euro;7.09</div><div class="metric-lbl">Cost/Result</div></div><div class="metric-cell"><div class="metric-big">3</div><div class="metric-lbl">Results</div></div></div><div class="ranking-row"><div class="rank-num ">4</div><div class="rank-thumb" data-lb-src="https://res.cloudinary.com/dm49t65oz/image/upload/v1785925623/wasal-bnr-report/w31/crsl-2-mode-homme.png" data-lb-title="CRSL - 2, Mode Homme" data-lb-stats="Spend &euro;7.05 &middot; Results 3"><img src="https://res.cloudinary.com/dm49t65oz/image/upload/v1785925623/wasal-bnr-report/w31/crsl-2-mode-homme.png" alt="CRSL - 2, Mode Homme" loading="lazy"></div><div><div class="rank-title">CRSL - 2 &middot; Mode Homme</div><div class="rank-meta"><span class="tag carousel">Carousel</span><span>Website purchases</span></div></div><div class="metric-cell"><div class="metric-big">&euro;7.05</div><div class="metric-lbl">Spend</div></div><div class="metric-cell"><div class="metric-big">4,623</div><div class="metric-lbl">Impr.</div></div><div class="metric-cell"><div class="metric-big">84</div><div class="metric-lbl">Clicks</div></div><div class="metric-cell"><span class="cvr-chip hot">1.82%</span></div><div class="metric-cell"><div class="metric-big">&euro;2.35</div><div class="metric-lbl">Cost/Result</div></div><div class="metric-cell"><div class="metric-big">3</div><div class="metric-lbl">Results</div></div></div><div class="ranking-row"><div class="rank-num ">5</div><div class="rank-thumb" data-lb-src="https://res.cloudinary.com/dm49t65oz/image/upload/v1785925631/wasal-bnr-report/w31/dpa-shoppers.png" data-lb-title="DPA, WASAL Shoppers" data-lb-stats="Spend &euro;43.72 &middot; Results 0"><img src="https://res.cloudinary.com/dm49t65oz/image/upload/v1785925631/wasal-bnr-report/w31/dpa-shoppers.png" alt="DPA, WASAL Shoppers" loading="lazy"></div><div><div class="rank-title">DPA &middot; WASAL Shoppers</div><div class="rank-meta"><span class="tag dpa">DPA</span><span>Website purchases</span></div></div><div class="metric-cell"><div class="metric-big">&euro;43.72</div><div class="metric-lbl">Spend</div></div><div class="metric-cell"><div class="metric-big">29,374</div><div class="metric-lbl">Impr.</div></div><div class="metric-cell"><div class="metric-big">612</div><div class="metric-lbl">Clicks</div></div><div class="metric-cell"><span class="cvr-chip hot">2.08%</span></div><div class="metric-cell"><div class="metric-big">n/a</div><div class="metric-lbl">Cost/Result</div></div><div class="metric-cell"><div class="metric-big">0</div><div class="metric-lbl">Results</div></div></div></div>
+
+  <div class="two-col-eq" style="margin-top:8px;">
+    <div class="card">
+      <div class="card-title">Clicks by Ad</div>
+      <div class="card-sub">Total clicks, ranked</div>
+      <div class="chart-wrap"><canvas id="chart-ads-clicks"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-title">CTR by Ad</div>
+      <div class="card-sub">Click-through rate, %</div>
+      <div class="chart-wrap"><canvas id="chart-ads-ctr"></canvas></div>
+    </div>
+  </div>
 </section>
 </main>
 <footer>
   <div class="footer-inner">
     <div>Wasal &middot; B&amp;R + Marketing Report &middot; Jul 27 &ndash; Aug 2, 2026</div>
-    <div>Data: AppsFlyer &middot; Sales Team and Meta Ads pending</div>
+    <div>Data: AppsFlyer, Meta Ads &middot; Sales Team pending</div>
   </div>
 </footer>
 <div id="print-view">
@@ -548,7 +564,21 @@ footer a { color: var(--ink); text-decoration: none; font-weight: 500; }
 <p style="font-size:8px;color:var(--ink-mute);margin-top:6px;line-height:1.5;">All stages from the AppsFlyer dashboard (Jul 27 to Aug 2), same source as the KPI tiles. Sessions from the Sessions Actual (Activity) figure; Purchase is af_purchase unique users LTV; Checkout is unique users on the navigate to /checkout event.</p>
 
 <div class="pv-section-label">Top 5 Ads</div>
-<div class="pv-note-box warn"><div class="t">Data pending</div><p>No Meta Ads data had been submitted at the time this report was generated.</p></div>
+<table class="pv-table pv-table-ads">
+  <thead><tr><th>#</th><th></th><th>Ad</th><th class="num">Spend</th><th class="num">Impr.</th><th class="num">Clicks</th><th class="num">CTR</th><th class="num">Cost/Res.</th><th class="num">Results</th></tr></thead>
+  <tbody><tr><td class="rank">1</td><td><img src="https://res.cloudinary.com/dm49t65oz/image/upload/v1785925607/wasal-bnr-report/w31/crsl-1-hightech-audio.png" alt=""></td><td>CRSL - 1 &middot; High-Tech &amp; Audio <span class="mut">&middot; Carousel</span></td><td class="num">&euro;20.50</td><td class="num">24,074</td><td class="num">378</td><td class="num">1.57%</td><td class="num">&euro;3.42</td><td class="num">6</td></tr><tr><td class="rank">2</td><td><img src="https://res.cloudinary.com/dm49t65oz/image/upload/v1785925657/wasal-bnr-report/w31/crsl-1-loisirs-plein-air.png" alt=""></td><td>CRSL - 1 &middot; Loisirs &amp; Plein Air <span class="mut">&middot; Carousel</span></td><td class="num">&euro;16.92</td><td class="num">9,408</td><td class="num">163</td><td class="num">1.73%</td><td class="num">&euro;2.82</td><td class="num">6</td></tr><tr><td class="rank">3</td><td><img src="https://res.cloudinary.com/dm49t65oz/image/upload/v1785925617/wasal-bnr-report/w31/crsl-3-soins-beaute.jpg" alt=""></td><td>CRSL - 3 &middot; Soins &amp; Beaut&eacute; <span class="mut">&middot; Carousel</span></td><td class="num">&euro;21.28</td><td class="num">19,576</td><td class="num">299</td><td class="num">1.53%</td><td class="num">&euro;7.09</td><td class="num">3</td></tr><tr><td class="rank">4</td><td><img src="https://res.cloudinary.com/dm49t65oz/image/upload/v1785925623/wasal-bnr-report/w31/crsl-2-mode-homme.png" alt=""></td><td>CRSL - 2 &middot; Mode Homme <span class="mut">&middot; Carousel</span></td><td class="num">&euro;7.05</td><td class="num">4,623</td><td class="num">84</td><td class="num">1.82%</td><td class="num">&euro;2.35</td><td class="num">3</td></tr><tr><td class="rank">5</td><td><img src="https://res.cloudinary.com/dm49t65oz/image/upload/v1785925631/wasal-bnr-report/w31/dpa-shoppers.png" alt=""></td><td>DPA &middot; WASAL Shoppers <span class="mut">&middot; DPA</span></td><td class="num">&euro;43.72</td><td class="num">29,374</td><td class="num">612</td><td class="num">2.08%</td><td class="num">n/a</td><td class="num">0</td></tr></tbody>
+</table>
+
+<div class="pv-pie-row" style="margin-top:12px;">
+  <div>
+    <div class="pv-mini-chart-title">Clicks by ad</div>
+    <div class="pv-bars compact small"><div class="pv-bar-row"><div class="name">DPA Shoppers</div><div class="track"><div class="fill" style="width:100.0%"></div></div><div class="val">612</div></div><div class="pv-bar-row"><div class="name">High-Tech & Audio</div><div class="track"><div class="fill" style="width:61.8%"></div></div><div class="val">378</div></div><div class="pv-bar-row"><div class="name">Soins & Beaut&eacute;</div><div class="track"><div class="fill" style="width:48.9%"></div></div><div class="val">299</div></div><div class="pv-bar-row"><div class="name">Loisirs & Plein Air</div><div class="track"><div class="fill" style="width:26.6%"></div></div><div class="val">163</div></div><div class="pv-bar-row"><div class="name">Mode Homme</div><div class="track"><div class="fill" style="width:13.7%"></div></div><div class="val">84</div></div></div>
+  </div>
+  <div>
+    <div class="pv-mini-chart-title">CTR by ad</div>
+    <div class="pv-bars compact small"><div class="pv-bar-row"><div class="name">DPA Shoppers</div><div class="track"><div class="fill" style="width:100.0%"></div></div><div class="val">2.08%</div></div><div class="pv-bar-row"><div class="name">Mode Homme</div><div class="track"><div class="fill" style="width:87.5%"></div></div><div class="val">1.82%</div></div><div class="pv-bar-row"><div class="name">Loisirs & Plein Air</div><div class="track"><div class="fill" style="width:83.2%"></div></div><div class="val">1.73%</div></div><div class="pv-bar-row"><div class="name">High-Tech & Audio</div><div class="track"><div class="fill" style="width:75.5%"></div></div><div class="val">1.57%</div></div><div class="pv-bar-row"><div class="name">Soins & Beaut&eacute;</div><div class="track"><div class="fill" style="width:73.6%"></div></div><div class="val">1.53%</div></div></div>
+  </div>
+</div>
 
 </div>
 
@@ -579,6 +609,91 @@ footer a { color: var(--ink); text-decoration: none; font-weight: 500; }
   </div>
 </div>
 <script>
+var adsNames = ["High-Tech & Audio", "Loisirs & Plein Air", "Soins & Beauté", "Mode Homme", "DPA Shoppers"];
+var adsClicks = [378, 163, 299, 84, 612];
+var adsCtr = [1.57, 1.73, 1.53, 1.82, 2.08];
+
+Chart.register(ChartDataLabels);
+Chart.defaults.font.family = "'Bricolage Grotesque', sans-serif";
+Chart.defaults.font.size = 11;
+Chart.defaults.color = '#6b7388';
+Chart.defaults.borderColor = '#e3e8f0';
+
+var cTeal = '#00c4cc', cBlue = '#00a3ff', cViolet = '#7b61ff';
+
+function linGrad(ctx, stops, vertical) {
+  var area = ctx.chart.chartArea || { top: 0, bottom: 300, left: 0, right: 400 };
+  var g = vertical
+    ? ctx.chart.ctx.createLinearGradient(0, area.top, 0, area.bottom)
+    : ctx.chart.ctx.createLinearGradient(area.left, 0, area.right, 0);
+  stops.forEach(function(s) { g.addColorStop(s[0], s[1]); });
+  return g;
+}
+
+function safeChart(id, config) {
+  var el = document.getElementById(id);
+  if (!el) return null;
+  return new Chart(el, config);
+}
+
+safeChart('chart-ads-clicks', {
+  type: 'bar',
+  data: {
+    labels: adsNames,
+    datasets: [{
+      data: adsClicks,
+      backgroundColor: function(ctx) { return linGrad(ctx, [[0, cTeal], [0.5, cBlue], [1, cViolet]], false); },
+      borderRadius: 6,
+      barThickness: 18
+    }]
+  },
+  options: {
+    indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+    layout: { padding: { right: 46 } },
+    plugins: {
+      legend: { display: false },
+      tooltip: { backgroundColor: '#0a1226', padding: 10, cornerRadius: 10, displayColors: false },
+      datalabels: {
+        anchor: 'end', align: 'right', color: '#0a1226', font: { weight: '700', size: 10 },
+        formatter: function(v) { return v.toLocaleString(); }
+      }
+    },
+    scales: {
+      x: { grid: { color: '#e3e8f0' }, ticks: { font: { size: 10 } } },
+      y: { grid: { display: false }, ticks: { font: { size: 11, weight: '500' } } }
+    }
+  }
+});
+
+safeChart('chart-ads-ctr', {
+  type: 'bar',
+  data: {
+    labels: adsNames,
+    datasets: [{
+      data: adsCtr,
+      backgroundColor: function(ctx) { return linGrad(ctx, [[0, cTeal], [0.5, cBlue], [1, cViolet]], false); },
+      borderRadius: 6,
+      barThickness: 18
+    }]
+  },
+  options: {
+    indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+    layout: { padding: { right: 46 } },
+    plugins: {
+      legend: { display: false },
+      tooltip: { backgroundColor: '#0a1226', padding: 10, cornerRadius: 10, displayColors: false },
+      datalabels: {
+        anchor: 'end', align: 'right', color: '#0a1226', font: { weight: '700', size: 10 },
+        formatter: function(v) { return v + '%'; }
+      }
+    },
+    scales: {
+      x: { grid: { color: '#e3e8f0' }, ticks: { font: { size: 10 } } },
+      y: { grid: { display: false }, ticks: { font: { size: 11, weight: '500' } } }
+    }
+  }
+});
+
 /* nav scroll-spy */
 var sections = document.querySelectorAll('.page-section, .cover-page');
 var navLinks = document.querySelectorAll('.masthead nav a');
