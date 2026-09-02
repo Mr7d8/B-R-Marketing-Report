@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wasal B&amp;R + Marketing Report - Week 35</title>
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+<style>
+:root {
+  --c-teal: #00c4cc;
+  --c-blue: #00a3ff;
+  --c-indigo: #5b5fff;
+  --c-violet: #7b61ff;
+  --c-purple: #8b3dff;
+  --gradient: linear-gradient(135deg, #00c4cc 0%, #00a3ff 40%, #5b5fff 75%, #7b61ff 100%);
+  --gradient-h: linear-gradient(90deg, #00c4cc 0%, #00a3ff 40%, #5b5fff 75%, #7b61ff 100%);
+  --gradient-soft: linear-gradient(135deg, rgba(0,196,204,.08) 0%, rgba(0,163,255,.08) 50%, rgba(123,97,255,.08) 100%);
+
+  --ink: #0a1226;
+  --ink-soft: #3d455c;
+  --ink-mute: #6b7388;
+  --ink-fade: #a6adbf;
+  --paper: #ffffff;
+  --paper-2: #f7f9fd;
+  --paper-3: #eef2f9;
+  --line: #e3e8f0;
+
+  --good: #10b981;
+  --warn: #f59e0b;
+  --bad:  #ef4444;
+
+  --shadow: 0 1px 2px rgba(10,18,38,.04), 0 4px 12px rgba(10,18,38,.04);
+  --shadow-lift: 0 2px 4px rgba(10,18,38,.04), 0 12px 32px rgba(10,18,38,.06);
+  --shadow-pop: 0 6px 24px rgba(0,163,255,.18), 0 2px 6px rgba(10,18,38,.05);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Bricolage Grotesque', system-ui, sans-serif;
+  color: var(--ink);
+  background: var(--paper-2);
+  font-size: 15px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  font-optical-sizing: auto;
+}
+
+/* NAV */
+.masthead {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(255,255,255,.85);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--line);
+}
+.masthead-inner {
+  max-width: 1240px; margin: 0 auto;
+  padding: 14px 32px;
+  display: flex; justify-content: space-between; align-items: center; gap: 20px;
+}
+.brand-lock { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 14px; letter-spacing: -.01em; }
+.brand-dot {
+  width: 26px; height: 26px; border-radius: 8px; background: var(--gradient);
+  box-shadow: var(--shadow-pop); display: flex; align-items: center; justify-content: center;
+  color: white; font-weight: 700; font-size: 13px;
+}
+.masthead nav { display: flex; gap: 4px; }
+.masthead nav a { padding: 8px 14px; border-radius: 100px; text-decoration: none; color: var(--ink-soft); font-size: 13px; font-weight: 500; transition: all .2s; }
+.masthead nav a:hover { background: var(--paper-3); color: var(--ink); }
+.masthead nav a.active { background: var(--ink); color: white; }
+.print-btn {
+  font-family: inherit; background: var(--gradient); color: white; border: none;
+  padding: 9px 18px; border-radius: 100px; font-size: 13px; font-weight: 600;
+  cursor: pointer; box-shadow: var(--shadow-pop); transition: transform .2s;
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.print-btn:hover { transform: translateY(-1px); }
+
+/* LAYOUT */
+.page { max-width: 1240px; margin: 0 auto; padding: 0 32px; }
+.page-section { padding: 96px 0 64px; min-height: 100vh; position: relative; }
+.page-section + .page-section { border-top: 1px solid var(--line); }
+
+.page-label {
+  display: inline-flex; align-items: center; gap: 12px; padding: 6px 14px 6px 6px;
+  border-radius: 100px; background: var(--paper); border: 1px solid var(--line);
+  font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-mute);
+  font-weight: 600; margin-bottom: 28px; box-shadow: var(--shadow);
+}
+.page-label .chip { background: var(--gradient); color: white; padding: 3px 10px; border-radius: 100px; font-size: 11px; letter-spacing: .08em; }
+
+/* TYPOGRAPHY */
+.display-xl { font-size: clamp(48px, 7vw, 88px); line-height: .96; letter-spacing: -.035em; font-weight: 600; max-width: 1000px; }
+.display-xl .grad, h2.display-l .grad {
+  background: var(--gradient-h); -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+h2.display-l { font-size: clamp(36px, 5vw, 60px); line-height: 1; letter-spacing: -.03em; font-weight: 600; max-width: 900px; margin-bottom: 16px; }
+h3.display-m { font-size: clamp(22px, 2.6vw, 32px); line-height: 1.1; letter-spacing: -.02em; font-weight: 600; }
+.lede { font-size: 18px; line-height: 1.55; color: var(--ink-soft); max-width: 760px; margin-bottom: 40px; }
+
+/* COVER */
+.cover-page { padding: 56px 0 80px; position: relative; overflow: hidden; }
+.cover-page::before { content: ""; position: absolute; top: -180px; right: -180px; width: 820px; height: 820px; background: radial-gradient(circle, rgba(0,163,255,.18) 0%, rgba(123,97,255,.08) 40%, transparent 70%); pointer-events: none; z-index: 0; }
+.cover-page::after { content: ""; position: absolute; bottom: -200px; left: -200px; width: 600px; height: 600px; background: radial-gradient(circle, rgba(0,196,204,.14) 0%, transparent 65%); pointer-events: none; z-index: 0; }
+.cover-inner { position: relative; z-index: 1; }
+.cover-kicker {
+  display: inline-flex; align-items: center; gap: 12px; padding: 8px 18px;
+  background: var(--paper); border: 1px solid var(--line); border-radius: 100px;
+  margin-bottom: 36px; box-shadow: var(--shadow); font-size: 12px; letter-spacing: .05em; font-weight: 500; color: var(--ink-soft);
+}
+.cover-kicker::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--c-blue); box-shadow: 0 0 0 4px rgba(0,163,255,.2); animation: pulse 2s infinite; }
+@keyframes pulse { 0%, 100% { box-shadow: 0 0 0 4px rgba(0,163,255,.2); } 50% { box-shadow: 0 0 0 8px rgba(0,163,255,0); } }
+.cover-meta { display: grid; grid-template-columns: repeat(4, 1fr); margin-top: 56px; padding-top: 40px; border-top: 1px solid var(--line); }
+.cover-meta-item { padding-right: 32px; }
+.cover-meta-item + .cover-meta-item { padding-left: 32px; border-left: 1px solid var(--line); }
+.cover-meta-item .label { font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-mute); margin-bottom: 10px; font-weight: 600; }
+.cover-meta-item .value { font-size: 20px; letter-spacing: -.01em; font-weight: 600; line-height: 1.2; }
+.cover-meta-item .value .sub { display: block; font-size: 13px; color: var(--ink-mute); font-weight: 400; margin-top: 2px; }
+
+/* KPI CARDS */
+.kpi-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin: 40px 0 24px; }
+.kpi-card { background: var(--paper); border: 1px solid var(--line); border-radius: 20px; padding: 24px; position: relative; overflow: hidden; box-shadow: var(--shadow); transition: all .3s; }
+.kpi-card:hover { box-shadow: var(--shadow-lift); transform: translateY(-2px); }
+.kpi-card::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--gradient-h); }
+.kpi-card .label { font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-mute); font-weight: 600; margin-bottom: 12px; }
+.kpi-card .value { font-size: 42px; line-height: 1; font-weight: 700; letter-spacing: -.03em; margin-bottom: 8px; background: var(--gradient-h); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.kpi-card .value .unit { font-size: 22px; }
+.kpi-card .sub { font-size: 13px; color: var(--ink-mute); line-height: 1.4; }
+
+/* CARDS */
+.card { background: var(--paper); border: 1px solid var(--line); border-radius: 20px; padding: 28px 28px 24px; box-shadow: var(--shadow); }
+.card-title { font-size: 18px; font-weight: 600; letter-spacing: -.01em; margin-bottom: 4px; }
+.card-sub { font-size: 13px; color: var(--ink-mute); margin-bottom: 20px; }
+
+/* GRID LAYOUTS */
+.two-col { display: grid; grid-template-columns: 1.25fr 1fr; gap: 20px; margin-bottom: 24px; }
+.two-col-eq { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px; }
+.three-col { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.chart-wrap { position: relative; height: 320px; width: 100%; }
+.chart-tall { height: 420px; }
+
+/* RANKING TABLE */
+.ranking { background: var(--paper); border: 1px solid var(--line); border-radius: 20px; overflow: hidden; box-shadow: var(--shadow); margin-bottom: 24px; }
+.ranking-row { display: grid; grid-template-columns: 42px 82px 1fr 104px 104px 104px 110px; gap: 16px; align-items: center; padding: 18px 22px; border-bottom: 1px solid var(--line); transition: background .15s; }
+.ranking-row:last-child { border-bottom: none; }
+.ranking-row:hover { background: var(--paper-2); }
+.ranking-row.header { background: var(--paper-3); padding: 12px 22px; }
+.ranking-row.header > div { font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-mute); font-weight: 600; }
+.rank-num { font-size: 26px; font-weight: 700; letter-spacing: -.02em; color: var(--ink-fade); text-align: center; }
+.rank-num.top3 { background: var(--gradient-h); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.rank-num.top1 { background: var(--gradient); color: white; -webkit-text-fill-color: white; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; font-size: 16px; border-radius: 50%; box-shadow: var(--shadow-pop); margin: 0 auto; }
+.rank-thumb { width: 74px; height: 74px; background: var(--paper-3); border-radius: 12px; overflow: hidden; box-shadow: inset 0 0 0 1px var(--line); cursor: pointer; transition: transform .2s; }
+.rank-thumb:hover { transform: scale(1.04); box-shadow: 0 0 0 2px var(--c-blue); }
+.rank-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.rank-title { font-size: 14px; font-weight: 600; color: var(--ink); line-height: 1.35; margin-bottom: 4px; letter-spacing: -.005em; }
+.rank-meta { font-size: 11px; color: var(--ink-mute); display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.tag { display: inline-block; padding: 3px 10px; border-radius: 100px; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; }
+.tag.reel { background: rgba(0,163,255,.1); color: var(--c-blue); }
+.tag.story { background: rgba(123,97,255,.12); color: var(--c-violet); }
+.tag.carousel { background: rgba(0,196,204,.12); color: #008b92; }
+.tag.capsule { background: rgba(0,163,255,.1); color: var(--c-blue); }
+.tag.dpa { background: rgba(123,97,255,.12); color: var(--c-violet); }
+.metric-cell { text-align: right; }
+.metric-big { font-size: 20px; font-weight: 700; letter-spacing: -.02em; color: var(--ink); }
+.metric-lbl { font-size: 10px; color: var(--ink-mute); letter-spacing: .08em; text-transform: uppercase; margin-top: 2px; font-weight: 500; }
+
+/* FUNNEL RANKING (wider grid for capsule funnel) */
+.funnel-ranking .ranking-row { grid-template-columns: 42px 82px 1fr 86px 86px 66px 62px 88px 92px; }
+.funnel-ranking .ranking-row.header { grid-template-columns: 42px 82px 1fr 86px 86px 66px 62px 88px 92px; }
+
+/* CVR CHIPS */
+.cvr-chip { display: inline-block; padding: 4px 12px; border-radius: 100px; font-weight: 700; font-size: 13px; }
+.cvr-chip.hot { background: rgba(16,185,129,.12); color: var(--good); }
+.cvr-chip.warm { background: rgba(245,158,11,.12); color: var(--warn); }
+.cvr-chip.cold { background: rgba(239,68,68,.1); color: var(--bad); }
+
+/* INSIGHT CARDS */
+.insight-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-top: 24px; }
+.insight-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+.insight { background: var(--paper); border: 1px solid var(--line); border-radius: 20px; padding: 28px 32px 28px 28px; position: relative; box-shadow: var(--shadow); transition: all .3s; overflow: hidden; }
+.insight:hover { transform: translateY(-2px); box-shadow: var(--shadow-lift); }
+.insight::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--gradient); }
+.insight.good::before { background: var(--good); }
+.insight.warn::before { background: var(--warn); }
+.insight.bad::before { background: var(--bad); }
+.insight-kicker { font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-mute); font-weight: 600; margin-bottom: 10px; }
+.insight-title { font-size: 20px; font-weight: 600; line-height: 1.2; margin-bottom: 12px; letter-spacing: -.02em; }
+.insight-body { font-size: 14px; color: var(--ink-soft); line-height: 1.6; }
+.insight-body strong { color: var(--ink); font-weight: 600; }
+
+/* KEY FINDING BANNER */
+.key-finding { background: var(--gradient); color: white; padding: 32px 40px; border-radius: 20px; margin: 32px 0; position: relative; overflow: hidden; box-shadow: var(--shadow-pop); }
+.key-finding::before { content: "\2726"; position: absolute; top: 24px; right: 32px; font-size: 100px; opacity: .12; line-height: 1; }
+.key-finding .kf-label { font-size: 10px; letter-spacing: .14em; text-transform: uppercase; opacity: .85; font-weight: 600; margin-bottom: 10px; }
+.key-finding .kf-text { font-size: 22px; font-weight: 600; line-height: 1.35; letter-spacing: -.015em; max-width: 800px; }
+
+/* LIGHTBOX */
+.lightbox { position: fixed; inset: 0; z-index: 1000; background: rgba(10,18,38,.88); backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; padding: 40px; cursor: zoom-out; opacity: 0; transition: opacity .25s ease; }
+.lightbox.open { display: flex; opacity: 1; }
+.lightbox-content { max-width: 92vw; max-height: 88vh; background: white; border-radius: 24px; overflow: hidden; box-shadow: 0 40px 100px rgba(0,0,0,.5); position: relative; cursor: default; transform: scale(.92); transition: transform .3s ease; }
+.lightbox.open .lightbox-content { transform: scale(1); }
+.lightbox-content img { display: block; width: auto; height: auto; max-width: 100%; max-height: 82vh; object-fit: contain; }
+.lightbox-caption { padding: 18px 28px; border-top: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; gap: 24px; flex-wrap: wrap; }
+.lightbox-caption-title { font-weight: 700; font-size: 16px; letter-spacing: -.01em; }
+.lightbox-caption-stats { display: flex; gap: 20px; font-size: 13px; color: var(--ink-mute); }
+.lightbox-close { position: absolute; top: 12px; right: 12px; z-index: 2; width: 38px; height: 38px; border-radius: 50%; background: white; border: none; cursor: pointer; font-size: 22px; color: var(--ink); line-height: 1; box-shadow: 0 4px 12px rgba(0,0,0,.15); font-family: inherit; display: flex; align-items: center; justify-content: center; }
+.lightbox-close:hover { background: var(--paper-3); }
+
+/* FOOTER */
+footer { background: var(--paper); border-top: 1px solid var(--line); padding: 40px 32px 60px; margin-top: 40px; }
+.footer-inner { max-width: 1240px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; color: var(--ink-mute); font-size: 13px; }
+footer a { color: var(--ink); text-decoration: none; font-weight: 500; }
+
+/* PAGE BREAK */
+.pb { page-break-after: always; break-after: page; }
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .page, .masthead-inner { padding-left: 20px; padding-right: 20px; }
+  .display-xl { font-size: 44px; }
+  h2.display-l { font-size: 32px; }
+  .kpi-strip { grid-template-columns: repeat(2, 1fr); }
+  .two-col, .two-col-eq, .three-col, .insight-grid, .insight-grid.cols-3, .plan-grid, .kpi-framework { grid-template-columns: 1fr; }
+  .cover-meta { grid-template-columns: 1fr 1fr; gap: 24px; }
+  .cover-meta-item, .cover-meta-item + .cover-meta-item { padding: 16px 0; border-left: none; border-top: 1px solid var(--line); }
+  .ranking-row { grid-template-columns: 36px 64px 1fr; gap: 12px; padding: 14px; }
+  .ranking-row > div:nth-child(n+4) { display: none; }
+  .ranking-row.header > div:nth-child(n+4) { display: none; }
+  .funnel-ranking .ranking-row { grid-template-columns: 36px 64px 1fr; }
+  .rank-thumb { width: 60px; height: 60px; }
+  .masthead nav { display: none; }
+}
+
+/* PRINT */
+/* The exported PDF is a separate, purpose-built 3-page layout, not a
+   reflow of the interactive screen page. See CLAUDE.md for why: CSS grids
+   that refuse to split across a page break, Chart.js canvases that don't
+   resize for print, margins silently discarded at page breaks. #print-view
+   is plain print-safe HTML (no CSS grid spanning a break, no canvases,
+   explicit page breaks) hidden on screen and shown only for print. */
+#print-view { display: none; }
+@media print {
+  @page { margin: 1.8cm; size: A4; }
+  body { background: white; }
+  .masthead, main, footer { display: none !important; }
+  #print-view { display: block !important; }
+
+  .pv-page { page-break-after: always; }
+  .pv-page:last-child { page-break-after: auto; }
+
+  .pv-header { display: flex; align-items: center; gap: 8px; padding-bottom: 8px; border-bottom: 1px solid var(--line); margin-bottom: 16px; }
+  .pv-header .dot { width: 18px; height: 18px; border-radius: 5px; background: var(--gradient); color: #fff; font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .pv-header .name { font-size: 11px; font-weight: 600; }
+  .pv-header .date { font-size: 10px; color: var(--ink-mute); margin-left: auto; }
+
+  .pv-title { font-size: 24px; font-weight: 700; letter-spacing: -.02em; margin-bottom: 2px; }
+  .pv-title .grad { background: var(--gradient-h); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .pv-subtitle { font-size: 11px; color: var(--ink-mute); margin-bottom: 16px; }
+
+  .pv-section-label { font-size: 9px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-mute); font-weight: 700; margin: 16px 0 6px; }
+  .pv-section-label:first-child { margin-top: 0; }
+
+  .pv-kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  .pv-kpi { border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; }
+  .pv-kpi .l { font-size: 8px; letter-spacing: .04em; text-transform: uppercase; color: var(--ink-mute); font-weight: 600; }
+  .pv-kpi .v { font-size: 16px; font-weight: 800; letter-spacing: -.02em; margin-top: 2px; }
+  .pv-kpi .s { font-size: 8px; color: var(--ink-mute); margin-top: 1px; }
+  .pv-kpi .d { font-size: 9px; font-weight: 700; margin-left: 4px; }
+  .pv-kpi .d.down { color: var(--bad); }
+  .pv-kpi .d.up { color: var(--good); }
+
+  .pv-bars { display: flex; flex-direction: column; gap: 6px; }
+  .pv-bar-row { display: flex; align-items: center; gap: 8px; font-size: 10px; }
+  .pv-bar-row .name { width: 130px; flex-shrink: 0; color: var(--ink-soft); text-align: right; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .pv-bar-row .track { flex: 1; background: var(--paper-3); border-radius: 4px; height: 12px; position: relative; overflow: hidden; }
+  .pv-bar-row .fill { height: 100%; background: var(--gradient-h); border-radius: 4px; }
+  .pv-bar-row .val { width: 52px; flex-shrink: 0; font-weight: 700; font-size: 10px; }
+
+  .pv-bars.compact { gap: 3px; }
+  .pv-bars.compact .pv-bar-row { font-size: 8.5px; }
+  .pv-bars.compact .pv-bar-row .name { width: 108px; font-size: 8.5px; }
+  .pv-bars.compact .pv-bar-row .track { height: 8px; }
+  .pv-bars.compact .pv-bar-row .val { width: 40px; font-size: 8.5px; }
+  .pv-bars.compact.small .pv-bar-row .name { width: 82px; }
+  .pv-bars.compact.small .pv-bar-row .val { width: 32px; }
+  .pv-mini-chart-title { font-size: 9px; font-weight: 700; color: var(--ink-soft); margin-bottom: 6px; }
+
+  .pv-pie-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .pv-pie-card { text-align: center; }
+  .pv-pie-card .t { font-size: 10px; font-weight: 700; margin-bottom: 10px; }
+  .pv-pie-wrap { position: relative; width: 132px; height: 132px; margin: 0 auto 10px; }
+  .pv-pie { width: 132px; height: 132px; border-radius: 50%; }
+  .pv-pie-label { position: absolute; transform: translate(-50%, -50%); color: #fff; font-size: 8.5px; font-weight: 700; text-shadow: 0 1px 2px rgba(0,0,0,.35); }
+  .pv-pie-legend { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 8px; font-size: 7.5px; color: var(--ink-soft); }
+  .pv-pie-legend span { display: inline-flex; align-items: center; gap: 3px; white-space: nowrap; }
+  .pv-pie-legend i { display: inline-block; width: 6px; height: 6px; border-radius: 2px; flex-shrink: 0; }
+
+  .pv-two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+  .pv-note-box { border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; }
+  .pv-note-box.good { border-left: 3px solid var(--good); }
+  .pv-note-box.warn { border-left: 3px solid var(--warn); }
+  .pv-note-box.bad { border-left: 3px solid var(--bad); }
+  .pv-note-box .t { font-size: 10px; font-weight: 700; margin-bottom: 4px; }
+  .pv-note-box ul { margin: 0; padding-left: 14px; font-size: 9.5px; color: var(--ink-soft); line-height: 1.55; }
+  .pv-note-box p { font-size: 9.5px; color: var(--ink-soft); line-height: 1.55; margin: 0; }
+
+  .pv-table { width: 100%; border-collapse: collapse; font-size: 9.5px; }
+  .pv-table th { text-align: left; font-size: 8px; letter-spacing: .04em; text-transform: uppercase; color: var(--ink-mute); font-weight: 700; padding: 4px 6px; border-bottom: 1px solid var(--line); }
+  .pv-table td { padding: 6px; border-bottom: 1px solid var(--line); }
+  .pv-table th.num, .pv-table td.num { text-align: right; }
+  .pv-table .rank { color: var(--ink-fade); font-weight: 700; }
+  .mut { color: var(--ink-mute); font-weight: 400; }
+
+  .pv-table-ads { table-layout: fixed; font-size: 8px; }
+  .pv-table-ads th, .pv-table-ads td { padding: 3px 4px; }
+  .pv-table-ads th:first-child, .pv-table-ads td:first-child { width: 14px; }
+  .pv-table-ads th:nth-child(2), .pv-table-ads td:nth-child(2) { width: 26px; }
+  .pv-table-ads th:nth-child(3), .pv-table-ads td:nth-child(3) { width: auto; }
+  .pv-table-ads img { width: 22px; height: 22px; object-fit: cover; border-radius: 4px; display: block; }
+
+  .pv-funnel-wrap { max-width: 270px; margin: 4px auto 0; }
+
+  .pv-plan-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .pv-plan-item { border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; position: relative; overflow: hidden; }
+  .pv-plan-item::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 2.5px; background: var(--gradient-h); }
+  .pv-plan-item .t { font-size: 10px; font-weight: 700; margin-bottom: 3px; }
+  .pv-plan-item ul { margin: 0; padding-left: 12px; font-size: 9px; color: var(--ink-soft); line-height: 1.5; }
+
+  .pv-hl-box { border: 1px solid var(--line); border-radius: 10px; padding: 10px 14px; position: relative; overflow: hidden; }
+  .pv-hl-box::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 2.5px; background: var(--gradient-h); }
+  .pv-hl-list { columns: 2; column-gap: 20px; margin: 0; padding-left: 14px; font-size: 9.5px; color: var(--ink-soft); line-height: 1.6; }
+  .pv-hl-list li { break-inside: avoid; margin-bottom: 4px; }
+  .pv-hl-list strong { color: var(--ink); }
+}
+
+/* week 35: DPA spend and impression figures run long, widen those two columns */
+.funnel-ranking .ranking-row,
+.funnel-ranking .ranking-row.header { grid-template-columns: 40px 78px 1fr 92px 96px 70px 60px 84px 76px; gap: 12px; }
+.funnel-ranking .metric-big { font-size: 17px; }
+@media (max-width: 900px) {
+  .funnel-ranking .ranking-row,
+  .funnel-ranking .ranking-row.header { grid-template-columns: 36px 64px 1fr; }
+}
+
+@keyframes riseIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.display-xl, h2.display-l, .kpi-card { animation: riseIn .6s ease-out; }
+
+
+.br-row1 { display: grid; grid-template-columns: 1fr 2fr; gap: 16px; margin-top: 28px; }
+.br-row2 { display: grid; grid-template-columns: 1.3fr 1fr 1fr; gap: 16px; margin-top: 16px; }
+.br-row3 { display: grid; grid-template-columns: 1fr 1.4fr; gap: 16px; margin-top: 16px; }
+.br-card { background: var(--paper); border: 1px solid var(--line); border-radius: 20px;
+  padding: 24px; box-shadow: var(--shadow); position: relative; overflow: hidden; }
+.br-card::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: var(--gradient-h); }
+.br-label { font-size: 11px; letter-spacing: .06em; text-transform: uppercase;
+  color: var(--ink-mute); font-weight: 600; }
+.br-value-xl { font-size: 40px; font-weight: 800; letter-spacing: -.03em; color: var(--ink);
+  margin-top: 10px; }
+.br-value-lg { font-size: 30px; font-weight: 800; letter-spacing: -.02em; color: var(--ink); }
+.br-split { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.br-split-col + .br-split-col { border-left: 1px solid var(--line); padding-left: 18px; }
+.br-sub { font-size: 12px; color: var(--ink-mute); margin-top: 2px; }
+.br-gauge-row { display: flex; align-items: center; gap: 22px; }
+.br-gauge-wrap { width: 110px; text-align: center; }
+.br-gauge-pct { font-size: 22px; font-weight: 800; color: var(--ink); margin-top: -34px; }
+.br-mini-label { font-size: 11px; letter-spacing: .04em; text-transform: uppercase; color: var(--ink-mute); font-weight: 600; text-align: center; margin-top: 4px; }
+.br-orders-block { text-align: left; }
+.br-pies { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.br-pie-card { text-align: center; }
+.br-pie-card .card-title { font-size: 14px; margin-bottom: 12px; }
+.br-chart-sm { position: relative; height: 190px; }
+.br-top-sellers-wrap { position: relative; height: 320px; }
+@media (max-width: 900px) {
+  .br-row1, .br-row2, .br-row3, .br-split, .br-pies { grid-template-columns: 1fr; }
+  .br-gauge-row { flex-wrap: wrap; }
+}
+
+.growth-cards.kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 28px; }
+.growth-card { background: var(--paper); border: 1px solid var(--line); border-radius: 20px;
+  padding: 24px; box-shadow: var(--shadow); position: relative; overflow: hidden; }
+.growth-card::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: var(--gradient-h); }
+.growth-card .label { font-size: 11px; letter-spacing: .06em; text-transform: uppercase;
+  color: var(--ink-mute); font-weight: 600; }
+.growth-card .value { font-size: 32px; font-weight: 800; letter-spacing: -.02em; color: var(--ink); margin-top: 10px; }
+.growth-card .delta { font-size: 12px; font-weight: 700; margin-top: 8px; display: inline-flex;
+  align-items: center; gap: 4px; padding: 3px 10px; border-radius: 100px; }
+.growth-card .delta.up { background: rgba(16,185,129,.12); color: var(--good); }
+.growth-card .delta.down { background: rgba(239,68,68,.1); color: var(--bad); }
+.growth-card.compact { padding: 20px; }
+@media (max-width: 900px) { .growth-cards.kpi-row { grid-template-columns: 1fr 1fr; } }
+
+.funnel-split { display: grid; grid-template-columns: 1.3fr 1fr; gap: 24px; margin-top: 24px; }
+.funnel-split .card { height: 100%; }
+@media (max-width: 900px) { .funnel-split { grid-template-columns: 1fr; } }
+
+.ops-list { list-style: none; display: flex; flex-direction: column; gap: 14px; }
+.ops-list li { padding-left: 22px; position: relative; font-size: 14px; color: var(--ink-soft); line-height: 1.55; }
+.ops-list li::before { content: ""; position: absolute; left: 0; top: 8px; width: 8px; height: 8px;
+  border-radius: 50%; background: var(--gradient); }
+.ops-list-sm { list-style: none; display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
+.ops-list-sm li { padding-left: 18px; position: relative; font-size: 13px; color: var(--ink-soft); line-height: 1.5; }
+.ops-list-sm li::before { content: ""; position: absolute; left: 0; top: 7px; width: 6px; height: 6px;
+  border-radius: 50%; background: var(--c-blue); }
+
+.plan-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-top: 24px; }
+.plan-card { background: var(--paper); border: 1px solid var(--line); border-radius: 20px; padding: 24px;
+  box-shadow: var(--shadow); }
+.plan-card .card-title { font-size: 15px; margin-bottom: 0; }
+@media (max-width: 900px) { .plan-grid { grid-template-columns: 1fr; } }
+
+.skeleton-card { background: var(--paper-3); border: 2px dashed var(--line); border-radius: 20px;
+  padding: 64px 24px; text-align: center; color: var(--ink-mute); }
+.skeleton-card svg { margin-bottom: 14px; }
+.skeleton-card .sk-label { font-size: 12px; letter-spacing: .1em; text-transform: uppercase; font-weight: 700; }
+.skeleton-card .sk-field { font-size: 11px; color: var(--ink-fade); margin-top: 6px; }
+
+</style>
+</head>
+<body>
+<header class="masthead">
+  <div class="masthead-inner">
+    <div class="brand-lock"><span class="brand-dot">W</span>Wasal B&amp;R + Marketing Report</div>
+    <nav>
+      <a href="#p-summary" class="active">Summary</a>
+      <a href="#p-br">Business &amp; Revenue</a>
+      <a href="#p-growth">App Growth</a>
+      <a href="#p-overview">Overview &amp; Ops</a>
+      <a href="#p-topads">Top 5 Ads</a>
+    </nav>
+    <button class="print-btn" onclick="window.print()">Export PDF</button>
+  </div>
+</header>
+<main>
+<section class="cover-page page" id="p-summary">
+  <div class="cover-inner">
+    <div class="cover-kicker">Weekly Report &middot; Week 35</div>
+    <h1 class="display-xl">B&amp;R + <span class="grad">Marketing</span> Report</h1>
+    <p class="lede">Business &amp; Revenue, App Growth, Overview &amp; Ops, and Top 5 Meta Ads for Wasal, covering Aug 24 &ndash; Aug 30, 2026.</p>
+    <div class="cover-meta">
+      <div class="cover-meta-item">
+        <div class="label">Period</div>
+        <div class="value">Aug 24 &ndash; Aug 30, 2026</div>
+      </div>
+      <div class="cover-meta-item">
+        <div class="label">Scope</div>
+        <div class="value">4 sections<span class="sub">Business &amp; Revenue &middot; App Growth &middot; Overview &amp; Ops &middot; Top 5 Ads</span></div>
+      </div>
+      <div class="cover-meta-item">
+        <div class="label">Data Sources</div>
+        <div class="value">Sales Team<span class="sub">AppsFlyer &middot; Meta Ads</span></div>
+      </div>
+      <div class="cover-meta-item">
+        <div class="label">Prepared For</div>
+        <div class="value">Wasal Leadership<span class="sub">Growth &amp; Marketing</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="page-section page" id="p-br">
+  <div class="page-label"><span class="chip">Page 01</span> Business &amp; Revenue</div>
+  <h2 class="display-l">Business &amp; <span class="grad">Revenue</span></h2>
+  <p class="lede">Sales team GMV, SKU/Brands/Sellers growth, goal pacing, top sellers and category mix. Source: Sales team, Aug 24 &ndash; Aug 30, 2026.</p>
+
+  <div class="br-row1"><div class="br-card"><div class="br-label">GMV Week</div><div class="br-value-xl">54K <span style="font-size:20px;font-weight:700;color:var(--ink-mute);">dhs</span></div></div><div class="br-card"><div class="br-split"><div class="br-split-col"><div class="br-label">SKU</div><div class="br-sub">Total: 207,264</div><div class="br-value-lg">+4,396</div></div><div class="br-split-col"><div class="br-split"><div><div class="br-label">Brands</div><div class="br-sub">Total: 6,136</div><div class="br-value-lg" style="font-size:24px;">+30</div></div><div><div class="br-label">Sellers</div><div class="br-sub">Total: 705</div><div class="br-value-lg" style="font-size:24px;">+6</div></div></div></div></div></div></div>
+  <div class="br-row2"><div class="br-card"><div class="br-gauge-row"><div class="br-gauge-wrap"><div class="br-chart-sm" style="height:80px;"><canvas id="chart-sales-goal"></canvas></div><div class="br-gauge-pct">12,9%</div><div class="br-mini-label">Sales Goals (GMV)</div></div><div class="br-orders-block"><div class="br-label">Gross Orders Lines</div><div class="br-value-xl" style="margin-top:6px;">219</div></div></div></div><div class="br-card"><div class="br-label">CRR</div><div class="br-value-xl">0,26%</div></div><div class="br-card"><div class="br-label">AOV &middot; WoW</div><div class="br-value-xl">2 881<span style="font-size:18px;">DHS</span></div><div class="br-sub">WoW: 411 DH</div></div></div>
+  <div class="br-row3"><div class="br-card"><div class="card-title">Top Sellers (GMV)</div><div class="card-sub">Ranked by GMV, last 7 days</div><div class="br-top-sellers-wrap"><canvas id="chart-top-sellers"></canvas></div></div><div class="br-card"><div class="br-pies"><div class="br-pie-card"><div class="card-title">GMV par Cat&eacute;gorie</div><div class="br-chart-sm"><canvas id="chart-gmv-cat"></canvas></div></div><div class="br-pie-card"><div class="card-title">SKU par Cat&eacute;gorie</div><div class="br-chart-sm"><canvas id="chart-sku-cat"></canvas></div></div><div class="card-sub" style="margin-top:12px;line-height:1.6;">Shares are transcribed from the sales team's category pies. GMV shares total 97.8% and SKU shares 102.7% once rounded per category, so each slice is the reported figure rather than a renormalised one. The GMV pie listed two separate 1% Culture slices, merged here into a single 2% Culture share.</div></div></div></div>
+  <div class="insight-grid" style="margin-top:24px;"><div class="insight good"><div class="insight-kicker">Sales Team</div><div class="insight-title">Les bonnes nouvelles</div><div class="insight-body"><ul class="ops-list-sm" style="margin-top:0;"><li><strong>Signatures:</strong> being silver, City Fashion, cuir vintage</li><li><strong>Int&eacute;ress&eacute;s:</strong> being silver, bo b&eacute;b&eacute;, gribouille, Hunkemoller, minek, ShopMarocEnLigne</li><li><strong>Campagne acquisition sellers:</strong> 52 leads, 4 euros co&ucirc;t par lead</li></ul></div></div><div class="insight bad"><div class="insight-kicker">Sales Team</div><div class="insight-title">A Fixer</div><div class="insight-body"><ul class="ops-list-sm" style="margin-top:0;"><li>Incubation program avec CRC en attente carte sim (bon de commande &agrave; faire signer)</li><li>Profile particulier toujours pas valid&eacute; par AKWA group, d&eacute;sactivation des stores</li><li>Outil pour les &eacute;quipes en attente (onedrive, process NDF, moyens g&eacute;n&eacute;raux...)</li><li>Dashboard perf produit et content en attente</li></ul></div></div></div>
+</section>
+<section class="page-section page" id="p-growth">
+  <div class="page-label"><span class="chip">Page 02</span> App Growth</div>
+  <h2 class="display-l">App <span class="grad">Growth</span></h2>
+  <p class="lede">AppsFlyer installs, active users, sessions, retention and budget, plus the Sessions to Purchase conversion funnel. Awaiting this week's figures from AppsFlyer.</p>
+
+  <div class="growth-cards kpi-row"><div class="skeleton-card" style="min-height:140px;display:flex;flex-direction:column;justify-content:center;"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="color:var(--ink-fade);margin:0 auto;"><rect x="3" y="4" width="18" height="16" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M7 9h10M7 13h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><div class="sk-label">Data pending</div><div class="sk-field">Installs (7d)</div></div><div class="skeleton-card" style="min-height:140px;display:flex;flex-direction:column;justify-content:center;"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="color:var(--ink-fade);margin:0 auto;"><rect x="3" y="4" width="18" height="16" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M7 9h10M7 13h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><div class="sk-label">Data pending</div><div class="sk-field">Active Users (7d)</div></div><div class="skeleton-card" style="min-height:140px;display:flex;flex-direction:column;justify-content:center;"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="color:var(--ink-fade);margin:0 auto;"><rect x="3" y="4" width="18" height="16" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M7 9h10M7 13h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><div class="sk-label">Data pending</div><div class="sk-field">Sessions</div></div><div class="skeleton-card" style="min-height:140px;display:flex;flex-direction:column;justify-content:center;"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="color:var(--ink-fade);margin:0 auto;"><rect x="3" y="4" width="18" height="16" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M7 9h10M7 13h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><div class="sk-label">Data pending</div><div class="sk-field">Add To Cart</div></div><div class="skeleton-card" style="min-height:140px;display:flex;flex-direction:column;justify-content:center;"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="color:var(--ink-fade);margin:0 auto;"><rect x="3" y="4" width="18" height="16" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M7 9h10M7 13h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><div class="sk-label">Data pending</div><div class="sk-field">Purchase (Unique Users)</div></div><div class="skeleton-card" style="min-height:140px;display:flex;flex-direction:column;justify-content:center;"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="color:var(--ink-fade);margin:0 auto;"><rect x="3" y="4" width="18" height="16" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M7 9h10M7 13h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><div class="sk-label">Data pending</div><div class="sk-field">Retention (Weekly)</div></div><div class="skeleton-card" style="min-height:140px;display:flex;flex-direction:column;justify-content:center;"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="color:var(--ink-fade);margin:0 auto;"><rect x="3" y="4" width="18" height="16" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M7 9h10M7 13h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><div class="sk-label">Data pending</div><div class="sk-field">Budget Spent</div></div><div class="skeleton-card" style="min-height:140px;display:flex;flex-direction:column;justify-content:center;"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="color:var(--ink-fade);margin:0 auto;"><rect x="3" y="4" width="18" height="16" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M7 9h10M7 13h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><div class="sk-label">Data pending</div><div class="sk-field">Checkout Visits</div></div></div>
+
+  <div class="funnel-split">
+    <div class="card">
+      <div class="card-title">Conversion Funnel</div>
+      <div class="card-sub">Sessions to Purchase, Aug 24 &ndash; Aug 30, 2026</div>
+      <div class="skeleton-card" style="min-height:300px;display:flex;flex-direction:column;justify-content:center;"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="color:var(--ink-fade);margin:0 auto;"><rect x="3" y="4" width="18" height="16" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M7 9h10M7 13h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><div class="sk-label">Data pending</div><div class="sk-field">Funnel stages, Sessions to Purchase</div></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Weekly Highlights</div>
+      <div class="card-sub">Performance Marketing</div>
+      <div class="skeleton-card" style="min-height:300px;display:flex;flex-direction:column;justify-content:center;"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="color:var(--ink-fade);margin:0 auto;"><rect x="3" y="4" width="18" height="16" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M7 9h10M7 13h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><div class="sk-label">Data pending</div><div class="sk-field">Weekly Highlights, Performance Marketing</div></div>
+    </div>
+  </div>
+</section>
+<section class="page-section page" id="p-overview">
+  <div class="page-label"><span class="chip">Page 03</span> Overview / Ops</div>
+  <h2 class="display-l">Overview &amp; <span class="grad">Ops</span></h2>
+  <p class="lede">Outside digital performance: campaign, brand, systems and partnership workstreams, the plan of action for the weeks ahead, and current blocking points.</p>
+
+  <div class="card">
+    <div class="card-title">Weekly Highlights</div>
+    <div class="card-sub">General overview</div>
+    <ul class="ops-list"><li><strong>Black Friday 2026 Campaign</strong> presented to COMEX and validated, with minor adjustments to business objectives.</li><li>Campaign preparation remains on track, despite a 3 working day delay in COMEX validation.</li><li><strong>Inditex Operation</strong> still awaiting validation. 21 Sept is the latest recommended confirmation date for integration into Black Friday.</li><li><strong>New Wasal Brand Guidelines</strong> in development, submission for COMEX / Upper Management validation planned by end of September.</li><li><strong>Sales &times; Marketing workflows</strong> moved to CRM for real-time request assignment, ownership and tracking.</li><li><strong>Black Friday Monday</strong> board created with tasks, subtasks and owners assigned.</li><li><strong>Affiliate Strategy</strong> presented to Ali and approved, action plan to follow. BP (Business Plan) affiliate partnership model requires adjustment around cash partnerships.</li><li><strong>Yallad</strong> partnership on hold pending presentation and alignment on the new Affiliate Strategy.</li><li><strong>Liik &amp; WLB</strong> partnerships and media collaborations awaiting feedback.</li><li><strong>Path&eacute; &amp; Megarama cinema</strong> advertising presented, potential deployment targeted for December around a major movie release.</li><li><strong>New dynamic Campaign Management System</strong> developed, V1 presented to COMEX.</li></ul>
+  </div>
+
+  <h3 class="display-m" style="margin-top:40px;margin-bottom:4px;">Plan of Action</h3>
+  <div class="plan-grid"><div class="plan-card"><div class="card-title">Black Friday 2026</div><ul class="ops-list-sm"><li>Finalize Black Friday business objectives and continue campaign execution.</li><li>Secure Inditex decision by 21 Sept.</li></ul></div><div class="plan-card"><div class="card-title">Brand &amp; Systems</div><ul class="ops-list-sm"><li>Submit Brand Guidelines for validation by month-end.</li><li>Roll out CRM workflow and Campaign Management System across upcoming campaigns.</li></ul></div><div class="plan-card"><div class="card-title">Partnerships &amp; Affiliate</div><ul class="ops-list-sm"><li>Implement Affiliate Strategy action plan and update the BP.</li><li>Follow up on Liik, WLB and cinema partnerships, as well as Orange, AWB Bank and Credit Du Maroc.</li></ul></div></div>
+
+  <h3 class="display-m" style="margin-top:40px;margin-bottom:4px;">Blocking Points</h3>
+  <div class="insight-grid cols-3"><div class="insight bad"><div class="insight-kicker">Blocking point</div><div class="insight-title">Inditex validation</div><div class="insight-body">Operation still awaiting validation. <strong>21 Sept</strong> is the latest recommended confirmation date for integration into Black Friday.</div></div><div class="insight bad"><div class="insight-kicker">Blocking point</div><div class="insight-title">COMEX validation delay</div><div class="insight-body">Black Friday campaign validation ran <strong>3 working days</strong> late. Preparation is still on track, but the buffer is gone.</div></div><div class="insight bad"><div class="insight-kicker">Blocking point</div><div class="insight-title">Partnerships on hold</div><div class="insight-body">Yallad paused pending alignment on the new Affiliate Strategy. Liik and WLB awaiting feedback. BP affiliate model needs adjustment around cash partnerships.</div></div></div>
+</section>
+<section class="page-section page" id="p-topads">
+  <div class="page-label"><span class="chip">Page 04</span> Top 5 Ads</div>
+  <h2 class="display-l">Top 5 <span class="grad">Ads</span></h2>
+  <p class="lede">Best performing Meta Ads by results, Aug 24 &ndash; Aug 30, 2026. Ad account 1737134693101957. Account total this week: &euro;4,252.26 spend, 3,733,901 impressions, 72,971 clicks, 1.95% CTR, 1,365,610 reach.</p>
+
+  <div class="ranking funnel-ranking"><div class="ranking-row header"><div>#</div><div>Creative</div><div>Ad</div><div>Spend</div><div>Impressions</div><div>Clicks</div><div>CTR</div><div>Cost/Result</div><div>Results</div></div><div class="ranking-row"><div class="rank-num top1">1</div><div class="rank-thumb" data-lb-src="https://res.cloudinary.com/dm49t65oz/image/upload/v1788352635/wasal-bnr-report/w35/dpa.png" data-lb-title="DPA" data-lb-stats="51,764 clicks &middot; 3.45% CTR &middot; 218 results"><img src="https://res.cloudinary.com/dm49t65oz/image/upload/v1788352635/wasal-bnr-report/w35/dpa.png" alt="DPA"></div><div><div class="rank-title">DPA</div><div class="rank-meta"><span class="tag dpa">DPA</span><span>Website purchases</span></div></div><div class="metric-cell"><div class="metric-big">&euro;1,715.91</div><div class="metric-lbl">Spend</div></div><div class="metric-cell"><div class="metric-big">1,502,334</div><div class="metric-lbl">Impr.</div></div><div class="metric-cell"><div class="metric-big">51,764</div><div class="metric-lbl">Clicks</div></div><div class="metric-cell"><span class="cvr-chip hot">3.45%</span></div><div class="metric-cell"><div class="metric-big">&euro;7.87</div><div class="metric-lbl">Per result</div></div><div class="metric-cell"><div class="metric-big">218</div><div class="metric-lbl">Results</div></div></div><div class="ranking-row"><div class="rank-num top3">2</div><div class="rank-thumb" data-lb-src="https://res.cloudinary.com/dm49t65oz/image/upload/v1788352641/wasal-bnr-report/w35/maison-carr02.png" data-lb-title="MAISON_CARR02" data-lb-stats="2,269 clicks &middot; 1.36% CTR &middot; 17 results"><img src="https://res.cloudinary.com/dm49t65oz/image/upload/v1788352641/wasal-bnr-report/w35/maison-carr02.png" alt="MAISON_CARR02"></div><div><div class="rank-title">MAISON_CARR02</div><div class="rank-meta"><span class="tag carousel">Carousel</span><span>Website purchases</span></div></div><div class="metric-cell"><div class="metric-big">&euro;300.10</div><div class="metric-lbl">Spend</div></div><div class="metric-cell"><div class="metric-big">166,829</div><div class="metric-lbl">Impr.</div></div><div class="metric-cell"><div class="metric-big">2,269</div><div class="metric-lbl">Clicks</div></div><div class="metric-cell"><span class="cvr-chip warm">1.36%</span></div><div class="metric-cell"><div class="metric-big">&euro;17.65</div><div class="metric-lbl">Per result</div></div><div class="metric-cell"><div class="metric-big">17</div><div class="metric-lbl">Results</div></div></div><div class="ranking-row"><div class="rank-num top3">3</div><div class="rank-thumb" data-lb-src="https://res.cloudinary.com/dm49t65oz/image/upload/v1788352647/wasal-bnr-report/w35/nv-img-4.jpg" data-lb-title="NV IMG 4" data-lb-stats="268 clicks &middot; 1.99% CTR &middot; 13 results"><img src="https://res.cloudinary.com/dm49t65oz/image/upload/v1788352647/wasal-bnr-report/w35/nv-img-4.jpg" alt="NV IMG 4"></div><div><div class="rank-title">NV IMG 4</div><div class="rank-meta"><span class="tag capsule">Image</span><span>Website leads</span></div></div><div class="metric-cell"><div class="metric-big">&euro;37.42</div><div class="metric-lbl">Spend</div></div><div class="metric-cell"><div class="metric-big">13,458</div><div class="metric-lbl">Impr.</div></div><div class="metric-cell"><div class="metric-big">268</div><div class="metric-lbl">Clicks</div></div><div class="metric-cell"><span class="cvr-chip warm">1.99%</span></div><div class="metric-cell"><div class="metric-big">&euro;2.88</div><div class="metric-lbl">Per result</div></div><div class="metric-cell"><div class="metric-big">13</div><div class="metric-lbl">Results</div></div></div><div class="ranking-row"><div class="rank-num ">4</div><div class="rank-thumb" data-lb-src="https://res.cloudinary.com/dm49t65oz/image/upload/v1788352654/wasal-bnr-report/w35/maison-carr01.png" data-lb-title="MAISON_CARR01" data-lb-stats="2,047 clicks &middot; 1.72% CTR &middot; 12 results"><img src="https://res.cloudinary.com/dm49t65oz/image/upload/v1788352654/wasal-bnr-report/w35/maison-carr01.png" alt="MAISON_CARR01"></div><div><div class="rank-title">MAISON_CARR01</div><div class="rank-meta"><span class="tag carousel">Carousel</span><span>Website purchases</span></div></div><div class="metric-cell"><div class="metric-big">&euro;248.29</div><div class="metric-lbl">Spend</div></div><div class="metric-cell"><div class="metric-big">118,695</div><div class="metric-lbl">Impr.</div></div><div class="metric-cell"><div class="metric-big">2,047</div><div class="metric-lbl">Clicks</div></div><div class="metric-cell"><span class="cvr-chip warm">1.72%</span></div><div class="metric-cell"><div class="metric-big">&euro;20.69</div><div class="metric-lbl">Per result</div></div><div class="metric-cell"><div class="metric-big">12</div><div class="metric-lbl">Results</div></div></div><div class="ranking-row"><div class="rank-num ">5</div><div class="rank-thumb" data-lb-src="https://res.cloudinary.com/dm49t65oz/image/upload/v1788352660/wasal-bnr-report/w35/sport-carr02.png" data-lb-title="SPORT_CARR02" data-lb-stats="2,315 clicks &middot; 0.65% CTR &middot; 10 results"><img src="https://res.cloudinary.com/dm49t65oz/image/upload/v1788352660/wasal-bnr-report/w35/sport-carr02.png" alt="SPORT_CARR02"></div><div><div class="rank-title">SPORT_CARR02</div><div class="rank-meta"><span class="tag carousel">Carousel</span><span>Website purchases</span></div></div><div class="metric-cell"><div class="metric-big">&euro;335.43</div><div class="metric-lbl">Spend</div></div><div class="metric-cell"><div class="metric-big">353,886</div><div class="metric-lbl">Impr.</div></div><div class="metric-cell"><div class="metric-big">2,315</div><div class="metric-lbl">Clicks</div></div><div class="metric-cell"><span class="cvr-chip cold">0.65%</span></div><div class="metric-cell"><div class="metric-big">&euro;33.54</div><div class="metric-lbl">Per result</div></div><div class="metric-cell"><div class="metric-big">10</div><div class="metric-lbl">Results</div></div></div></div>
+
+  <div class="two-col-eq" style="margin-top:8px;">
+    <div class="card">
+      <div class="card-title">Clicks by Ad</div>
+      <div class="card-sub">Total clicks, ranked</div>
+      <div class="chart-wrap"><canvas id="chart-ads-clicks"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-title">CTR by Ad</div>
+      <div class="card-sub">Click-through rate, %</div>
+      <div class="chart-wrap"><canvas id="chart-ads-ctr"></canvas></div>
+    </div>
+  </div>
+</section>
+</main>
+<footer>
+  <div class="footer-inner">
+    <div>Wasal &middot; B&amp;R + Marketing Report &middot; Aug 24 &ndash; Aug 30, 2026</div>
+    <div>Data: Sales Team &middot; AppsFlyer &middot; Meta Ads</div>
+  </div>
+</footer>
+<div id="print-view">
+
+<div class="pv-page">
+<div class="pv-header"><div class="dot">W</div><div class="name">Wasal B&amp;R + Marketing Report &middot; Week 35</div><div class="date">Aug 24 to Aug 30, 2026</div></div>
+<div class="pv-title">B&amp;R + <span class="grad">Marketing</span> Report</div>
+<div class="pv-subtitle">Week 35 &middot; Business &amp; Revenue &middot; Source: Sales team</div>
+
+<div class="pv-section-label">Business &amp; Revenue</div>
+<div class="pv-kpi-grid"><div class="pv-kpi"><div class="l">GMV Week</div><div class="v">54K dhs</div></div><div class="pv-kpi"><div class="l">Gross Orders Lines</div><div class="v">219</div></div><div class="pv-kpi"><div class="l">Sales Goal (GMV)</div><div class="v">12,9%</div></div><div class="pv-kpi"><div class="l">AOV</div><div class="v">2 881 DHS</div><div class="s">WoW 411 DH</div></div><div class="pv-kpi"><div class="l">SKU</div><div class="v">207,264</div><div class="s">+4,396</div></div><div class="pv-kpi"><div class="l">Brands</div><div class="v">6,136</div><div class="s">+30</div></div><div class="pv-kpi"><div class="l">Sellers</div><div class="v">705</div><div class="s">+6</div></div><div class="pv-kpi"><div class="l">CRR</div><div class="v">0,26%</div></div></div>
+
+<div class="pv-section-label">Top Sellers (GMV)</div>
+<div class="pv-bars compact"><div class="pv-bar-row"><div class="name">INKSOLUTIONS</div><div class="track"><div class="fill" style="width:100.0%"></div></div><div class="val">5,648</div></div><div class="pv-bar-row"><div class="name">ETCEINFO</div><div class="track"><div class="fill" style="width:68.4%"></div></div><div class="val">3,861</div></div><div class="pv-bar-row"><div class="name">WORLD MARKET PLACE</div><div class="track"><div class="fill" style="width:62.6%"></div></div><div class="val">3,538</div></div><div class="pv-bar-row"><div class="name">Lmouhib</div><div class="track"><div class="fill" style="width:55.6%"></div></div><div class="val">3,140</div></div><div class="pv-bar-row"><div class="name">MAROCOR</div><div class="track"><div class="fill" style="width:52.0%"></div></div><div class="val">2,938</div></div><div class="pv-bar-row"><div class="name">NEXT LEVEL PC</div><div class="track"><div class="fill" style="width:50.9%"></div></div><div class="val">2,875</div></div><div class="pv-bar-row"><div class="name">ELECTRO ELAISSI</div><div class="track"><div class="fill" style="width:42.5%"></div></div><div class="val">2,398</div></div><div class="pv-bar-row"><div class="name">Havaianas</div><div class="track"><div class="fill" style="width:35.2%"></div></div><div class="val">1,990</div></div><div class="pv-bar-row"><div class="name">JUMPWAY</div><div class="track"><div class="fill" style="width:35.2%"></div></div><div class="val">1,990</div></div></div>
+
+<div class="pv-section-label">Category Mix</div>
+<div class="pv-pie-row">
+  <div class="pv-pie-card"><div class="t">GMV par Cat&eacute;gorie</div><div class="pv-pie-wrap"><div class="pv-pie" style="background:conic-gradient(#00c4cc 0.0% 41.7%, #00a3ff 41.7% 65.6%, #5b5fff 65.6% 78.5%, #7b61ff 78.5% 84.7%, #8b3dff 84.7% 90.3%, #00d9a3 90.3% 94.7%, #ffb020 94.7% 98.0%, #ff6b9d 98.0% 100.0%)"></div></div><div class="pv-pie-legend"><span><i style="background:#00c4cc"></i>Tech 40.8%</span><span><i style="background:#00a3ff"></i>Maison 23.4%</span><span><i style="background:#5b5fff"></i>Beaute 12.6%</span><span><i style="background:#7b61ff"></i>Homme 6%</span><span><i style="background:#8b3dff"></i>Sport 5.5%</span><span><i style="background:#00d9a3"></i>Fashion femme 4.3%</span><span><i style="background:#ffb020"></i>Enfant 3.2%</span><span><i style="background:#ff6b9d"></i>Culture 2%</span></div></div>
+  <div class="pv-pie-card"><div class="t">SKU par Cat&eacute;gorie</div><div class="pv-pie-wrap"><div class="pv-pie" style="background:conic-gradient(#00c4cc 0.0% 38.6%, #00a3ff 38.6% 57.6%, #5b5fff 57.6% 68.8%, #7b61ff 68.8% 78.8%, #8b3dff 78.8% 85.5%, #00d9a3 85.5% 90.7%, #ffb020 90.7% 95.0%, #ff6b9d 95.0% 98.1%, #94a3b8 98.1% 100.0%)"></div></div><div class="pv-pie-legend"><span><i style="background:#00c4cc"></i>Beaute 39.6%</span><span><i style="background:#00a3ff"></i>Maison 19.6%</span><span><i style="background:#5b5fff"></i>Fashion 11.5%</span><span><i style="background:#7b61ff"></i>Tech 10.2%</span><span><i style="background:#8b3dff"></i>Culture & Loisirs 6.9%</span><span><i style="background:#00d9a3"></i>Jardinage et bricolage 5.3%</span><span><i style="background:#ffb020"></i>Homme 4.5%</span><span><i style="background:#ff6b9d"></i>Maman & bebe 3.1%</span><span><i style="background:#94a3b8"></i>Sport 2%</span></div></div>
+</div>
+
+<div class="pv-section-label">Sales Team Notes</div>
+<div class="pv-two-col">
+  <div class="pv-note-box good"><div class="t">Les bonnes nouvelles</div><ul><li><strong>Signatures:</strong> being silver, City Fashion, cuir vintage</li><li><strong>Int&eacute;ress&eacute;s:</strong> being silver, bo b&eacute;b&eacute;, gribouille, Hunkemoller, minek, ShopMarocEnLigne</li><li><strong>Campagne acquisition sellers:</strong> 52 leads, 4 euros co&ucirc;t par lead</li></ul></div>
+  <div class="pv-note-box bad"><div class="t">A Fixer</div><ul><li>Incubation program avec CRC en attente carte sim (bon de commande &agrave; faire signer)</li><li>Profile particulier toujours pas valid&eacute; par AKWA group, d&eacute;sactivation des stores</li><li>Outil pour les &eacute;quipes en attente (onedrive, process NDF, moyens g&eacute;n&eacute;raux...)</li><li>Dashboard perf produit et content en attente</li></ul></div>
+</div>
+</div>
+
+<div class="pv-page">
+<div class="pv-header"><div class="dot">W</div><div class="name">Wasal B&amp;R + Marketing Report &middot; Week 35</div><div class="date">Aug 24 to Aug 30, 2026</div></div>
+<div class="pv-title">App <span class="grad">Growth</span> &amp; Top Ads</div>
+<div class="pv-subtitle">Week 35 &middot; AppsFlyer + Meta Ads</div>
+
+<div class="pv-section-label">App Growth</div>
+<div class="pv-note-box warn"><div class="t">Data pending</div><p>AppsFlyer installs, active users, sessions, retention, budget spent and the conversion funnel stages had not been supplied at the time this report was generated. This section will be updated once the week 35 figures arrive.</p></div>
+
+<div class="pv-section-label">Top 5 Ads</div>
+<p style="font-size:8px;color:var(--ink-mute);margin:0 0 6px;line-height:1.5;">Ranked by results, Aug 24 - Aug 30, 2026. Account total: &euro;4,252.26 spend, 3,733,901 impressions, 72,971 clicks, 1.95% CTR, 1,365,610 reach.</p>
+<table class="pv-table pv-table-ads">
+  <thead><tr><th>#</th><th></th><th>Ad</th><th class="num">Spend</th><th class="num">Impr.</th><th class="num">Clicks</th><th class="num">CTR</th><th class="num">Cost/res.</th><th class="num">Results</th></tr></thead>
+  <tbody><tr><td class="rank">1</td><td><img src="https://res.cloudinary.com/dm49t65oz/image/upload/v1788352635/wasal-bnr-report/w35/dpa.png" alt="DPA"></td><td>DPA <span class="mut">&middot; DPA</span></td><td class="num">&euro;1,715.91</td><td class="num">1,502,334</td><td class="num">51,764</td><td class="num">3.45%</td><td class="num">&euro;7.87</td><td class="num">218</td></tr><tr><td class="rank">2</td><td><img src="https://res.cloudinary.com/dm49t65oz/image/upload/v1788352641/wasal-bnr-report/w35/maison-carr02.png" alt="MAISON_CARR02"></td><td>MAISON_CARR02 <span class="mut">&middot; Carousel</span></td><td class="num">&euro;300.10</td><td class="num">166,829</td><td class="num">2,269</td><td class="num">1.36%</td><td class="num">&euro;17.65</td><td class="num">17</td></tr><tr><td class="rank">3</td><td><img src="https://res.cloudinary.com/dm49t65oz/image/upload/v1788352647/wasal-bnr-report/w35/nv-img-4.jpg" alt="NV IMG 4"></td><td>NV IMG 4 <span class="mut">&middot; Image</span></td><td class="num">&euro;37.42</td><td class="num">13,458</td><td class="num">268</td><td class="num">1.99%</td><td class="num">&euro;2.88</td><td class="num">13</td></tr><tr><td class="rank">4</td><td><img src="https://res.cloudinary.com/dm49t65oz/image/upload/v1788352654/wasal-bnr-report/w35/maison-carr01.png" alt="MAISON_CARR01"></td><td>MAISON_CARR01 <span class="mut">&middot; Carousel</span></td><td class="num">&euro;248.29</td><td class="num">118,695</td><td class="num">2,047</td><td class="num">1.72%</td><td class="num">&euro;20.69</td><td class="num">12</td></tr><tr><td class="rank">5</td><td><img src="https://res.cloudinary.com/dm49t65oz/image/upload/v1788352660/wasal-bnr-report/w35/sport-carr02.png" alt="SPORT_CARR02"></td><td>SPORT_CARR02 <span class="mut">&middot; Carousel</span></td><td class="num">&euro;335.43</td><td class="num">353,886</td><td class="num">2,315</td><td class="num">0.65%</td><td class="num">&euro;33.54</td><td class="num">10</td></tr></tbody>
+</table>
+
+<div class="pv-pie-row" style="margin-top:12px;">
+  <div><div class="pv-mini-chart-title">Clicks by ad</div><div class="pv-bars compact small"><div class="pv-bar-row"><div class="name">DPA</div><div class="track"><div class="fill" style="width:100.0%"></div></div><div class="val">51,764</div></div><div class="pv-bar-row"><div class="name">SPORT_CARR02</div><div class="track"><div class="fill" style="width:4.5%"></div></div><div class="val">2,315</div></div><div class="pv-bar-row"><div class="name">MAISON_CARR02</div><div class="track"><div class="fill" style="width:4.4%"></div></div><div class="val">2,269</div></div><div class="pv-bar-row"><div class="name">MAISON_CARR01</div><div class="track"><div class="fill" style="width:4.0%"></div></div><div class="val">2,047</div></div><div class="pv-bar-row"><div class="name">NV IMG 4</div><div class="track"><div class="fill" style="width:0.5%"></div></div><div class="val">268</div></div></div></div>
+  <div><div class="pv-mini-chart-title">CTR by ad</div><div class="pv-bars compact small"><div class="pv-bar-row"><div class="name">DPA</div><div class="track"><div class="fill" style="width:100.0%"></div></div><div class="val">3.45%</div></div><div class="pv-bar-row"><div class="name">NV IMG 4</div><div class="track"><div class="fill" style="width:57.7%"></div></div><div class="val">1.99%</div></div><div class="pv-bar-row"><div class="name">MAISON_CARR01</div><div class="track"><div class="fill" style="width:49.9%"></div></div><div class="val">1.72%</div></div><div class="pv-bar-row"><div class="name">MAISON_CARR02</div><div class="track"><div class="fill" style="width:39.4%"></div></div><div class="val">1.36%</div></div><div class="pv-bar-row"><div class="name">SPORT_CARR02</div><div class="track"><div class="fill" style="width:18.8%"></div></div><div class="val">0.65%</div></div></div></div>
+</div>
+</div>
+
+<div class="pv-page">
+<div class="pv-header"><div class="dot">W</div><div class="name">Wasal B&amp;R + Marketing Report &middot; Week 35</div><div class="date">Aug 24 to Aug 30, 2026</div></div>
+<div class="pv-title">Overview &amp; <span class="grad">Operations</span></div>
+<div class="pv-subtitle">Week 35 &middot; Outside Digital Performance</div>
+
+<div class="pv-section-label">Weekly Highlights</div>
+<div class="pv-hl-box"><ul class="pv-hl-list"><li><strong>Black Friday 2026 Campaign</strong> presented to COMEX and validated, with minor adjustments to business objectives.</li><li>Campaign preparation remains on track, despite a 3 working day delay in COMEX validation.</li><li><strong>Inditex Operation</strong> still awaiting validation. 21 Sept is the latest recommended confirmation date for integration into Black Friday.</li><li><strong>New Wasal Brand Guidelines</strong> in development, submission for COMEX / Upper Management validation planned by end of September.</li><li><strong>Sales &times; Marketing workflows</strong> moved to CRM for real-time request assignment, ownership and tracking.</li><li><strong>Black Friday Monday</strong> board created with tasks, subtasks and owners assigned.</li><li><strong>Affiliate Strategy</strong> presented to Ali and approved, action plan to follow. BP (Business Plan) affiliate partnership model requires adjustment around cash partnerships.</li><li><strong>Yallad</strong> partnership on hold pending presentation and alignment on the new Affiliate Strategy.</li><li><strong>Liik &amp; WLB</strong> partnerships and media collaborations awaiting feedback.</li><li><strong>Path&eacute; &amp; Megarama cinema</strong> advertising presented, potential deployment targeted for December around a major movie release.</li><li><strong>New dynamic Campaign Management System</strong> developed, V1 presented to COMEX.</li></ul></div>
+
+<div class="pv-section-label">Plan of Action</div>
+<div class="pv-plan-grid"><div class="pv-plan-item"><div class="t">Black Friday 2026</div><ul><li>Finalize Black Friday business objectives and continue campaign execution.</li><li>Secure Inditex decision by 21 Sept.</li></ul></div><div class="pv-plan-item"><div class="t">Brand &amp; Systems</div><ul><li>Submit Brand Guidelines for validation by month-end.</li><li>Roll out CRM workflow and Campaign Management System across upcoming campaigns.</li></ul></div><div class="pv-plan-item"><div class="t">Partnerships &amp; Affiliate</div><ul><li>Implement Affiliate Strategy action plan and update the BP.</li><li>Follow up on Liik, WLB and cinema partnerships, as well as Orange, AWB Bank and Credit Du Maroc.</li></ul></div></div>
+
+<div class="pv-section-label">Blocking Points</div>
+<div class="pv-plan-grid"><div class="pv-note-box bad"><div class="t">Inditex validation</div><p>Operation still awaiting validation. <strong>21 Sept</strong> is the latest recommended confirmation date for integration into Black Friday.</p></div><div class="pv-note-box bad"><div class="t">COMEX validation delay</div><p>Black Friday campaign validation ran <strong>3 working days</strong> late. Preparation is still on track, but the buffer is gone.</p></div><div class="pv-note-box bad"><div class="t">Partnerships on hold</div><p>Yallad paused pending alignment on the new Affiliate Strategy. Liik and WLB awaiting feedback. BP affiliate model needs adjustment around cash partnerships.</p></div></div>
+</div>
+
+</div>
+<div class="lightbox" id="lightbox">
+  <div class="lightbox-content">
+    <button class="lightbox-close" id="lightboxClose">&times;</button>
+    <img id="lightboxImg" src="" alt="">
+    <div class="lightbox-caption">
+      <div class="lightbox-caption-title" id="lightboxTitle"></div>
+      <div class="lightbox-caption-stats" id="lightboxStats"></div>
+    </div>
+  </div>
+</div>
+<script>
+var adsNames = ["DPA", "MAISON_CARR02", "NV IMG 4", "MAISON_CARR01", "SPORT_CARR02"];
+var adsClicks = [51764, 2269, 268, 2047, 2315];
+var adsCtr = [3.45, 1.36, 1.99, 1.72, 0.65];
+var topSellerNames = ["INKSOLUTIONS", "ETCEINFO", "WORLD MARKET PLACE", "Lmouhib", "MAROCOR", "NEXT LEVEL PC", "ELECTRO ELAISSI", "Havaianas", "JUMPWAY"];
+var topSellerValues = [5648, 3861, 3538, 3140, 2938, 2875, 2398, 1990, 1990];
+var gmvCatLabels = ["Tech", "Maison", "Beaute", "Homme", "Sport", "Fashion femme", "Enfant", "Culture"];
+var gmvCatValues = [40.8, 23.4, 12.6, 6.0, 5.5, 4.3, 3.2, 2.0];
+var skuCatLabels = ["Beaute", "Maison", "Fashion", "Tech", "Culture & Loisirs", "Jardinage et bricolage", "Homme", "Maman & bebe", "Sport"];
+var skuCatValues = [39.6, 19.6, 11.5, 10.2, 6.9, 5.3, 4.5, 3.1, 2.0];
+var salesGoalPct = 12.9;
+
+Chart.register(ChartDataLabels);
+Chart.defaults.font.family = "'Bricolage Grotesque', sans-serif";
+Chart.defaults.font.size = 11;
+Chart.defaults.color = '#6b7388';
+Chart.defaults.borderColor = '#e3e8f0';
+
+var cTeal = '#00c4cc', cBlue = '#00a3ff', cIndigo = '#5b5fff', cViolet = '#7b61ff', cPurple = '#8b3dff';
+var palette = [cTeal, cBlue, cIndigo, cViolet, cPurple, '#00d9a3', '#ffb020', '#ff6b9d', '#94a3b8'];
+
+function linGrad(ctx, stops, vertical) {
+  var area = ctx.chart.chartArea || { top: 0, bottom: 300, left: 0, right: 400 };
+  var g = vertical
+    ? ctx.chart.ctx.createLinearGradient(0, area.top, 0, area.bottom)
+    : ctx.chart.ctx.createLinearGradient(area.left, 0, area.right, 0);
+  stops.forEach(function(s) { g.addColorStop(s[0], s[1]); });
+  return g;
+}
+
+function safeChart(id, config) {
+  var el = document.getElementById(id);
+  if (!el) return null;
+  return new Chart(el, config);
+}
+
+safeChart('chart-sales-goal', {
+  type: 'doughnut',
+  data: {
+    datasets: [{
+      data: [salesGoalPct, 100 - salesGoalPct],
+      backgroundColor: [cTeal, '#eef2f9'],
+      borderWidth: 0
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    circumference: 180, rotation: 270, cutout: '72%',
+    plugins: { legend: { display: false }, tooltip: { enabled: false } }
+  }
+});
+
+safeChart('chart-top-sellers', {
+  type: 'bar',
+  data: {
+    labels: topSellerNames,
+    datasets: [{
+      data: topSellerValues,
+      backgroundColor: function(ctx) { return linGrad(ctx, [[0, cTeal], [0.5, cBlue], [1, cViolet]], false); },
+      borderRadius: 6,
+      barThickness: 16
+    }]
+  },
+  options: {
+    indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+    layout: { padding: { right: 46 } },
+    plugins: {
+      legend: { display: false },
+      tooltip: { backgroundColor: '#0a1226', padding: 10, cornerRadius: 10, displayColors: false,
+        callbacks: { label: function(c) { return c.parsed.x.toLocaleString() + ' dhs'; } } },
+      datalabels: {
+        anchor: 'end', align: 'right', color: '#0a1226', font: { weight: '700', size: 10 },
+        formatter: function(v) { return v.toLocaleString(); }
+      }
+    },
+    scales: {
+      x: { grid: { color: '#e3e8f0' }, ticks: { font: { size: 10 } } },
+      y: { grid: { display: false }, ticks: { font: { size: 11, weight: '500' } } }
+    }
+  }
+});
+
+safeChart('chart-gmv-cat', {
+  type: 'pie',
+  data: {
+    labels: gmvCatLabels,
+    datasets: [{ data: gmvCatValues, backgroundColor: palette, borderWidth: 2, borderColor: '#fff' }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'bottom', labels: { boxWidth: 9, font: { size: 9 }, padding: 8 } },
+      tooltip: { backgroundColor: '#0a1226', padding: 10, cornerRadius: 10,
+        callbacks: { label: function(c) { return c.label + ': ' + c.parsed + '%'; } } },
+      datalabels: {
+        display: 'auto',
+        color: '#fff', font: { weight: '700', size: 10 },
+        formatter: function(v) { return v < 5 ? null : v + '%'; }
+      }
+    }
+  }
+});
+
+safeChart('chart-sku-cat', {
+  type: 'pie',
+  data: {
+    labels: skuCatLabels,
+    datasets: [{ data: skuCatValues, backgroundColor: palette, borderWidth: 2, borderColor: '#fff' }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'bottom', labels: { boxWidth: 9, font: { size: 9 }, padding: 8 } },
+      tooltip: { backgroundColor: '#0a1226', padding: 10, cornerRadius: 10,
+        callbacks: { label: function(c) { return c.label + ': ' + c.parsed + '%'; } } },
+      datalabels: {
+        display: 'auto',
+        color: '#fff', font: { weight: '700', size: 10 },
+        formatter: function(v) { return v < 5 ? null : v + '%'; }
+      }
+    }
+  }
+});
+
+safeChart('chart-ads-clicks', {
+  type: 'bar',
+  data: {
+    labels: adsNames,
+    datasets: [{
+      data: adsClicks,
+      backgroundColor: function(ctx) { return linGrad(ctx, [[0, cTeal], [0.5, cBlue], [1, cViolet]], false); },
+      borderRadius: 6,
+      barThickness: 18
+    }]
+  },
+  options: {
+    indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+    layout: { padding: { right: 46 } },
+    plugins: {
+      legend: { display: false },
+      tooltip: { backgroundColor: '#0a1226', padding: 10, cornerRadius: 10, displayColors: false },
+      datalabels: {
+        anchor: 'end', align: 'right', color: '#0a1226', font: { weight: '700', size: 10 },
+        formatter: function(v) { return v.toLocaleString(); }
+      }
+    },
+    scales: {
+      x: { grid: { color: '#e3e8f0' }, ticks: { font: { size: 10 } } },
+      y: { grid: { display: false }, ticks: { font: { size: 11, weight: '500' } } }
+    }
+  }
+});
+
+safeChart('chart-ads-ctr', {
+  type: 'bar',
+  data: {
+    labels: adsNames,
+    datasets: [{
+      data: adsCtr,
+      backgroundColor: function(ctx) { return linGrad(ctx, [[0, cTeal], [0.5, cBlue], [1, cViolet]], false); },
+      borderRadius: 6,
+      barThickness: 18
+    }]
+  },
+  options: {
+    indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+    layout: { padding: { right: 46 } },
+    plugins: {
+      legend: { display: false },
+      tooltip: { backgroundColor: '#0a1226', padding: 10, cornerRadius: 10, displayColors: false },
+      datalabels: {
+        anchor: 'end', align: 'right', color: '#0a1226', font: { weight: '700', size: 10 },
+        formatter: function(v) { return v + '%'; }
+      }
+    },
+    scales: {
+      x: { grid: { color: '#e3e8f0' }, ticks: { font: { size: 10 } } },
+      y: { grid: { display: false }, ticks: { font: { size: 11, weight: '500' } } }
+    }
+  }
+});
+
+/* nav scroll-spy */
+var sections = document.querySelectorAll('.page-section, .cover-page');
+var navLinks = document.querySelectorAll('.masthead nav a');
+var observer = new IntersectionObserver(function(entries) {
+  entries.forEach(function(entry) {
+    if (entry.isIntersecting) {
+      var id = entry.target.getAttribute('id');
+      navLinks.forEach(function(link) {
+        link.classList.toggle('active', link.getAttribute('href') === '#' + id);
+      });
+    }
+  });
+}, { rootMargin: '-40% 0px -55% 0px' });
+sections.forEach(function(s) { observer.observe(s); });
+
+/* lightbox, delegated click */
+var lightbox = document.getElementById('lightbox');
+var lightboxImg = document.getElementById('lightboxImg');
+var lightboxTitle = document.getElementById('lightboxTitle');
+var lightboxStats = document.getElementById('lightboxStats');
+document.addEventListener('click', function(e) {
+  var thumb = e.target.closest('[data-lb-src]');
+  if (thumb) {
+    lightboxImg.src = thumb.getAttribute('data-lb-src');
+    lightboxTitle.textContent = thumb.getAttribute('data-lb-title') || '';
+    lightboxStats.textContent = thumb.getAttribute('data-lb-stats') || '';
+    lightbox.classList.add('open');
+  }
+});
+document.getElementById('lightboxClose').addEventListener('click', function() {
+  lightbox.classList.remove('open');
+});
+lightbox.addEventListener('click', function(e) {
+  if (e.target === lightbox) lightbox.classList.remove('open');
+});
+</script>
+</body>
+</html>
