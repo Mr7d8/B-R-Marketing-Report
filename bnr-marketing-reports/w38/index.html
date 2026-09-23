@@ -356,6 +356,7 @@ footer a { color: var(--ink); text-decoration: none; font-weight: 500; }
 .src-table tbody td:first-child { color: var(--ink); font-weight: 600; }
 .src-table tfoot td { padding: 10px; border-top: 1px solid var(--line); font-size: 14px; font-weight: 700; color: var(--ink); }
 .src-table .src-id { font-size: 11px; color: var(--ink-fade); font-weight: 500; }
+@media (max-width: 560px) { .src-table th, .src-table td { padding: 8px 5px; font-size: 12px; } .src-table th { font-size: 9px; letter-spacing: .04em; } }
 
 @keyframes riseIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 .display-xl, h2.display-l, .kpi-card { animation: riseIn .6s ease-out; }
@@ -486,10 +487,34 @@ footer a { color: var(--ink); text-decoration: none; font-weight: 500; }
 <section class="page-section page" id="p-growth">
   <div class="page-label"><span class="chip">Page 02</span> App Growth</div>
   <h2 class="display-l">App <span class="grad">Growth</span></h2>
-  <p class="lede">Active users, installs, sessions and in-app activity from AppsFlyer. Source: AppsFlyer, Sep 14 &ndash; Sep 20, 2026.</p>
+  <p class="lede">Active users, installs, sessions and in-app activity from AppsFlyer, plus retention by platform. Source: AppsFlyer, last 7 days compared to the previous week.</p>
 
-  <div class="skeleton-card" style="min-height:160px;display:flex;flex-direction:column;justify-content:center;margin-top:28px;"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="color:var(--ink-fade);margin:0 auto;"><rect x="3" y="4" width="18" height="16" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M7 9h10M7 13h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><div class="sk-label">Data pending</div><div class="sk-field">AppsFlyer KPIs: Active Users, Installs, Organic Installs, Sessions, Retention</div></div>
-  <div class="skeleton-card" style="min-height:160px;display:flex;flex-direction:column;justify-content:center;margin-top:16px;"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="color:var(--ink-fade);margin:0 auto;"><rect x="3" y="4" width="18" height="16" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M7 9h10M7 13h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><div class="sk-label">Data pending</div><div class="sk-field">Weekly Highlights &middot; Performance Marketing</div></div>
+  <div class="growth-cards kpi-row">
+    <div class="growth-card"><div class="label">Active Users (7d)</div><div class="value">5,881</div><div class="delta up">+17%</div></div><div class="growth-card"><div class="label">Installs</div><div class="value">3,268</div><div class="delta up">+57%</div></div><div class="growth-card"><div class="label">Organic Installs</div><div class="value">359</div><div class="delta up">+1%</div></div><div class="growth-card"><div class="label">Sessions</div><div class="value">13.92K</div><div class="delta up">+22%</div></div><div class="growth-card"><div class="label">Retention W0</div><div class="value">93.05%</div><div class="delta down">-1%</div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Weekly Highlights</div>
+    <div class="card-sub">Performance Marketing</div>
+    <ul class="ops-list"><li>Strongest acquisition week in this window: Installs 3,268 (+57%), Active Users 5,881 (+17%) and Sessions 13.92K (+22%).</li><li>The growth was paid-driven. Organic Installs held flat at 359 (+1%), so organic fell to 11.0% of all installs, down from about 17% the previous week.</li><li>Daily installs climbed steadily through the second half of the period, peaking at 685 in a single day against a 200 to 300 daily range in late August and early September.</li><li>Conversion did not follow traffic: Add To Cart fell 13% to 131 and af_purchase unique users stayed flat at 14, even with 22% more sessions.</li><li>Conversion is thin at both ends: 0.9% of sessions reached Add to Cart, and 10.7% of those carts converted to a purchase.</li><li>Retention weakened across cohorts: W0 93.05% (-1%), W1 5.41% against 8.52% (-36%), W2 1.69% against 3.15% (-46%).</li><li>iOS retains far better than Android: W1 at 11.13% on iOS against 4.55% on Android, and W2 at 3.63% against 1.39%.</li><li>This week&rsquo;s new installs look lower-intent than usual. Worth checking which paid sources drove the spike before scaling that budget further.</li></ul>
+  </div>
+
+  <div class="two-col-eq" style="margin-top:24px;">
+    <div class="card">
+      <div class="card-title">In-App Activity</div>
+      <div class="card-sub">Last 7 days compared to the previous week, unified view</div>
+      <table class="src-table"><thead><tr><th>Metric</th><th class="num">This week</th><th class="num">Change</th></tr></thead>
+      <tbody><tr><td>Sessions</td><td class="num">13.92K</td><td class="num" style="color:var(--good);font-weight:700;">+22%</td></tr><tr><td>Add To Cart</td><td class="num">131</td><td class="num" style="color:var(--bad);font-weight:700;">-13%</td></tr><tr><td>af_purchase <span class="src-id">unique users LTV</span></td><td class="num">14</td><td class="num">0%</td></tr><tr><td>Sessions to cart</td><td class="num">0.9%</td><td class="num">&ndash;</td></tr><tr><td>Cart to purchase</td><td class="num">10.7%</td><td class="num">&ndash;</td></tr></tbody></table>
+      <div class="card-sub" style="margin-top:14px;line-height:1.6;">Media source breakdown was not included in this week&rsquo;s AppsFlyer export.</div>
+    </div>
+    <div class="card">
+      <div class="card-title">Retention</div>
+      <div class="card-sub">Classic attribution, last 4 weeks compared to the previous period</div>
+      <table class="src-table"><thead><tr><th>Cohort</th><th class="num">Previous</th><th class="num">This period</th><th class="num">Change</th></tr></thead>
+      <tbody><tr><td>W0, all apps</td><td class="num">93.69%</td><td class="num">93.05%</td><td class="num" style="color:var(--bad);font-weight:700;">-1%</td></tr><tr><td>W0, Android</td><td class="num">92.44%</td><td class="num">91.77%</td><td class="num" style="color:var(--bad);font-weight:700;">-1%</td></tr><tr><td>W0, iOS</td><td class="num">100.16%</td><td class="num">101.57%</td><td class="num" style="color:var(--good);font-weight:700;">+1%</td></tr><tr><td>W1, all apps</td><td class="num">8.52%</td><td class="num">5.41%</td><td class="num" style="color:var(--bad);font-weight:700;">-36%</td></tr><tr><td>W1, Android</td><td class="num">7.41%</td><td class="num">4.55%</td><td class="num" style="color:var(--bad);font-weight:700;">-39%</td></tr><tr><td>W1, iOS</td><td class="num">14.26%</td><td class="num">11.13%</td><td class="num" style="color:var(--bad);font-weight:700;">-22%</td></tr><tr><td>W2, all apps</td><td class="num">3.15%</td><td class="num">1.69%</td><td class="num" style="color:var(--bad);font-weight:700;">-46%</td></tr><tr><td>W2, Android</td><td class="num">2.68%</td><td class="num">1.39%</td><td class="num" style="color:var(--bad);font-weight:700;">-48%</td></tr><tr><td>W2, iOS</td><td class="num">5.58%</td><td class="num">3.63%</td><td class="num" style="color:var(--bad);font-weight:700;">-35%</td></tr></tbody></table>
+      <div class="card-sub" style="margin-top:14px;line-height:1.6;">W2 changes are computed from the reported rates. iOS W0 above 100% reflects AppsFlyer re-attribution within the cohort window.</div>
+    </div>
+  </div>
 </section>
 <section class="page-section page" id="p-overview">
   <div class="page-label"><span class="chip">Page 03</span> Overview / Ops</div>
@@ -567,7 +592,8 @@ footer a { color: var(--ink); text-decoration: none; font-weight: 500; }
 <div class="pv-subtitle">Week 38 &middot; AppsFlyer + Meta Ads</div>
 
 <div class="pv-section-label">App Growth</div>
-<div class="pv-note-box"><p>AppsFlyer data for Sep 14 to Sep 20, 2026 is pending and will be added once available.</p></div>
+<div class="pv-kpi-grid"><div class="pv-kpi"><div class="l">Active Users (7d)</div><div class="v">5,881<span class="d up">&uarr;17%</span></div></div><div class="pv-kpi"><div class="l">Installs</div><div class="v">3,268<span class="d up">&uarr;57%</span></div></div><div class="pv-kpi"><div class="l">Organic Installs</div><div class="v">359<span class="d up">&uarr;1%</span></div></div><div class="pv-kpi"><div class="l">Sessions</div><div class="v">13.92K<span class="d up">&uarr;22%</span></div></div><div class="pv-kpi"><div class="l">Retention W0</div><div class="v">93.05%<span class="d down">&darr;1%</span></div></div><div class="pv-kpi"><div class="l">Add To Cart</div><div class="v">131<span class="d down">&darr;13%</span></div></div><div class="pv-kpi"><div class="l">af_purchase</div><div class="v">14</div><div class="s">flat WoW</div></div><div class="pv-kpi"><div class="l">Cart to purchase</div><div class="v">10.7%</div></div></div>
+<p style="font-size:8px;color:var(--ink-mute);margin:6px 0 0;line-height:1.5;">Retention, classic attribution: W1 5.41% against 8.52% (-36%), W2 1.69% against 3.15% (-46%). iOS W1 11.13% against Android 4.55%. Installs grew 57% while organic stayed flat at 359, and carts fell 13%.</p>
 
 <div class="pv-section-label">Top 5 Ads</div>
 <p style="font-size:8px;color:var(--ink-mute);margin:0 0 6px;line-height:1.5;">Ranked by results, Sep 14 - Sep 20, 2026. Account total: &euro;2,202.47 spend, 2,336,500 impressions, 26,138 clicks, 1.12% CTR, 991,677 reach. Results are website leads for NV IMG 4 and 5, website purchases for the others.</p>
