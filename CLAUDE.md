@@ -32,6 +32,45 @@ separate report family, separate repo, separate deploy.
      latest branch commit. Then `git checkout -B main origin/main`, `git merge <branch>` (not a
      bare fast-forward assumption), and `git push origin main`, switching back to the feature
      branch afterward so the session's working branch stays what it was.
+6. Confirm the deploy actually happened (see below). A successful `git push` only proves GitHub
+   has the commit, not that Vercel picked it up.
+
+## Vercel deploy not triggering on push
+
+The Vercel project is `b-r-marketing-report` (`prj_a3LtCoC48jpfkP7J7QDnfKTT7CoY`) in the team
+**mr7d8's projects** (`team_wyYc2EsyMUq3MbNIFBidxo0v`). Production domain is
+`business-marketing-report.vercel.app`; `b-r-marketing-report.vercel.app` redirects to it.
+The Claude Vercel connector can end up signed in to a different Vercel account (it was once on
+"ossamameta1-5799's projects", which has no B&R project). If `list_teams` doesn't show
+mr7d8's projects, ask the user to reconnect the Vercel connector with the right account rather
+than concluding the project doesn't exist.
+
+**Verify every push:** `list_deployments` with `teamId`, `projectId` and the full commit `sha`.
+It should show a production deployment for that SHA reaching `READY` within a few seconds (static
+site, no build). An empty list means the push never reached Vercel.
+
+**Symptom seen in W39:** two pushes to `main` landed on GitHub but Vercel recorded no deployment
+for either SHA, so the live site silently stayed on the previous week. Triggering a deploy by
+hand (`create_deployment` with a `gitSource`, or a redeploy with `withLatestCommit: true`) failed
+with `incorrect_git_source_info: The provided GitHub repository can't be found.` Cause: Vercel's
+GitHub integration had lost access to `Mr7d8/B-R-Marketing-Report`.
+
+**Fix (needs the user, not doable from a session):** either Vercel → mr7d8's projects →
+b-r-marketing-report → Settings → Git and reconnect the repo, or GitHub → Settings → Applications
+→ Installed GitHub Apps → Vercel → Configure → Repository access and add `B-R-Marketing-Report`.
+Then deploy the commits that were missed, since reconnecting does not backfill them:
+
+```
+create_deployment(teamId="team_wyYc2EsyMUq3MbNIFBidxo0v", requestBody={
+  "name": "b-r-marketing-report", "project": "prj_a3LtCoC48jpfkP7J7QDnfKTT7CoY",
+  "target": "production",
+  "gitSource": {"type": "github", "org": "Mr7d8", "repo": "B-R-Marketing-Report",
+                "ref": "main", "sha": "<full HEAD sha of main>"}})
+```
+
+After that, pushes to `main` auto-deploy again (confirmed on the next W39 push). A files-based
+deploy that skips Git isn't a practical workaround here: it has to upload every file in the site
+(~800 KB), not just the changed week.
 
 ## Report page structure (per week's index.html)
 
