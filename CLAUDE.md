@@ -25,21 +25,75 @@ separate report family, separate repo, separate deploy.
    it per week, just link to it.
 5. Commit and push to `main` (this repo has no PR workflow by default, push directly unless told
    otherwise). Vercel redeploys automatically.
+   - If working on a feature branch (e.g. a Claude Code Remote session bound to one), a plain
+     `git push origin <branch>` can still result in GitHub auto-opening *and auto-merging* a PR
+     from it asynchronously, main can advance out from under you between pushes. Before pushing
+     to `main`, always `git fetch origin main` first and check whether it already contains your
+     latest branch commit. Then `git checkout -B main origin/main`, `git merge <branch>` (not a
+     bare fast-forward assumption), and `git push origin main`, switching back to the feature
+     branch afterward so the session's working branch stays what it was.
+6. Confirm the deploy actually happened (see below). A successful `git push` only proves GitHub
+   has the commit, not that Vercel picked it up.
+
+## Vercel deploy not triggering on push
+
+The Vercel project is `b-r-marketing-report` (`prj_a3LtCoC48jpfkP7J7QDnfKTT7CoY`) in the team
+**mr7d8's projects** (`team_wyYc2EsyMUq3MbNIFBidxo0v`). Production domain is
+`business-marketing-report.vercel.app`; `b-r-marketing-report.vercel.app` redirects to it.
+The Claude Vercel connector can end up signed in to a different Vercel account (it was once on
+"ossamameta1-5799's projects", which has no B&R project). If `list_teams` doesn't show
+mr7d8's projects, ask the user to reconnect the Vercel connector with the right account rather
+than concluding the project doesn't exist.
+
+**Verify every push:** `list_deployments` with `teamId`, `projectId` and the full commit `sha`.
+It should show a production deployment for that SHA reaching `READY` within a few seconds (static
+site, no build). An empty list means the push never reached Vercel.
+
+**Symptom seen in W39:** two pushes to `main` landed on GitHub but Vercel recorded no deployment
+for either SHA, so the live site silently stayed on the previous week. Triggering a deploy by
+hand (`create_deployment` with a `gitSource`, or a redeploy with `withLatestCommit: true`) failed
+with `incorrect_git_source_info: The provided GitHub repository can't be found.` Cause: Vercel's
+GitHub integration had lost access to `Mr7d8/B-R-Marketing-Report`.
+
+**Fix (needs the user, not doable from a session):** either Vercel → mr7d8's projects →
+b-r-marketing-report → Settings → Git and reconnect the repo, or GitHub → Settings → Applications
+→ Installed GitHub Apps → Vercel → Configure → Repository access and add `B-R-Marketing-Report`.
+Then deploy the commits that were missed, since reconnecting does not backfill them:
+
+```
+create_deployment(teamId="team_wyYc2EsyMUq3MbNIFBidxo0v", requestBody={
+  "name": "b-r-marketing-report", "project": "prj_a3LtCoC48jpfkP7J7QDnfKTT7CoY",
+  "target": "production",
+  "gitSource": {"type": "github", "org": "Mr7d8", "repo": "B-R-Marketing-Report",
+                "ref": "main", "sha": "<full HEAD sha of main>"}})
+```
+
+After that, pushes to `main` auto-deploy again (confirmed on the next W39 push). A files-based
+deploy that skips Git isn't a practical workaround here: it has to upload every file in the site
+(~800 KB), not just the changed week.
 
 ## Data sources (as of W43)
 
 - **Business & Revenue**: the Sales team's weekly slide (`BR__Marketing_Preformance_WNN...pptx`, one slide).
-  Transcribe its KPIs, pies and notes as-is. Its Top Sellers chart prints only the top value; the Wasal data
-  lakehouse (`ventes_lignes_jour`, `SUM(gmv) WHERE est_nette` per `store_id`, names from
-  `mkt_review_top_jour`) reproduced the slide's ranking exactly in W43, so use those values for the other bars
-  and say so in the card sub. The slide's "GMV Week" matched lakehouse GMV brut.
-- **App Growth**: Wasal data lakehouse. Installs from `mkt_installs_app_jour` (AppsFlyer), sessions and the
-  session funnel from `engagement_sessions_journalier` (PostHog, app `mobile` + `web`, tunnel columns are
-  monotonic by construction), active app users = distinct `visiteur` with a `$screen` event in
-  `silver_posthog_events_app` (raw distinct visitors include AppsFlyer callback-only visitors and mislead).
-- **Top 5 Ads**: Meta ad account 1737134693101957, ranked by website purchases
-  (`offsite_conversion_fb_pixel_purchase`), ties broken by cost per purchase. Don't sort by the generic
-  `results`, which mixes result types (a ThruPlay video ad tops it with 100K+ "results").
+  Transcribe its KPIs, pies and notes as-is. When its Top Sellers chart prints only the top value, query the
+  Wasal data lakehouse (Data_Wasal connector: `ventes_lignes_jour`, `SUM(gmv) WHERE est_nette` per
+  `store_id`, names from `mkt_review_top_jour`) for the same week before estimating from bar length. In W43
+  it reproduced the slide's ranking exactly, so all ten bars use exact values (say so in the card sub). The
+  slide's "GMV Week" matched lakehouse GMV brut.
+- **App Growth without an AppsFlyer dashboard screenshot**: the lakehouse is a usable fallback, with care.
+  `mkt_installs_app_jour` (AppsFlyer) matches the dashboard exactly: W39's window gave 4,615 installs and 364
+  organic, the same as the published tiles, so Installs and Organic Installs stay comparable week to week.
+  Active users and sessions only exist there from PostHog, which counts differently: for W39's window,
+  distinct app visitors with a `$screen` event were 7,030 against AppsFlyer's 7,196 active users, and
+  PostHog app sessions (`engagement_sessions_journalier`, `canal_observation = 'mobile'`) were 9,188 against
+  AppsFlyer's 17.97K. Label those tiles as PostHog and compare them only with PostHog figures for the
+  previous week, never with the AppsFlyer tiles of earlier reports. Raw distinct PostHog visitors (without
+  the `$screen` filter) also count AppsFlyer callback-only devices and mislead.
+- **Top 5 Ads**: same method as W28 and W39: rank by results (website purchases or website leads,
+  whichever the ad optimises for), ties broken by lower cost per result, and leave out ads whose objective
+  isn't a conversion (engagement/ThruPlay, traffic/landing page views, app installs with no results),
+  naming them and their spend in the lede. Don't take Meta's generic `results` sort as-is: it mixes result
+  types, so a ThruPlay video ad tops it with 100K+ "results".
 - Charts are created after `document.fonts.ready` (see `safeChart` in `w43/index.html`). Creating them before
   the web font loads clips the longest y-axis labels, because Chart.js measures them in the fallback font.
 
@@ -52,10 +106,24 @@ Fixed page order, each `<section class="page-section pb" id="...">`:
    `.insight-grid` at the bottom.
 3. App Growth (`#p-growth`): AppsFlyer KPI tiles (`.growth-cards.kpi-row`, flat single-metric
    cards) plus Conversion Funnel Overview (`.funnel-split`: funnel SVG left, "Weekly Highlights ·
-   Performance Marketing" list right).
+   Performance Marketing" list right). **Always write this list yourself** from the week's own
+   AppsFlyer/Mixpanel numbers already on the same page (budget, active users, sessions, funnel
+   rates, retention, etc.), don't leave it as a pending skeleton just because no one supplied
+   prose bullets separately. This is a legitimate data-driven summary of figures already
+   verified elsewhere on the page, not a fabrication. This does not extend to Page 03's Weekly
+   Highlights below, see that section for why.
 4. Overview / Outside Digital Performance (`#p-overview`): Weekly Highlights, Plan of Action
-   (`.plan-grid`), Blocking Points (`.insight-grid.cols-3`, red accent).
-5. Top 5 Ads (`#p-topads`): Meta Ads ranking table plus clicks/CTR charts.
+   (`.plan-grid`), Blocking Points (`.insight-grid.cols-3`, red accent). Unlike Page 02's
+   highlights, this section covers business/ops initiatives (campaign launches, program
+   approvals, workstream status) that this report has no data source for. Leave it pending if
+   no one supplied it, writing something here means inventing specific business claims, not
+   summarizing numbers already in the report.
+5. Top 5 Ads (`#p-topads`): Meta Ads ranking table plus clicks/CTR charts. Ranking columns are
+   Spend, Impr., Clicks, CTR, **Cost/Result** (its own column, not folded into the Results
+   label), Results. When Meta returns duplicate/generic ad names (e.g. several ads literally
+   named "CRSL - 1"), fetch each ad's ad set name (one extra `ads_get_ad_entities` call at
+   `level=adset`) and use it as disambiguating context in the display name, e.g. "CRSL - 1 ·
+   High-Tech & Audio", so the ranking table and charts don't show indistinguishable duplicates.
 
 Update the masthead nav links and the `Page 0N` chip in each `.page-label` if you add or reorder
 pages. Keep the sticky masthead nav order in sync with section order.
@@ -81,6 +149,13 @@ honest.
   centered in the viewBox. See the current funnel SVG in any `wNN/index.html` for the worked
   example (stage y-positions evenly spaced, `maxHalfWidth` ~130, dividers between all but the
   final stage).
+- Blending two sources into one funnel (e.g. Mixpanel for the top stages, AppsFlyer's
+  `af_purchase` for the final one because Mixpanel didn't report a purchase stage that week) is
+  fine, it's better than shipping a funnel with a stage missing. But always add a small note
+  under the funnel spelling out which stages came from which source and why, plus any side
+  annotations that came with the data but aren't funnel stages themselves (a ratio between two
+  stages, a context-only count like "/checkout" visits). Don't let a blended funnel look like a
+  single clean source.
 
 ## Export PDF / print
 
@@ -112,10 +187,11 @@ save space, only trim if a render actually overflows to a 4th page:
 2. App Growth + Top Ads: KPI grid, the conversion funnel (the same hand-built SVG used on
    screen, copy it as-is since it's pure vector and prints reliably with no JS involved), Top 5
    Ads as a full `<table class="pv-table pv-table-ads">` with the same columns as the screen
-   ranking (Spend, Impr., Clicks, CTR, CPC, Results) plus a small thumbnail per row (reuse the
-   Cloudinary URLs, see "Ad thumbnail images" below), and two CSS bar-chart blocks below the
-   table ("Clicks by ad" / "CTR by ad", `.pv-bars.compact.small` inside a `.pv-pie-row`) mirroring
-   the screen's ad performance charts.
+   ranking (Spend, Impr., Clicks, CTR, Cost/Res., Results, in that order, don't drop Results
+   itself when adding Cost/Res.) plus a small thumbnail per row (reuse the Cloudinary URLs, see
+   "Ad thumbnail images" below), and two CSS bar-chart blocks below the table ("Clicks by ad" /
+   "CTR by ad", `.pv-bars.compact.small` inside a `.pv-pie-row`) mirroring the screen's ad
+   performance charts.
 3. Overview & Operations: Weekly Highlights as a 2-column bullet list (`.pv-hl-list`), full Plan
    of Action grid, Blocking Points.
 
@@ -170,6 +246,50 @@ to whatever network policy blocks that host locally. Upload each ad's image once
 matching `data-lb-src` (they're the same URL twice per ranking row, once for the inline
 thumbnail, once for the lightbox) at the returned `secure_url`. Do this before the original
 signed URL expires, not after, since an already-expired URL can no longer be fetched by anyone.
+
+**Cloudinary connector gotcha:** the connector can show as `connected: true` at the org level
+(via `ListConnectors`) while still being `enabledInChat: false` for the current session, in
+which case its tools never load no matter how many times you re-check. Ask the user to enable it
+for the current chat specifically (not just connect it), and don't loop on re-checking, ask once
+and let them confirm before retrying. If it truly isn't available this session, build the Top 5
+Ads page with real ranking data and a placeholder thumbnail icon rather than shipping a raw
+`fbcdn.net` URL, then re-host the thumbnails in a follow-up once the connector is live.
+
+**Local dev sandbox network limitations:** the environment this report is typically built in
+(Claude Code sandbox) blocks outbound requests to `cdn.jsdelivr.net` (Chart.js/datalabels),
+`*.fbcdn.net`, and `res.cloudinary.com` at the proxy level (`CONNECT tunnel failed, response
+403`). This means local Playwright screenshots/PDF renders will show broken Chart.js canvases
+and broken thumbnail `<img>` tags even when the code and the uploaded assets are both correct,
+production (Vercel, real browsers) has no such restriction. Don't mistake this for a real defect:
+confirm a Cloudinary upload succeeded from its API response (it returns `secure_url`, `bytes`,
+etc. on success) rather than from a local screenshot, and confirm Chart.js configs are correct by
+pattern-matching against a previous week's already-deployed, working charts.
+
+## Chart.js pie/doughnut datalabels must not overlap
+
+The GMV/SKU category pies (`chart-gmv-cat`, `chart-sku-cat`) show permanent `%` labels on each
+slice via chartjs-plugin-datalabels, per the report-wide "always show values, no hover-only
+labels" rule. With several small categories clustered next to each other (e.g. Maison 7.1%,
+Beaut&eacute; 6.3%, Fashion femme 9.4% all adjacent), their centroid labels land close enough to
+visually overlap and become unreadable, this happened for real in W29.
+
+Fix: always set `display: 'auto'` on the `datalabels` block for pie/doughnut charts, alongside
+the existing `formatter` cutoff that hides labels below a minimum share:
+
+```js
+datalabels: {
+  display: 'auto',
+  color: '#fff', font: { weight: '700', size: 10 },
+  formatter: function(v) { return v < 5 ? null : v + '%'; }
+}
+```
+
+`display: 'auto'` is a chartjs-plugin-datalabels feature that hides a label if it would overlap
+an already-placed one, evaluated in dataset order, so keep category data sorted largest-first
+(as it already is) so the labels that survive are the biggest, most important slices. The full
+breakdown is never lost since the legend below each pie always lists every category and its
+percentage regardless of which inline labels got auto-hidden. This applies to every pie/doughnut
+chart in the report, not just this week's two.
 
 ## Style rules
 
