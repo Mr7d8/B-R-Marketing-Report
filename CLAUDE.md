@@ -26,6 +26,23 @@ separate report family, separate repo, separate deploy.
 5. Commit and push to `main` (this repo has no PR workflow by default, push directly unless told
    otherwise). Vercel redeploys automatically.
 
+## Data sources (as of W43)
+
+- **Business & Revenue**: the Sales team's weekly slide (`BR__Marketing_Preformance_WNN...pptx`, one slide).
+  Transcribe its KPIs, pies and notes as-is. Its Top Sellers chart prints only the top value; the Wasal data
+  lakehouse (`ventes_lignes_jour`, `SUM(gmv) WHERE est_nette` per `store_id`, names from
+  `mkt_review_top_jour`) reproduced the slide's ranking exactly in W43, so use those values for the other bars
+  and say so in the card sub. The slide's "GMV Week" matched lakehouse GMV brut.
+- **App Growth**: Wasal data lakehouse. Installs from `mkt_installs_app_jour` (AppsFlyer), sessions and the
+  session funnel from `engagement_sessions_journalier` (PostHog, app `mobile` + `web`, tunnel columns are
+  monotonic by construction), active app users = distinct `visiteur` with a `$screen` event in
+  `silver_posthog_events_app` (raw distinct visitors include AppsFlyer callback-only visitors and mislead).
+- **Top 5 Ads**: Meta ad account 1737134693101957, ranked by website purchases
+  (`offsite_conversion_fb_pixel_purchase`), ties broken by cost per purchase. Don't sort by the generic
+  `results`, which mixes result types (a ThruPlay video ad tops it with 100K+ "results").
+- Charts are created after `document.fonts.ready` (see `safeChart` in `w43/index.html`). Creating them before
+  the web font loads clips the longest y-axis labels, because Chart.js measures them in the fallback font.
+
 ## Report page structure (per week's index.html)
 
 Fixed page order, each `<section class="page-section pb" id="...">`:
