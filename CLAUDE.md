@@ -89,6 +89,10 @@ deploy that skips Git isn't a practical workaround here: it has to upload every 
   AppsFlyer's 17.97K. Label those tiles as PostHog and compare them only with PostHog figures for the
   previous week, never with the AppsFlyer tiles of earlier reports. Raw distinct PostHog visitors (without
   the `$screen` filter) also count AppsFlyer callback-only devices and mislead.
+  PostHog figures get restated after the fact: by W44, W43's window read 4,499 active users and 6,701 sessions
+  against the 4,415 and 6,573 published in W43 (AppsFlyer installs, add-to-cart and purchase sessions did not
+  move). Re-query the previous week alongside the current one, compute deltas from the re-queried values, and
+  say on the page that the earlier week was restated.
 - **Top 5 Ads**: same method as W28 and W39: rank by results (website purchases or website leads,
   whichever the ad optimises for), ties broken by lower cost per result, and leave out ads whose objective
   isn't a conversion (engagement/ThruPlay, traffic/landing page views, app installs with no results),
